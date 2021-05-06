@@ -28,12 +28,12 @@ cursor = db.cursor()
 
 # excel 파일 불러오기
 
-fileDir = 'C:/Users/kimsh/Desktop/list.xlsx'
+fileDir = 'C:/Users/kimsh/Desktop/list2.xlsx'
 excelFile = openpyxl.load_workbook(fileDir)
 
 sheet = excelFile['Sheet1']
 
-cells = sheet['A2' : 'E324']    # 읽을 셀 범위 설정
+cells = sheet['A1' : 'E10']    # 읽을 셀 범위 설정
 
 
 rowNum = 0
