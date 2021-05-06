@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UnivDetail">
+   <children>
+    <AnchorPane layoutY="100.0" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="900.0" style="-fx-border-width: 0px;">
+         <children>
+            <TableView layoutX="26.0" layoutY="382.0" prefHeight="87.0" prefWidth="699.0">
+              <columns>
+                <TableColumn fx:id="colStudentNumber" prefWidth="99.0" text="재학생 수" />
+                <TableColumn fx:id="colAdmissionCompetitionRate" prefWidth="101.0" text="입학경쟁률" />
+                  <TableColumn prefWidth="102.0" text="취업률" />
+                  <TableColumn prefWidth="106.0" text="진학률" />
+                  <TableColumn prefWidth="147.0" text="1인당 교육비" />
+                  <TableColumn prefWidth="143.0" text="장학금 수혜 현황" />
+              </columns>
+            </TableView>
+            <Circle fx:id="imgUnivLogo" fill="DODGERBLUE" layoutX="198.0" layoutY="118.0" radius="79.0" stroke="BLACK" strokeType="INSIDE" />
+            <Text layoutX="161.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="학교이미지" />
+            <TableView layoutX="26.0" layoutY="481.0" prefHeight="87.0" prefWidth="849.0">
+               <columns>
+                  <TableColumn minWidth="0.0" prefWidth="115.0" text="창업자 수" />
+                  <TableColumn prefWidth="132.0" text="창업기업 매출액" />
+                  <TableColumn prefWidth="124.0" text="창업기업 매출액" />
+                  <TableColumn prefWidth="126.0" text="교비 창업 지원액" />
+                  <TableColumn minWidth="0.0" prefWidth="123.0" text="정부 창업 지원액" />
+                  <TableColumn minWidth="0.0" prefWidth="115.0" text="창업 전담 교원" />
+                  <TableColumn minWidth="0.0" prefWidth="113.0" text="창업 전담 직원" />
+               </columns>
+            </TableView>
+            <TableView layoutX="26.0" layoutY="579.0" prefHeight="87.0" prefWidth="849.0">
+               <columns>
+                  <TableColumn prefWidth="75.0" text="입학금" />
+                  <TableColumn prefWidth="118.0" text="평균 등록금" />
+                  <TableColumn prefWidth="153.0" text="인문사회 등록금" />
+                  <TableColumn prefWidth="139.0" text="자연과학 등록금" />
+                  <TableColumn prefWidth="122.0" text="예체능 등록금" />
+                  <TableColumn prefWidth="113.0" text="공학 등록금" />
+                  <TableColumn prefWidth="128.0" text="의학 등록금" />
+               </columns>
+            </TableView>
+            <AnchorPane layoutX="386.0" layoutY="48.0" prefHeight="158.0" prefWidth="360.0">
+               <children>
+                  <Text fx:id="textUnivName" layoutX="17.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="학교이름" wrappingWidth="139.0">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="btnHomepage" layoutX="181.0" layoutY="16.0" mnemonicParsing="false" text="홈페이지 하이퍼 링크" />
+                  <Text fx:id="textUnivAddress" layoutX="97.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="경상북도 구밈ㅇㅁㄴㅇ" wrappingWidth="283.65137523412704" />
+                  <Text fx:id="textUnivType" layoutX="86.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="대학교" />
+                  <Label layoutX="30.0" layoutY="55.0" text="주소" />
+                  <Label layoutX="30.0" layoutY="117.0" text="종류" />
+                  <Label layoutX="156.0" layoutY="118.0" text="설립" />
+                  <Text fx:id="textUnivEstablishmentCls" layoutX="209.0" layoutY="132.0" strokeType="OUTSIDE" strokeWidth="0.0" text="국립" />
+                  <Label layoutX="15.0" layoutY="83.0" text="대표번호" />
+                  <Text fx:id="textUnivRepresentativeNumber" layoutX="97.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="012312301" wrappingWidth="283.65137523412704" />
+               </children>
+            </AnchorPane>
+            <Label fx:id="textUnivIntroduction" layoutX="119.0" layoutY="242.0" prefHeight="87.0" prefWidth="633.0" text="학교소개" />
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="100.0" prefWidth="900.0" style="-fx-border-width: 0px 0px 1px 0px; -fx-border-color: #7f8c8d;">
+         <children>
+            <Button fx:id="btnRequestUnivInf" layoutX="744.0" layoutY="22.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="114.0" text="조회" />
+            <TextField fx:id="inputUniv" layoutX="61.0" layoutY="22.0" prefHeight="56.0" prefWidth="656.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
