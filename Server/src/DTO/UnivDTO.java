@@ -82,7 +82,9 @@ public class UnivDTO {
     }
 
     public void setUnivLogoImageFile(Byte[] univLogoImageFile) {
-        this.univLogoImageFile = univLogoImageFile;
+        for(int i = 0; i < univLogoImageFile.length; i++){
+            this.univLogoImageFile = univLogoImageFile;
+        }
     }
 
     public String getUnivIntroduction() {
