@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class ClientMain extends Application {
 
     public static void main(String[] args) {
@@ -19,7 +21,7 @@ public class ClientMain extends Application {
         String serverIp = "192.168.231.243";    // 사설 ip
         int port = 5500;
 
-//        new Connection(serverIp, port);
+        new Connection(serverIp, port);   // test
     }
 
     @Override
@@ -33,5 +35,16 @@ public class ClientMain extends Application {
         primaryStage.show();
     }
 
+    public static void terminate(){
+//        Protocol packet = new Protocol(Protocol.PT_EXIT, Protocol.PT_EXIT);
+//        Connection.send(packet.getPacket());    // 종료 패킷 송신
+        try {
+            Connection.is.close();
+            Connection.os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        System.exit(0);                   //클라이언트 종료
+    }
 }

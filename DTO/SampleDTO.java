@@ -1,6 +1,8 @@
-package client.controller;
+package DTO;
 
-public class SampleDTO {
+import java.io.Serializable;
+
+public class SampleDTO implements Serializable {
     String name;
     int age;
     int height;
