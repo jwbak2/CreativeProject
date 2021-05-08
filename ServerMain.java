@@ -1,4 +1,4 @@
-import DTO.SampleDTO;
+import model.dto.SampleDTO;
 import Transmission.Connection;
 import Transmission.Protocol;
 import Transmission.Receiver;
