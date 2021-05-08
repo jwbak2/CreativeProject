@@ -122,7 +122,7 @@ public class UnivDetail implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
+        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
     }
 
     @FXML
@@ -136,7 +136,8 @@ public class UnivDetail implements Initializable{
             잘못 입력했을때 예외처리 필요 클라이언트 - 서버 둘다
             -> 실패 패킷?
          */
-        String univName = inputUniv.getText();  // input에 입력한 학교 이름 추출
+        // input에 입력한 학교 이름 추출 + 공백 제거
+        String univName = inputUniv.getText().replace(" ","");
 
         try {
             if (univName.equals("")){               // 공백일시 예외처리
@@ -150,6 +151,8 @@ public class UnivDetail implements Initializable{
 
             UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveDTO(); // 학교 상세정보 receive
             setUnivDetailInf(univDetailDTO);
+
+            mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -179,8 +182,9 @@ public class UnivDetail implements Initializable{
          */
         Protocol receivePT = Connection.receive();
 
-        if (receivePT.getProtocolType() == Protocol.PT_FAIL ){  // CODE 도 추가 필요 실패 로직 대충만듬
-            throw new Exception("not found");
+        if (receivePT.getProtocolType() == Protocol.PT_FAIL 
+                && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF){    // 입력한 학교명이 존재하지 않을떄
+            throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리 
         }
 
         Object objectMember = null;

@@ -32,7 +32,7 @@ public class Connection {
         Protocol receivePT = null;       // header 패킷 수신후 bodyLength 확인후 body 패킷 부분 읽음
         byte[] header = new byte[Protocol.LEN_HEADER];              // header 길이 만크의 바이트 배열
         int bodyLength;
-        byte[] body = null;
+        byte[] body;
 
         try {
             is.read(header);
