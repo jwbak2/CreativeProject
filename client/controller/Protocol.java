@@ -100,6 +100,4 @@ public class Protocol {
         System.arraycopy(packet, LEN_HEADER, body, 0, getBodyLength());
         return body;
     }
-
-
 }
