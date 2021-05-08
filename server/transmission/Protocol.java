@@ -1,6 +1,4 @@
-package Transmission;
-
-import com.sun.javafx.binding.SelectBinding;
+package src.server.Transmission;
 
 public class Protocol {
 

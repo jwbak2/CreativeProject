@@ -1,4 +1,4 @@
-package Transmission;
+package src.server.Transmission;
 
 import java.io.IOException;
 import java.net.ServerSocket;
