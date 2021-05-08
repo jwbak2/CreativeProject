@@ -24,7 +24,9 @@ public class Protocol {
     public static final int PT_RES_UNIV_INF = 0x01; // 학교 상세정보 조회 응답
 
     //TYPE 0x03 (SUCCESS) CODE
+
     //TYPE 0x04 (ERROR) CODE
+    public static final int PT_FAIL_UNIV_INF = 0x01;
 
     //Header 길이
     public static final int LEN_TYPE = 1;
@@ -97,7 +99,7 @@ public class Protocol {
         packet = buffer;
     }
 
-    public byte[] getBody() {
+    public byte[] getBody() {   // get body of packet
         byte[] body = new byte[getBodyLength()];
 
         System.arraycopy(packet, LEN_HEADER, body, 0, getBodyLength());

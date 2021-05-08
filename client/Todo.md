@@ -2,8 +2,8 @@
 
 #### 0508
 - [ ] Client, Server 둘다 예외처리 필요
-- [ ] Server로 받은 데이터 GUI 뿌려주기  
-
+- [x] Server로 받은 데이터 GUI 뿌려주기  
+- [ ] popup창 만들기 ex) 학교 상세정보 조회 실패
 ---
 
 ### FIX
@@ -17,11 +17,11 @@
 #### 0506
 - [x] git 해보기
     - fetch 로 기존 branch 읽어온 다음 merge 시킴
-    - 원격 레포에 있던 commit하고 로컬 commit 이랑 안맞는 멍청한 짓함
+    - 원격 레포에 있던 commit하고 로컬 commit 이랑 안맞음
 - [x] SampleDTO 역직렬화
     - Serialization Interface 구현
     
-#### COMPLETE
+#### COMPLETE ( Fix )
 - protocol body(data) 길이 정보 저장 필요 - 해결
     - -> 가변 길이로 읽을수 있도록 변경완료
     - 지금은 단순히 무조건 최대 바이트로 읽음 

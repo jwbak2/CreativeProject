@@ -29,17 +29,17 @@ public class Connection {
     }
 
     static public Protocol receive() {   // 서버 -> 클라이언트 패킷 수신, 받은 패킷으로 Protocol 생성해서 반환
-        Protocol receivePT = null;
+        Protocol receivePT = null;       // header 패킷 수신후 bodyLength 확인후 body 패킷 부분 읽음
         byte[] header = new byte[Protocol.LEN_HEADER];              // header 길이 만크의 바이트 배열
         int bodyLength;
-        byte[] body = null;
+        byte[] body;
 
         try {
             is.read(header);
             receivePT = new Protocol(header);
             bodyLength = receivePT.getBodyLength();
 
-            body = new byte[bodyLength];                         // header에 포함된 bodyLenght따라 만들어진 가변 배열
+            body = new byte[bodyLength];            // header에 포함된 bodyLength따라 만들어진 가변 배열
             is.read(body);
 
             receivePT.setPacket(body);
