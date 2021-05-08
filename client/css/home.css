@@ -1,3 +1,7 @@
-Label, Text, Button {
+* {
     -fx-font-family: "Noto Sans KR";
+}
+
+#title{
+    -fx-font-size: 50px;
 }

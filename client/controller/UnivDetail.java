@@ -120,7 +120,7 @@ public class UnivDetail implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
+//        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
     }
 
     @FXML
@@ -134,21 +134,24 @@ public class UnivDetail implements Initializable{
             잘못 입력했을때 예외처리 필요 클라이언트 - 서버 둘다
             -> 실패 패킷?
 
-            처음에 hide 였다가 조회누르면 show되게
          */
         String univName = inputUniv.getText();  // input에 입력한 학교 이름 추출
 
-        if (univName.equals("")){
-            System.out.println("univname null");
-            return;
+        try {
+            if (univName.equals("")){
+                throw new Exception("univName of input is null");
+            }
+
+            requestUnivInf(univName);   // 학교 상세정보 요청
+
+            UnivDTO univDTO = (UnivDTO) receiveDTO();       // 학교 정보 receive
+            setUnivInf(univDTO);
+
+            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveDTO(); // 학교 상세정보 receive
+            setUnivDetailInf(univDetailDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        requestUnivInf(univName);   // 학교 상세정보 요청
-
-        UnivDTO univDTO = (UnivDTO) receiveDTO();   // 학교 정보 receive
-        setUnivInf(univDTO);
-
-        UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveDTO(); // 학교 상세정보 receive
-        setUnivDetailInf(univDetailDTO);
     }
 
     void requestUnivInf(String univName){
@@ -169,8 +172,16 @@ public class UnivDetail implements Initializable{
         }
     }
 
-    public Object receiveDTO(){
+    public Object receiveDTO() throws Exception {
+        /*
+            실패 로직 추가 필요
+         */
         Protocol receivePT = Connection.receive();
+
+        if (receivePT.getProtocolType() == Protocol.PT_FAIL ){  // CODE 도 추가 필요
+            throw new Exception("not found");
+        }
+
         Object objectMember = null;
 
         try (ByteArrayInputStream bais = new ByteArrayInputStream(receivePT.getBody())) {
@@ -226,9 +237,7 @@ public class UnivDetail implements Initializable{
     void moveHyperLink(MouseEvent event) {  // 홈페이지 URL 하이퍼 링크
         try {
             Desktop.getDesktop().browse(new URI(homepageURL));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
