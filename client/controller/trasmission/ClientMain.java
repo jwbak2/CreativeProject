@@ -26,9 +26,9 @@ public class ClientMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Font.loadFont(getClass().getResourceAsStream("../resource/font/NotoSansKR-Bold.otf"), 10);    // 외부 폰트 사용
+        Font.loadFont(getClass().getResourceAsStream("../../resource/font/NotoSansKR-Bold.otf"), 10);    // 외부 폰트 사용
 
-        Parent root = FXMLLoader.load(getClass().getResource("../view/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../../view/home.fxml"));
         primaryStage.setTitle("대학 정보 제공 프로그램");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);   // 화면 크기 고정

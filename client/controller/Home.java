@@ -23,7 +23,7 @@ public class Home {
     }
 
     @FXML
-    void univDetail(MouseEvent event) {
+    void univDetail(MouseEvent event) { // sidebar 선택 이벤트 핸들러
         Parent root = null;
         try {
             root = FXMLLoader.load(getClass().getResource("../view/univDetail.fxml"));

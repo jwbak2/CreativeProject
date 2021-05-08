@@ -128,7 +128,7 @@ public class UnivDetail implements Initializable{
     @FXML
     void clickRequestBtn(MouseEvent event) {
         /*
-            직렬화, 역직렬화 추상화 가능?
+            직렬화, 역직렬화 추상화? 가능?
             현재는 각 컨트롤러에서만 처리중
             통합적으로 처리하는 함수 만들수 있을까
             -> 중간발표 이후 처리할게요
@@ -139,7 +139,7 @@ public class UnivDetail implements Initializable{
         String univName = inputUniv.getText();  // input에 입력한 학교 이름 추출
 
         try {
-            if (univName.equals("")){
+            if (univName.equals("")){               // 공백일시 예외처리
                 throw new Exception("univName of input is null");
             }
 
@@ -151,7 +151,7 @@ public class UnivDetail implements Initializable{
             UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveDTO(); // 학교 상세정보 receive
             setUnivDetailInf(univDetailDTO);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -169,7 +169,7 @@ public class UnivDetail implements Initializable{
                 Connection.send(pt);        // 패킷 전송
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 
@@ -179,7 +179,7 @@ public class UnivDetail implements Initializable{
          */
         Protocol receivePT = Connection.receive();
 
-        if (receivePT.getProtocolType() == Protocol.PT_FAIL ){  // CODE 도 추가 필요
+        if (receivePT.getProtocolType() == Protocol.PT_FAIL ){  // CODE 도 추가 필요 실패 로직 대충만듬
             throw new Exception("not found");
         }
 
@@ -190,7 +190,7 @@ public class UnivDetail implements Initializable{
                 objectMember = ois.readObject();  // 역직렬화된 SampleDto 객체를 읽어온다.
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return objectMember;
@@ -235,9 +235,9 @@ public class UnivDetail implements Initializable{
     }
 
     @FXML
-    void moveHyperLink(MouseEvent event) {  // 홈페이지 URL 하이퍼 링크
+    void moveHyperLink(MouseEvent event) {  // 홈페이지 URL 하이퍼 링크 event handler
         try {
-            Desktop.getDesktop().browse(new URI(homepageURL));
+            Desktop.getDesktop().browse(new URI(homepageURL));  // 버튼 누를시 브라우져 생성
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }

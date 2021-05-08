@@ -13,10 +13,10 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.UnivDetail">
    <children>
-    <AnchorPane fx:id="mainAp" layoutY="100.0" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="900.0" style="-fx-border-width: 0px;" stylesheets="@css/style.css">
+    <AnchorPane fx:id="mainAp" layoutY="100.0" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="900.0" style="-fx-border-width: 0px;" stylesheets="@css/univDetail.css">
          <children>
-            <ImageView fx:id="imageUnivLogo" fitHeight="199.0" fitWidth="235.0" layoutX="104.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" />
-            <AnchorPane layoutX="412.0" layoutY="48.0" prefHeight="199.0" prefWidth="439.0" style="-fx-border-color: #2d3436;">
+            <ImageView fx:id="imageUnivLogo" fitHeight="199.0" fitWidth="235.0" layoutX="121.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true" />
+            <AnchorPane layoutX="412.0" layoutY="48.0" prefHeight="199.0" prefWidth="439.0" style="-fx-border-color: #2d3436; -fx-border-radius: 10px;">
                <children>
                   <Text fx:id="textUnivName" layoutX="28.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="학교이름" wrappingWidth="139.0">
                      <font>
@@ -49,18 +49,18 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="입학경쟁률" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Label text="장학금 수혜 현황" GridPane.columnIndex="5" />
-                  <Label text="진학률" GridPane.columnIndex="3" />
-                  <Label text="취업률" GridPane.columnIndex="2" />
-                  <Label text="1인당 교육비" GridPane.columnIndex="4" />
-                  <Label text="재학생 수" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                  <Label fx:id="studentNumber" GridPane.rowIndex="1" />
-                  <Label fx:id="admissionCompetitionRate" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="employmentRate" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="enteringRate" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label fx:id="educationCostPerPerson" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                  <Label fx:id="totalScholarshipBenefit" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER" prefHeight="99.0" prefWidth="220.0" text="입학경쟁률" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Label alignment="CENTER" prefHeight="144.0" prefWidth="319.0" text="장학금 수혜 현황" GridPane.columnIndex="5" />
+                  <Label alignment="CENTER" prefHeight="126.0" prefWidth="221.0" text="진학률" GridPane.columnIndex="3" />
+                  <Label alignment="CENTER" prefHeight="66.0" prefWidth="155.0" text="취업률" GridPane.columnIndex="2" />
+                  <Label alignment="CENTER" contentDisplay="BOTTOM" prefHeight="80.0" prefWidth="143.0" text="1인당 교육비" GridPane.columnIndex="4" />
+                  <Label alignment="CENTER" prefHeight="104.0" prefWidth="209.0" text="재학생 수" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Label fx:id="studentNumber" alignment="CENTER" prefHeight="74.0" prefWidth="105.0" GridPane.rowIndex="1" />
+                  <Label fx:id="admissionCompetitionRate" alignment="CENTER" prefHeight="94.0" prefWidth="125.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="employmentRate" alignment="CENTER" prefHeight="70.0" prefWidth="152.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="enteringRate" alignment="CENTER" prefHeight="51.0" prefWidth="181.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Label fx:id="educationCostPerPerson" alignment="CENTER" prefHeight="66.0" prefWidth="131.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <Label fx:id="totalScholarshipBenefit" alignment="CENTER" prefHeight="95.0" prefWidth="223.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane layoutX="20.0" layoutY="498.0" prefHeight="60.0" prefWidth="861.0" style="-fx-border-color: #2d3436;">
@@ -78,12 +78,12 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="창업기업 매출액" GridPane.columnIndex="1" />
-                  <Label text="창업 전담 직원" GridPane.columnIndex="6" />
-                  <Label text="창업 전담 교원" GridPane.columnIndex="5" />
-                  <Label text="정부 창업 지원액" GridPane.columnIndex="4" />
-                  <Label text="교비 창업 지원액" GridPane.columnIndex="3" />
-                  <Label text="창업기업 매출액" GridPane.columnIndex="2" />
+                  <Label alignment="CENTER" prefHeight="93.0" prefWidth="211.0" text="창업기업 매출액" GridPane.columnIndex="1" />
+                  <Label alignment="CENTER" prefHeight="81.0" prefWidth="191.0" text="창업 전담 직원" GridPane.columnIndex="6" />
+                  <Label alignment="CENTER" prefHeight="57.0" prefWidth="167.0" text="창업 전담 교원" GridPane.columnIndex="5" />
+                  <Label alignment="CENTER" prefHeight="74.0" prefWidth="215.0" text="정부 창업 지원액" GridPane.columnIndex="4" />
+                  <Label alignment="CENTER" prefHeight="73.0" prefWidth="164.0" text="교비 창업 지원액" GridPane.columnIndex="3" />
+                  <Label alignment="CENTER" prefHeight="86.0" prefWidth="209.0" text="창업기업 매출액" GridPane.columnIndex="2" />
                   <Label fx:id="foundersNumber" GridPane.rowIndex="1" />
                   <Label fx:id="staffForStartCompany" GridPane.columnIndex="6" GridPane.rowIndex="1" />
                   <Label fx:id="profesorForStartCompany" GridPane.columnIndex="5" GridPane.rowIndex="1" />
@@ -91,7 +91,7 @@
                   <Label fx:id="schoolStartCompanyFund" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <Label fx:id="startCompanyCapital" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label fx:id="startCompanySale" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label alignment="CENTER" text="창업자 수" />
+                  <Label alignment="CENTER" prefHeight="112.0" prefWidth="205.0" text="창업자 수" />
                </children>
             </GridPane>
             <GridPane alignment="CENTER" layoutX="20.0" layoutY="586.0" prefHeight="60.0" prefWidth="861.0" style="-fx-border-color: #2d3436;">
@@ -109,25 +109,25 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="평균 등록금" GridPane.columnIndex="1" />
-                  <Label text="의학 등록금" GridPane.columnIndex="6" />
-                  <Label text="공학 등록금" GridPane.columnIndex="5" />
-                  <Label text="예체능 등록금" GridPane.columnIndex="4" />
-                  <Label text="자연과학 등록금" GridPane.columnIndex="3" />
-                  <Label text="인문사회 등록금" GridPane.columnIndex="2" />
-                  <Label fx:id="admissionFee" GridPane.rowIndex="1" />
-                  <Label fx:id="medicalTuition" GridPane.columnIndex="6" GridPane.rowIndex="1" />
-                  <Label fx:id="engineeringTuition" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-                  <Label fx:id="artMusPhysTuition" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                  <Label fx:id="naturalScienceTuition" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label fx:id="humanitiesSocialTuition" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="averageTuition" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="입학금" />
+                  <Label alignment="CENTER" prefHeight="97.0" prefWidth="183.0" text="평균 등록금" GridPane.columnIndex="1" />
+                  <Label alignment="CENTER" prefHeight="172.0" prefWidth="235.0" text="의학 등록금" GridPane.columnIndex="6" />
+                  <Label alignment="CENTER" prefHeight="148.0" prefWidth="225.0" text="공학 등록금" GridPane.columnIndex="5" />
+                  <Label alignment="CENTER" prefHeight="100.0" prefWidth="201.0" text="예체능 등록금" GridPane.columnIndex="4" />
+                  <Label alignment="CENTER" prefHeight="146.0" prefWidth="251.0" text="자연과학 등록금" GridPane.columnIndex="3" />
+                  <Label alignment="CENTER" prefHeight="84.0" prefWidth="194.0" text="인문사회 등록금" GridPane.columnIndex="2" />
+                  <Label fx:id="admissionFee" alignment="CENTER" prefHeight="108.0" prefWidth="177.0" GridPane.rowIndex="1" />
+                  <Label fx:id="medicalTuition" alignment="CENTER" prefHeight="156.0" prefWidth="206.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                  <Label fx:id="engineeringTuition" alignment="CENTER" prefHeight="166.0" prefWidth="257.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                  <Label fx:id="artMusPhysTuition" alignment="CENTER" prefHeight="145.0" prefWidth="208.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <Label fx:id="naturalScienceTuition" alignment="CENTER" prefHeight="152.0" prefWidth="283.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Label fx:id="humanitiesSocialTuition" alignment="CENTER" prefHeight="165.0" prefWidth="320.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="averageTuition" alignment="CENTER" prefHeight="153.0" prefWidth="243.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label alignment="CENTER" prefHeight="90.0" prefWidth="124.0" text="입학금" />
                </children>
             </GridPane>
          </children>
       </AnchorPane>
-      <AnchorPane prefHeight="100.0" prefWidth="900.0" style="-fx-border-width: 0px 0px 1px 0px; -fx-border-color: #7f8c8d;" stylesheets="@css/style.css">
+      <AnchorPane prefHeight="100.0" prefWidth="900.0" style="-fx-border-width: 0px 0px 1px 0px; -fx-border-color: #7f8c8d;" stylesheets="@css/univDetail.css">
          <children>
             <Button fx:id="btnRequestUnivInf" layoutX="744.0" layoutY="22.0" mnemonicParsing="false" onMouseClicked="#clickRequestBtn" prefHeight="56.0" prefWidth="114.0" text="조회" />
             <TextField fx:id="inputUniv" layoutX="61.0" layoutY="22.0" prefHeight="56.0" prefWidth="656.0" />

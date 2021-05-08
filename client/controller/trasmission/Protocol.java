@@ -97,7 +97,7 @@ public class Protocol {
         packet = buffer;
     }
 
-    public byte[] getBody() {
+    public byte[] getBody() {   // get body of packet
         byte[] body = new byte[getBodyLength()];
 
         System.arraycopy(packet, LEN_HEADER, body, 0, getBodyLength());
