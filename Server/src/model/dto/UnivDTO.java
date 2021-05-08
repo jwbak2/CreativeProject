@@ -9,9 +9,29 @@ public class UnivDTO {
     private String univAddress;
     private String univRepresentativeNumber;
     private String univHomepageUrl;
-    private Byte[] univLogoImageFile;
+    private byte[] univLogoImageFile;
     private String univIntroduction;
     private Long view;
+
+    public UnivDTO(String univId, String univName, String univType, String univEstablishmentCls, String univArea,
+                   String univAddress, String univRepresentativeNumber, String univHomepageUrl, byte[] univLogoImageFile,
+                   String univIntroduction, Long view){
+
+        this.univId = univId;
+        this.univName = univName;
+        this.univType = univType;
+        this.univEstablishmentCls = univEstablishmentCls;
+        this.univArea = univArea;
+        this.univAddress = univAddress;
+        this.univRepresentativeNumber = univRepresentativeNumber;
+        this.univHomepageUrl = univHomepageUrl;
+        this.univIntroduction = univIntroduction;
+        this.view = view;
+
+        this.setUnivLogoImageFile(univLogoImageFile);
+
+    }
+
 
     public String getUnivId() {
         return this.univId;
@@ -77,11 +97,11 @@ public class UnivDTO {
         this.univHomepageUrl = univHomepageUrl;
     }
 
-    public Byte[] getUnivLogoImageFile() {
+    public byte[] getUnivLogoImageFile() {
         return this.univLogoImageFile;
     }
 
-    public void setUnivLogoImageFile(Byte[] univLogoImageFile) {
+    public void setUnivLogoImageFile(byte[] univLogoImageFile) {
         for(int i = 0; i < univLogoImageFile.length; i++){
             this.univLogoImageFile = univLogoImageFile;
         }
