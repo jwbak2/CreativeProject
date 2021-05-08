@@ -1,13 +1,14 @@
-import DTO.SampleDTO;
-import Transmission.Connection;
-import Transmission.Protocol;
-import Transmission.Receiver;
-import Transmission.Sender;
+package src.server;
+
+import src.server.DTO.SampleDTO;
+import src.server.Transmission.Connection;
+import src.server.Transmission.Protocol;
+import src.server.Transmission.Receiver;
+import src.server.Transmission.Sender;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLOutput;
 
 public class ServerMain {
 	public static void main(String[] args) throws IOException {
@@ -39,7 +40,7 @@ public class ServerMain {
 					Object obj = new Object();
 					SampleDTO sdto = new SampleDTO("갯강구", 2, 10);
 //					SampleDTO sdto2 = Class.forName("SampleDTO").cast(obj);
-					SampleDTO b = Class.forName("DTO.SampleDTO").cast(obj);
+					SampleDTO b = Class.forName("src.server.DTO.SampleDTO").cast(obj);
 
 					if (obj instanceof SampleDTO)
 					{
