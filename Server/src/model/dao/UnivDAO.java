@@ -11,7 +11,7 @@ public class UnivDAO {
 
         Connection conn = DBCP.getConnection();
 
-        String preQuery = "SELECT * FROM crtvp.\"univ\" WHERE univ_id = ?";
+        String preQuery = "SELECT * FROM crtvp.\"univ\" WHERE \"univ_id\" = ?";
 
         ResultSet rs = null;
         UnivDTO dto = null;
