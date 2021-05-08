@@ -1,6 +1,6 @@
-package client.controller;
+package client.controller.trasmission;
 
-import com.sun.media.sound.SoftTuning;
+import client.controller.trasmission.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

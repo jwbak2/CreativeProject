@@ -2,6 +2,8 @@ package client.controller;
 
 import DTO.UnivDTO;
 import DTO.UnivDetailDTO;
+import client.controller.trasmission.Connection;
+import client.controller.trasmission.Protocol;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -133,7 +135,6 @@ public class UnivDetail implements Initializable{
 
             잘못 입력했을때 예외처리 필요 클라이언트 - 서버 둘다
             -> 실패 패킷?
-
          */
         String univName = inputUniv.getText();  // input에 입력한 학교 이름 추출
 

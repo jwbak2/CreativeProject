@@ -1,4 +1,4 @@
-package client.controller;
+package client.controller.trasmission;
 
 import com.sun.javafx.binding.SelectBinding;
 
@@ -22,6 +22,9 @@ public class Protocol {
 
     //TYPE 0x02 (RESPONSE) CODE
     public static final int PT_RES_UNIV_INF = 0x01; // 학교 상세정보 조회 응답
+
+    //TYPE 0x03 (SUCCESS) CODE
+    //TYPE 0x04 (ERROR) CODE
 
     //Header 길이
     public static final int LEN_TYPE = 1;
