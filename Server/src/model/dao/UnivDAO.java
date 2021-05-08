@@ -6,6 +6,7 @@ import model.dto.UnivDTO;
 
 public class UnivDAO {
 
+    //id로 select 연산 수행
     public UnivDTO select(String univID) throws Exception {
 
         Connection conn = DBCP.getConnection();
@@ -51,5 +52,42 @@ public class UnivDAO {
 
         return dto;
     }
+    
+    public String[][] getUnivList() throws Exception {  // 학교 목록 반환하는 메소드
 
+        String[][] univList = null;     // 학교 목록 선언 '학교id, 학교이름'의 2차원 배열
+
+        String SQL = "SELECT * FROM crtvp.\"univ\"";
+
+        Connection conn = DBCP.getConnection();
+
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
+        ) {
+
+            rs.last();                      // 행 개수 세기 위해 결과셋의 마지막 행으로 이동
+            int rowCount = rs.getRow();
+            rs.beforeFirst();               // 처음 행으로 이동
+
+            univList = new String[rowCount][2];
+
+            int i = 0;
+            while (rs.next()) {
+                univList[i][0] = rs.getString("univ_id");
+                univList[i][1] = rs.getString("univ_name");
+                i++;
+            }
+
+        } catch (SQLException sqle) {
+            System.out.println("Exception : SELECT");
+            sqle.printStackTrace();
+
+        } finally {
+            if (conn != null)
+                DBCP.returnConnection(conn);
+
+        }
+
+        return univList;
+    }
 }
