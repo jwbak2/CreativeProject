@@ -24,6 +24,38 @@ public class UnivDetailDTO {
     private Long engineeringTuition;
     private Long medicalTuition;
 
+    public UnivDetailDTO(Long year, String univId, Long studentNumber, Long admissionCompetitionRate, Long employmentRate,
+                         Long enteringRate, Long educationCostPerPerson, Long totalScholarshipBenefits, Long numberFounders,
+                         Long startCompanySales, Long startCompanyCapital, Long schoolStartCompanyFund,
+                         Long governmentStartCompanyFund, Long professorForStartCompany, Long staffForStartCompany,
+                         Long admissionFee, Long averageTuition, Long humanitiesSocialTuition, Long naturalScienceTuition,
+                         Long artMusPhysTuition, Long engineeringTuition, Long medicalTuition) {
+
+        this.year = year;
+        this.univId = univId;
+        this.studentNumber = studentNumber;
+        this.admissionCompetitionRate = admissionCompetitionRate;
+        this.employmentRate = employmentRate;
+        this.enteringRate = enteringRate;
+        this.educationCostPerPerson = educationCostPerPerson;
+        this.totalScholarshipBenefits = totalScholarshipBenefits;
+        this.numberFounders = numberFounders;
+        this.startCompanySales = startCompanySales;
+        this.startCompanyCapital = startCompanyCapital;
+        this.schoolStartCompanyFund = schoolStartCompanyFund;
+        this.governmentStartCompanyFund = governmentStartCompanyFund;
+        this.professorForStartCompany = professorForStartCompany;
+        this.staffForStartCompany = staffForStartCompany;
+        this.admissionFee = admissionFee;
+        this.averageTuition = averageTuition;
+        this.humanitiesSocialTuition = humanitiesSocialTuition;
+        this.naturalScienceTuition = naturalScienceTuition;
+        this.artMusPhysTuition = artMusPhysTuition;
+        this.engineeringTuition = engineeringTuition;
+        this.medicalTuition = medicalTuition;
+
+    }
+
     public Long getYear() {
         return this.year;
     }
