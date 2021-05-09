@@ -1,15 +1,14 @@
-package client.controller;
+package Client.controller;
 
-import DTO.UnivDTO;
-import DTO.UnivDetailDTO;
-import client.controller.trasmission.Connection;
-import client.controller.trasmission.Protocol;
+import Server.src.model.dto.UnivDetailDTO;
+import Server.src.model.dto.UnivDTO;
+import Client.controller.trasmission.Connection;
+import Client.controller.trasmission.Protocol;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
@@ -20,7 +19,6 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class UnivDetail implements Initializable{
@@ -152,9 +150,10 @@ public class UnivDetail implements Initializable{
             UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveDTO(); // 학교 상세정보 receive
             setUnivDetailInf(univDetailDTO);
 
+
             mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -172,7 +171,7 @@ public class UnivDetail implements Initializable{
                 Connection.send(pt);        // 패킷 전송
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -184,25 +183,25 @@ public class UnivDetail implements Initializable{
 
         if (receivePT.getProtocolType() == Protocol.PT_FAIL 
                 && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF){    // 입력한 학교명이 존재하지 않을떄
-            throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리 
+            throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
         }
 
         Object objectMember = null;
 
         try (ByteArrayInputStream bais = new ByteArrayInputStream(receivePT.getBody())) {
             try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                objectMember = ois.readObject();  // 역직렬화된 SampleDto 객체를 읽어온다.
+                objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
 
         return objectMember;
     }
 
     public void setUnivInf(UnivDTO univDTO){    // UnivDTO GUI에 뿌려주기
-        Image univLogo = new Image(Arrays.toString(univDTO.getUnivLogoImageFile()));
-        imageUnivLogo.setImage(univLogo);
+//        Image univLogo = new Image(Arrays.toString(univDTO.getUnivLogoImageFile()));
+//        imageUnivLogo.setImage(univLogo);
         textUnivName.setText(univDTO.getUnivName());
         homepageURL = univDTO.getUnivHomepageUrl(); // homepage url은 멤버변수로 따로 저장
                                                     // -> 하이퍼링크 클릭 이벤트에서 DTO 정보 읽을수 없어서 변수로 처리
@@ -247,4 +246,13 @@ public class UnivDetail implements Initializable{
         }
     }
 
+//    String addDelimiterInNumber(String number){
+//        StringBuffer str = new StringBuffer(number);
+//
+//        int idx = number.length();
+//
+//        while (idx > 0){
+//            str.insert()
+//        }
+//    }
 }

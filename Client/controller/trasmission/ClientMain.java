@@ -1,6 +1,5 @@
-package client.controller.trasmission;
+package Client.controller.trasmission;
 
-import client.controller.trasmission.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +20,7 @@ public class ClientMain extends Application {
         String serverIp = "192.168.231.243";    // 사설 ip
         int port = 5500;
 
-//        new Connection(serverIp, port);   // test
+        new Connection(serverIp, port);
     }
 
     @Override

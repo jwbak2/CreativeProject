@@ -1,4 +1,4 @@
-package model.dto;
+package Server.src.model.dto;
 
 public class UnivDetailDTO {
     private Long year;
