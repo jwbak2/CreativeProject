@@ -43,7 +43,7 @@
                </font>
             </Text>
             <Text layoutX="419.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="갯강구팀" />
-            <Text layoutX="423.0" layoutY="371.0" strokeType="OUTSIDE" strokeWidth="0.0" text="V 1.0.0" />
+            <Text layoutX="412.0" layoutY="372.0" strokeType="OUTSIDE" strokeWidth="0.0" text="프로토타입" />
          </children></AnchorPane>
    </center>
 </BorderPane>
