@@ -1,4 +1,4 @@
-package client.controller.trasmission;
+package Client.controller.trasmission;
 
 import java.io.*;
 import java.net.Socket;
@@ -26,6 +26,12 @@ public class Connection {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+//        Thread thread = new Thread(){
+//            public void run() {
+//
+//            }
+//        };
     }
 
     static public Protocol receive() {   // 서버 -> 클라이언트 패킷 수신, 받은 패킷으로 Protocol 생성해서 반환
