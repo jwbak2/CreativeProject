@@ -1,3 +1,6 @@
 Label, Text, Button {
     -fx-font-family: "Noto Sans KR";
 }
+#univIntroduction{
+    -fx-font-size: 15px;
+}

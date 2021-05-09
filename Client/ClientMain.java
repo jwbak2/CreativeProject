@@ -1,5 +1,6 @@
-package Client.controller.trasmission;
+package Client;
 
+import Client.controller.trasmission.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,29 +22,25 @@ public class ClientMain extends Application {
         int port = 5500;
 
         new Connection(serverIp, port);
+        System.out.println("IP : " + serverIp + ", Port : " + port);
+        System.out.println("Server Connect!");
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Font.loadFont(getClass().getResourceAsStream("../../resource/font/NotoSansKR-Bold.otf"), 10);    // 외부 폰트 사용
+        Font.loadFont(getClass().getResourceAsStream("./resource/font/NotoSansKR-Bold.otf"), 10);    // 외부 폰트 사용
 
-        Parent root = FXMLLoader.load(getClass().getResource("../../view/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("./view/home.fxml"));
         primaryStage.setTitle("대학 정보 제공 프로그램");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);   // 화면 크기 고정
         primaryStage.show();
     }
 
-    public static void terminate(){
+    public static void terminate() {
 //        Protocol packet = new Protocol(Protocol.PT_EXIT, Protocol.PT_EXIT);
 //        Connection.send(packet.getPacket());    // 종료 패킷 송신
-        try {
-            Connection.is.close();
-            Connection.os.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+//        Connection.terminate();                 // 소켓 통신 종료
         System.exit(0);                   //클라이언트 종료
     }
 }
