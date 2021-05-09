@@ -74,6 +74,9 @@ public class Protocol {
     public void setPacket(byte[] data) { // 패킷 바이트 배열 중 데이터 영역에 데이터 set
         byte[] buffer = new byte[LEN_HEADER + data.length]; // 새로운 바이트 배열 buffer 생성해서 초기화
                                                             // 기존 packet 바이트 배열 + data 바이트 배열
+        System.out.println("setpacket(): " + data.length);
+
+//        setBodyLength();
 
         System.arraycopy(packet, 0, buffer, 0, LEN_HEADER);
         System.arraycopy(data, 0, buffer, LEN_HEADER, data.length);

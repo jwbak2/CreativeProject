@@ -1,7 +1,7 @@
-package model.dao;
+package server.model.dao;
 
-import model.DBCP;
-import model.dto.UnivDetailDTO;
+import server.model.DBCP;
+import server.model.dto.UnivDetailDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ public class UnivDetailDAO {
 
         Connection conn = DBCP.getConnection();
 
-        String preQuery = "SELECT * FROM crtvp.\"univ_detail\" WHERE univ_id = ?";
+        String preQuery = "SELECT * FROM crtvp.\"univ_detail\" WHERE \"univ_id\" = ?";
 
         ResultSet rs = null;
         UnivDetailDTO dto = null;
@@ -25,7 +25,7 @@ public class UnivDetailDAO {
             pstmt.setString(1, univID);
 
             rs = pstmt.executeQuery();
-
+            rs.next();
 
             Long year = rs.getLong("year");
             String univId = rs.getString("univ_id");

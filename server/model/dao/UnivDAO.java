@@ -1,8 +1,8 @@
-package model.dao;
+package server.model.dao;
 
 import java.sql.*;
-import model.DBCP;
-import model.dto.UnivDTO;
+import server.model.DBCP;
+import server.model.dto.UnivDTO;
 
 public class UnivDAO {
 
@@ -11,7 +11,7 @@ public class UnivDAO {
 
         Connection conn = DBCP.getConnection();
 
-        String preQuery = "SELECT * FROM crtvp.\"univ\" WHERE univ_id = ?";
+        String preQuery = "SELECT * FROM crtvp.\"univ\" WHERE \"univ_id\" = ?";
 
         ResultSet rs = null;
         UnivDTO dto = null;
@@ -21,6 +21,7 @@ public class UnivDAO {
             pstmt.setString(1, univID);
 
             rs = pstmt.executeQuery();
+            rs.next();
 
             String univId = rs.getString("univ_id");
             String univName = rs.getString("univ_name");
@@ -32,10 +33,10 @@ public class UnivDAO {
             String univHomepageUrl = rs.getString("univ_homepage_url");
             byte[] univLogoImageFile = rs.getBytes("univ_logo_image_file");
             String univIntroduction = rs.getString("univ_introduction");
-            Long view = rs.getLong("view");
+            Long view = rs.getLong("USER_view");
 
             dto = new UnivDTO(univId, univName, univType, univEstablishmentCls, univArea, univAddress
-                                        , univRepresentativeNumber, univHomepageUrl, univLogoImageFile, univIntroduction, view);
+                    , univRepresentativeNumber, univHomepageUrl, univLogoImageFile, univIntroduction, view);
 
 
         } catch (SQLException sqle) {
@@ -52,7 +53,7 @@ public class UnivDAO {
 
         return dto;
     }
-    
+
     public String[][] getUnivList() throws Exception {  // 학교 목록 반환하는 메소드
 
         String[][] univList = null;     // 학교 목록 선언 '학교id, 학교이름'의 2차원 배열
@@ -61,7 +62,7 @@ public class UnivDAO {
 
         Connection conn = DBCP.getConnection();
 
-        try(Statement stmt = conn.createStatement();
+        try(Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             ResultSet rs = stmt.executeQuery(SQL);
         ) {
 
