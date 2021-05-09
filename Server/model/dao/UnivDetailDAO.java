@@ -1,7 +1,7 @@
-package model.dao;
+package Server.model.dao;
 
-import model.DBCP;
-import model.dto.UnivDetailDTO;
+import Server.model.DBCP;
+import Server.model.dto.UnivDetailDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,7 +25,7 @@ public class UnivDetailDAO {
             pstmt.setString(1, univID);
 
             rs = pstmt.executeQuery();
-
+            rs.next();
 
             Long year = rs.getLong("year");
             String univId = rs.getString("univ_id");

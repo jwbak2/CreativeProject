@@ -1,6 +1,7 @@
-package Transmission;
+package Server.transmission;
 
-import com.sun.javafx.binding.SelectBinding;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class Protocol {
 
@@ -16,10 +17,13 @@ public class Protocol {
 	//Type 별 Code
 
 	//TYPE 0x01 (REQUEST) CODE
-	public static final int PT_REQ_UNIV_INF = 0x01; // 학교 상세정보 조회 요청
+	public static final int PT_REQ_UNIV_INF = 0x01;		// 학교 상세정보 조회 요청
 
 	//TYPE 0x02 (RESPONSE) CODE
-	public static final int PT_RES_UNIV_INF = 0x01; // 학교 상세정보 조회 응답
+	public static final int PT_RES_UNIV_INF = 0x01;		// 학교 상세정보 조회 응답
+
+	//TYPE 0x04 (ERROR) CODE
+	public static final int PT_FAIL_UNIV_INF = 0x01;	// 학교 조회 실패 응답
 
 	//Header 길이
 	public static final int LEN_TYPE = 1;
@@ -66,12 +70,31 @@ public class Protocol {
 	}
 
 	public int getBodyLength() {
-		return (packet[LEN_TYPE + LEN_CODE] << 8) + (packet[LEN_TYPE + LEN_CODE + 1]);
+		final int size = Integer.SIZE / 8;
+		ByteBuffer buff = ByteBuffer.allocate(size);
+		final byte[] newBytes = new byte[size];
+
+		newBytes[0] = 0x00;
+		newBytes[1] = 0x00;
+		newBytes[2] = packet[LEN_TYPE + LEN_CODE];
+		newBytes[3] = packet[LEN_TYPE + LEN_CODE + 1];
+
+		buff = ByteBuffer.wrap(newBytes);
+		buff.order(ByteOrder.BIG_ENDIAN);
+		return buff.getInt();
+//        return (packet[LEN_TYPE + LEN_CODE] << 8) + (packet[LEN_TYPE + LEN_CODE + 1]);
 	}
 
 	public void setBodyLength(int length) {
-		packet[LEN_TYPE + LEN_CODE] = (byte) ((length & 0x0000FF00) >> 8);	// Body Length
-		packet[LEN_TYPE + LEN_CODE + 1] = (byte) (length & 0x000000FF);		// Body Length
+		ByteBuffer buff = ByteBuffer.allocate(Integer.SIZE / 8);
+		buff.putInt(length);
+		buff.order(ByteOrder.BIG_ENDIAN);
+
+		packet[LEN_TYPE + LEN_CODE] = buff.array()[2];
+		packet[LEN_TYPE + LEN_CODE + 1] = buff.array()[3];
+
+//        packet[LEN_TYPE+LEN_CODE] = (byte) ((length & 0x0000FF00) >> 8); // Body Length
+//        packet[LEN_TYPE+LEN_CODE+ 1] = (byte) (length & 0x000000FF);       // Body Length
 	}
 
     /*
@@ -87,12 +110,19 @@ public class Protocol {
 		byte[] buffer = new byte[LEN_HEADER + data.length]; // 새로운 바이트 배열 buffer 생성해서 초기화
 		// 기존 packet 바이트 배열 + data 바이트 배열
 
+
+		System.out.println("setPacket() " + data.length);
+
+		setBodyLength(data.length);
+		System.out.println("setPacket() bodyLength " + getBodyLength());
+
 		System.arraycopy(packet, 0, buffer, 0, LEN_HEADER);	// header 복사
 		System.arraycopy(data, 0, buffer, LEN_HEADER, data.length);	// data 복사
 
 		packet = buffer;
 
-		setBodyLength(data.length);
+//		setBodyLength(data.length);
+		System.out.println("setPacket() - endLine" + getBodyLength());
 	}
 
 	public byte[] getBody() {
