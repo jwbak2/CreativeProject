@@ -1,7 +1,7 @@
 package Client.controller;
 
-import Server.src.model.dto.UnivDetailDTO;
-import Server.src.model.dto.UnivDTO;
+import Server.model.dto.UnivDetailDTO;
+import Server.model.dto.UnivDTO;
 import Client.controller.trasmission.Connection;
 import Client.controller.trasmission.Protocol;
 import javafx.fxml.FXML;
@@ -120,7 +120,7 @@ public class UnivDetail implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
+//        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
     }
 
     @FXML
@@ -130,9 +130,6 @@ public class UnivDetail implements Initializable{
             현재는 각 컨트롤러에서만 처리중
             통합적으로 처리하는 함수 만들수 있을까
             -> 중간발표 이후 처리할게요
-
-            잘못 입력했을때 예외처리 필요 클라이언트 - 서버 둘다
-            -> 실패 패킷?
          */
         // input에 입력한 학교 이름 추출 + 공백 제거
         String univName = inputUniv.getText().replace(" ","");
@@ -141,17 +138,17 @@ public class UnivDetail implements Initializable{
             if (univName.equals("")){               // 공백일시 예외처리
                 throw new Exception("univName of input is null");
             }
-
             requestUnivInf(univName);   // 학교 상세정보 요청
 
             UnivDTO univDTO = (UnivDTO) receiveDTO();       // 학교 정보 receive
             setUnivInf(univDTO);
+            System.out.println("UnivInf DTO 수신 완료 ");
 
             UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveDTO(); // 학교 상세정보 receive
             setUnivDetailInf(univDetailDTO);
+            System.out.println("UnivDetail DTO 수신 완료");
 
-
-            mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
+//            mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -168,6 +165,7 @@ public class UnivDetail implements Initializable{
                 serializedDTO = baos.toByteArray();
                 pt.setPacket(serializedDTO);
 
+                System.out.println("학교 상세정보 조회 요청");
                 Connection.send(pt);        // 패킷 전송
             }
         } catch (Exception e) {

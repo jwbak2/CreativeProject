@@ -1,5 +1,7 @@
 package Client.controller.trasmission;
 
+import Server.model.DBCP;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -18,11 +20,20 @@ public class Connection {
         }
     }
 
+    public static void terminate(){    // 소켓 통신 연결 종료 시 스트림 close
+        try {
+            Connection.is.close();
+            Connection.os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     static public void send(Protocol sendPT) { // 패킷 전송
         try {
             os.write(sendPT.getPacket());   // 전송
             os.flush();
-            System.out.println("send - 데이터 전송 완료");
+            System.out.println("send - 패킷 송신 완료");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +58,8 @@ public class Connection {
 
             body = new byte[bodyLength];            // header에 포함된 bodyLength따라 만들어진 가변 배열
             is.read(body);
-
+            System.out.println("receive - 패킷 수신 완료");
+            
             receivePT.setPacket(body);
         } catch (IOException e) {
             e.printStackTrace();
