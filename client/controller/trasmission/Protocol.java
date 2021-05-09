@@ -1,8 +1,6 @@
-package client.controller.trasmission;
+package client.controller;
 
 import com.sun.javafx.binding.SelectBinding;
-
-import java.nio.ByteBuffer;
 
 public class Protocol {
 
@@ -23,11 +21,6 @@ public class Protocol {
     //TYPE 0x02 (RESPONSE) CODE
     public static final int PT_RES_UNIV_INF = 0x01; // 학교 상세정보 조회 응답
 
-    //TYPE 0x03 (SUCCESS) CODE
-
-    //TYPE 0x04 (ERROR) CODE
-    public static final int PT_FAIL_UNIV_INF = 0x01;
-
     //Header 길이
     public static final int LEN_TYPE = 1;
     public static final int LEN_CODE = 1;
@@ -47,14 +40,6 @@ public class Protocol {
         packet = new byte[LEN_MAX_DATA];
     }
 
-    // 패킷 바이트 배열 받는 생성자 필요
-    public Protocol(byte[] buffer){
-        this.protocolType = buffer[0];
-        this.protocolCode = buffer[1];
-
-        packet = buffer;
-    }
-
     public Protocol(int protocolType, int protocolCode) {
         this.protocolType = protocolType;
         this.protocolCode = protocolCode;
@@ -64,8 +49,6 @@ public class Protocol {
         packet[0] = (byte) protocolType;
         packet[LEN_TYPE] = (byte) protocolCode;
     }
-
-
 
     public int getProtocolType() {
         return packet[0];
@@ -79,10 +62,10 @@ public class Protocol {
         return (packet[LEN_TYPE + LEN_CODE] << 8) + (packet[LEN_TYPE + LEN_CODE + 1]);
     }
 
-    public void setBodyLength(int length) {
-        packet[LEN_TYPE+LEN_CODE] = (byte) ((length & 0x0000FF00) >> 8); // Body Length
-        packet[LEN_TYPE+LEN_CODE+ 1] = (byte) (length & 0x000000FF);       // Body Length
-    }
+    /*
+        1. 타입 코드 별 패킷 초기화   -> getPacket
+        2. 패킷 바이트 배열 중 데이터 영역에 데이터 -> setPacket
+    */
 
     public byte[] getPacket() { // 1. 그냥 패킷 바이트배열 리턴 2. 타입, 코드 별 패킷 바이트 배열 초기화하고 리턴
         return packet;
@@ -91,7 +74,6 @@ public class Protocol {
     public void setPacket(byte[] data) { // 패킷 바이트 배열 중 데이터 영역에 데이터 set
         byte[] buffer = new byte[LEN_HEADER + data.length]; // 새로운 바이트 배열 buffer 생성해서 초기화
                                                             // 기존 packet 바이트 배열 + data 바이트 배열
-        setBodyLength(data.length);
 
         System.arraycopy(packet, 0, buffer, 0, LEN_HEADER);
         System.arraycopy(data, 0, buffer, LEN_HEADER, data.length);
@@ -99,10 +81,4 @@ public class Protocol {
         packet = buffer;
     }
 
-    public byte[] getBody() {   // get body of packet
-        byte[] body = new byte[getBodyLength()];
-
-        System.arraycopy(packet, LEN_HEADER, body, 0, getBodyLength());
-        return body;
-    }
 }

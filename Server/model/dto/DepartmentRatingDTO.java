@@ -1,8 +1,8 @@
-package model.dto;
+package Server.model.dto;
 
-public class UnivRatingDTO {
+public class DepartmentRatingDTO {
     private String userEmail;
-    private String univId;
+    private String departmentId;
     private String content;
     private Long score;
     private java.sql.Date creationDate;
@@ -15,12 +15,12 @@ public class UnivRatingDTO {
         this.userEmail = userEmail;
     }
 
-    public String getUnivId() {
-        return this.univId;
+    public String getDepartmentId() {
+        return this.departmentId;
     }
 
-    public void setUnivId(String univId) {
-        this.univId = univId;
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getContent() {

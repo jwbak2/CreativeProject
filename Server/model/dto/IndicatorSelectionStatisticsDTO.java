@@ -1,4 +1,4 @@
-package model.dto;
+package Server.model.dto;
 
 public class IndicatorSelectionStatisticsDTO {
     private String indicatorName;

@@ -1,6 +1,8 @@
-package model.dto;
+package Server.model.dto;
 
-public class UnivDetailDTO {
+import java.io.Serializable;
+
+public class UnivDetailDTO implements Serializable {
     private Long year;
     private String univId;
     private Long studentNumber;
