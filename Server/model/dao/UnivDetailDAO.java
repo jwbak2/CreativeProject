@@ -1,7 +1,7 @@
-package server.model.dao;
+package Server.model.dao;
 
-import server.model.DBCP;
-import server.model.dto.UnivDetailDTO;
+import Server.model.DBCP;
+import Server.model.dto.UnivDetailDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,4 +1,4 @@
-package server.model;
+package Server.model;
 
 import java.sql.*;
 import java.util.Stack;

@@ -1,9 +1,9 @@
-package server.transmission;
+package Server.transmission;
 
-import server.model.dao.UnivDAO;
-import server.model.dao.UnivDetailDAO;
-import server.model.dto.UnivDTO;
-import server.model.dto.UnivDetailDTO;
+import Server.model.dao.UnivDAO;
+import Server.model.dao.UnivDetailDAO;
+import Server.model.dto.UnivDTO;
+import Server.model.dto.UnivDetailDTO;
 
 import java.io.*;
 

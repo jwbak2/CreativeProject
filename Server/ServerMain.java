@@ -1,11 +1,10 @@
-package server;
+package Server;
 
 //import server.dto.SampleDTO;
-import server.model.DBCP;
-import server.transmission.Connection;
-import server.transmission.Protocol;
-import server.transmission.Receiver;
-import server.transmission.Sender;
+import Server.model.DBCP;
+import Server.transmission.Connection;
+import Server.transmission.Receiver;
+import Server.transmission.Sender;
 
 import java.io.*;
 import java.net.ServerSocket;

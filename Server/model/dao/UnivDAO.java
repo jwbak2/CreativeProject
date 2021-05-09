@@ -1,8 +1,8 @@
-package server.model.dao;
+package Server.model.dao;
 
 import java.sql.*;
-import server.model.DBCP;
-import server.model.dto.UnivDTO;
+import Server.model.DBCP;
+import Server.model.dto.UnivDTO;
 
 public class UnivDAO {
 

@@ -1,4 +1,4 @@
-package server.transmission;
+package Server.transmission;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
