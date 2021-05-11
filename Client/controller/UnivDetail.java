@@ -9,16 +9,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 
-import java.awt.*;
+import javax.imageio.ImageIO;
+import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UnivDetail implements Initializable{
@@ -133,6 +138,7 @@ public class UnivDetail implements Initializable{
          */
         // input에 입력한 학교 이름 추출 + 공백 제거
         String univName = inputUniv.getText().replace(" ","");
+        System.out.println("입력한 대학교 : " + univName);
 
         try {
             if (univName.equals("")){               // 공백일시 예외처리
@@ -141,12 +147,14 @@ public class UnivDetail implements Initializable{
             requestUnivInf(univName);   // 학교 상세정보 요청
 
             UnivDTO univDTO = (UnivDTO) receiveDTO();       // 학교 정보 receive
-            setUnivInf(univDTO);
             System.out.println("UnivInf DTO 수신 완료 ");
+            setUnivInf(univDTO);
+            System.out.println("학교 정보 GUI 출력 완료");
 
             UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveDTO(); // 학교 상세정보 receive
-            setUnivDetailInf(univDetailDTO);
             System.out.println("UnivDetail DTO 수신 완료");
+            setUnivDetailInf(univDetailDTO);
+            System.out.println("학교 상세정보 GUI 출력 완료");
 
 //            mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
         } catch (Exception e) {
@@ -198,8 +206,9 @@ public class UnivDetail implements Initializable{
     }
 
     public void setUnivInf(UnivDTO univDTO){    // UnivDTO GUI에 뿌려주기
-//        Image univLogo = new Image(Arrays.toString(univDTO.getUnivLogoImageFile()));
-//        imageUnivLogo.setImage(univLogo);
+        // ByteArrayInputStream 알아보기
+        Image univLogo = new Image(new ByteArrayInputStream(univDTO.getUnivLogoImageFile()));
+        imageUnivLogo.setImage(univLogo);
         textUnivName.setText(univDTO.getUnivName());
         homepageURL = univDTO.getUnivHomepageUrl(); // homepage url은 멤버변수로 따로 저장
                                                     // -> 하이퍼링크 클릭 이벤트에서 DTO 정보 읽을수 없어서 변수로 처리
@@ -211,28 +220,28 @@ public class UnivDetail implements Initializable{
     }
 
     public void setUnivDetailInf(UnivDetailDTO univDetailDTO){  // UnivDetailDTO GUI에 뿌려주기
-        studentNumber.setText(String.valueOf(univDetailDTO.getStudentNumber()));
-        admissionCompetitionRate.setText(String.valueOf(univDetailDTO.getAdmissionCompetitionRate()));
-        employmentRate.setText(String.valueOf((univDetailDTO.getEmploymentRate())));
-        enteringRate.setText(String.valueOf(univDetailDTO.getEnteringRate()));
-        educationCostPerPerson.setText(String.valueOf(univDetailDTO.getEducationCostPerPerson()));
-        totalScholarshipBenefit.setText(String.valueOf(univDetailDTO.getTotalScholarshipBenefits()));
+        studentNumber.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getStudentNumber()));
+        admissionCompetitionRate.setText(univDetailDTO.getAdmissionCompetitionRate() + "%");
+        employmentRate.setText(univDetailDTO.getEmploymentRate() + "%");
+        enteringRate.setText(univDetailDTO.getEnteringRate() + "%");
+        educationCostPerPerson.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getEducationCostPerPerson()));
+        totalScholarshipBenefit.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getTotalScholarshipBenefits()));
 
         foundersNumber.setText(String.valueOf(univDetailDTO.getNumberFounders()));
-        startCompanySale.setText(String.valueOf(univDetailDTO.getStartCompanySales()));
-        startCompanyCapital.setText(String.valueOf(univDetailDTO.getStartCompanyCapital()));
-        schoolStartCompanyFund.setText(String.valueOf(univDetailDTO.getSchoolStartCompanyFund()));
-        govermentStartCompanyFund.setText(String.valueOf(univDetailDTO.getGovernmentStartCompanyFund()));
+        startCompanySale.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getStartCompanySales()));
+        startCompanyCapital.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getStartCompanyCapital()));
+        schoolStartCompanyFund.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getSchoolStartCompanyFund()));
+        govermentStartCompanyFund.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getGovernmentStartCompanyFund()));
         profesorForStartCompany.setText(String.valueOf(univDetailDTO.getProfessorForStartCompany()));
         staffForStartCompany.setText(String.valueOf(univDetailDTO.getStaffForStartCompany()));
 
         admissionFee.setText(String.valueOf(univDetailDTO.getAdmissionFee()));
-        averageTuition.setText(String.valueOf(univDetailDTO.getAverageTuition()));
-        humanitiesSocialTuition.setText(String.valueOf(univDetailDTO.getHumanitiesSocialTuition()));
-        naturalScienceTuition.setText(String.valueOf(univDetailDTO.getNaturalScienceTuition()));
-        artMusPhysTuition.setText(String.valueOf(univDetailDTO.getArtMusPhysTuition()));
-        engineeringTuition.setText(String.valueOf(univDetailDTO.getEngineeringTuition()));
-        medicalTuition.setText(String.valueOf(univDetailDTO.getMedicalTuition()));
+        averageTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getAverageTuition()));
+        humanitiesSocialTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getHumanitiesSocialTuition()));
+        naturalScienceTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNaturalScienceTuition()));
+        artMusPhysTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getArtMusPhysTuition()));
+        engineeringTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getEngineeringTuition()));
+        medicalTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getMedicalTuition()));
     }
 
     @FXML
@@ -243,14 +252,4 @@ public class UnivDetail implements Initializable{
             e.printStackTrace();
         }
     }
-
-//    String addDelimiterInNumber(String number){
-//        StringBuffer str = new StringBuffer(number);
-//
-//        int idx = number.length();
-//
-//        while (idx > 0){
-//            str.insert()
-//        }
-//    }
 }

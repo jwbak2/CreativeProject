@@ -52,7 +52,7 @@ public class Controller {
 			{
 				System.out.println("대학 정보 DAO로 조회");
 				UnivDTO univ = univDAO.select(univId);
-				univ.setUnivLogoImageFile(new byte[1]);
+//				univ.setUnivLogoImageFile(new byte[1]);
 				UnivDetailDTO univDetail = univDetailDAO.select(univId);
 
 				System.out.println("대학 정보 전송 시작");
