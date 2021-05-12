@@ -26,19 +26,19 @@ public class Receiver {
 			is.read(body);
 			tmp.setPacket(body);
 //			tmp.getBody();
-			System.out.println("역직렬화");
 			String univName = "";
 			try (ByteArrayInputStream bais = new ByteArrayInputStream(tmp.getBody())) {
 				try (ObjectInputStream ois = new ObjectInputStream(bais)) {
 					Object objectMember = ois.readObject();
 					univName = (String) objectMember;
 
-					System.out.println(univName);
 				}
 				catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
 			}
+
+			System.out.println("---패킷 수신 완료---");
 
 			int type = tmp.getProtocolType();
 			switch (type) {
@@ -68,7 +68,6 @@ public class Receiver {
 	}
 
 	public void handleRequest(String univName, int code) {
-		System.out.println("handleRequest");
 		switch (code) {
 			case Protocol.PT_REQ_UNIV_INF:
 				// 대학 정보를 요청
@@ -80,6 +79,7 @@ public class Receiver {
 				// 아니 일단 진우 말대로 프로토콜 만들어서 전송이나 해주자.
 				superman.getUnivData(univName, new Protocol(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF));
 				break;
+
 			default:
 				System.out.println("handleRequest default");
 				break;

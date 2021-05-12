@@ -82,7 +82,6 @@ public class Protocol {
 		buff = ByteBuffer.wrap(newBytes);
 		buff.order(ByteOrder.BIG_ENDIAN);
 		return buff.getInt();
-//        return (packet[LEN_TYPE + LEN_CODE] << 8) + (packet[LEN_TYPE + LEN_CODE + 1]);
 	}
 
 	public void setBodyLength(int length) {
@@ -110,19 +109,12 @@ public class Protocol {
 		byte[] buffer = new byte[LEN_HEADER + data.length]; // 새로운 바이트 배열 buffer 생성해서 초기화
 		// 기존 packet 바이트 배열 + data 바이트 배열
 
-
-		System.out.println("setPacket() " + data.length);
-
 		setBodyLength(data.length);
-		System.out.println("setPacket() bodyLength " + getBodyLength());
 
 		System.arraycopy(packet, 0, buffer, 0, LEN_HEADER);	// header 복사
 		System.arraycopy(data, 0, buffer, LEN_HEADER, data.length);	// data 복사
 
 		packet = buffer;
-
-//		setBodyLength(data.length);
-		System.out.println("setPacket() - endLine" + getBodyLength());
 	}
 
 	public byte[] getBody() {

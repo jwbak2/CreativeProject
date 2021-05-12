@@ -28,7 +28,7 @@ public class Connection {
 
 	public Socket getSocket() {
 		try {
-			System.out.println("클라이언트 접속 대기중...");
+			System.out.println("---클라이언트 접속 대기중---");
 			socket = serverSocket.accept();
 			System.out.println("---클라이언트 접속---");
 		} catch (IOException e) {
