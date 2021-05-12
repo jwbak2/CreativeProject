@@ -9,9 +9,9 @@ public class Connection {
 	ServerSocket serverSocket = null;
 	Socket socket = null;
 
-	public Connection(int port)
+	public Connection(final int PORT)
 	{
-		this.port = port;
+		this.port = PORT;
 	}
 
 	public ServerSocket connect() {
@@ -28,7 +28,7 @@ public class Connection {
 
 	public Socket getSocket() {
 		try {
-			System.out.println("클라이언트 접속 대기중...");
+			System.out.println("---클라이언트 접속 대기중---");
 			socket = serverSocket.accept();
 			System.out.println("---클라이언트 접속---");
 		} catch (IOException e) {
