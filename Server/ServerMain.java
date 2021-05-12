@@ -1,8 +1,8 @@
 package Server;
 
-///asdfasdofihsoadifjasdf
-//import Server.dto.SampleDTO;
+import Server.model.Cache;
 import Server.model.DBCP;
+import Server.model.dao.UnivDAO;
 import Server.transmission.Connection;
 import Server.transmission.Receiver;
 import Server.transmission.Sender;
@@ -12,129 +12,46 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerMain {
-	public static void main(String[] args) throws IOException {
-		int port = 5500;
-		Connection conn = new Connection(port);
+
+	// 미리 DB 에서 가져올 데이터(ex. 학교 리스트) 보관
+	public static Cache serverCache = new Cache();
+
+	public static void main(String[] args) {
+		final int PORT = 5500;
+		Connection conn = new Connection(PORT);
 		DBCP.init();	  //DB 커넥션 풀 초기화
+
+
 		ServerSocket serverSocket = null;
 		Socket socket = null;
+		OutputStream os = null;
+		InputStream is = null;
+
 
 		// 서버 연결
 		serverSocket = conn.connect();
+		System.out.println("서버 오픈");
+
+		// 실행 시간을 줄이기 위해,
+		// 서버가 미리 필요한 데이터 가져오기
+		loadInitData();
+		System.out.println("데이터 로드 완료");
+
 
 		// 소켓 할당
 		socket = conn.getSocket();
 
 		try {
-			OutputStream os = socket.getOutputStream();
-			InputStream is = socket.getInputStream();
+			os = socket.getOutputStream();
+			is = socket.getInputStream();
 
-			/*
-				서버는 사용자와 연결된 직후에 데이터를 보내는 경우를 제외하고는,
-				모두 사용자로부터 요청을 받고, 응답을 하는 구조로 돌아가는 것으로 보임
-			*/
-			Receiver rcvr = new Receiver(is, os);
-			Sender sndr = new Sender(os);
+			Sender sender = new Sender(os);
+			Receiver receiver = new Receiver(is, sender);
 
 			while (true) {
-
-				rcvr.waiting();
-//				try {
-//				} catch (ClassNotFoundException e) {
-//					e.printStackTrace();
-//				}
-//				rcvr.waiting();
-//				try {
-//					// 사용자로부터 요청 받기
-//
-//					System.out.println("패킷 받음");
-//
-//
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				}
-				// 사용자로부터 요청을 받음
-//				byte[] head = new byte[4];
-//				is.read(head);
-//
-//				int type = head[0];
-
-
-//				switch()
-//				head[Protocol.LEN_TYPE + Protocol.LEN_CODE];
-
-//				byte[] body = new byte[];
-//				is.read();
-
-				// 사용자의 요청이 어떤 타입인지 확인
-
-//				byte[] header = new byte[Protocol.LEN_HEADER];
-//				System.out.println("헤드 읽기 대기");
-//				is.read(header);
-//
-//				Protocol pt = new Protocol(header);
-//				int bodyLength = pt.getBodyLength();
-//
-//				byte[] body = new byte[bodyLength];
-//				is.read(body);
-//
-//				System.out.println("바디 읽기 대기");
-//				System.out.println(body.length);
-//				System.out.println("직렬화");
-//				try (ByteArrayInputStream bais = new ByteArrayInputStream(body)) {
-//					try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-//						Object objectMember = ois.readObject();
-//						String smpl = (String) objectMember;
-//
-//						System.out.println(smpl);
-//					}
-//					catch (ClassNotFoundException e) {
-//						e.printStackTrace();
-//					}
-//				}
-//
-//				System.out.println("데이터 전송 시작");
-//				SampleDTO tmp = new SampleDTO("갯강구", 2, 10);	// 직렬화할 객체
-//				byte[] serializedDTO;	// 직렬화 결과가 담기는 바이트
-//				try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-//					try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-//						oos.writeObject(tmp);	// tmp 객체 직렬화
-//
-//						serializedDTO = baos.toByteArray();
-//					}
-//				}
-//				System.out.println("직렬화 완료");
-//
-//				// 직렬화 완료된 데이터 사용자에게 전달
-//				Protocol protocol = new Protocol(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF);
-//
-//				// 패킷 바디에 직렬화 객체 삽입
-//				protocol.setPacket(serializedDTO);
-//
-//				// 전송
-//				os.write(protocol.getPacket());
-//				os.flush();
-//				System.out.println("데이터 전송 완료");
-
-//				ObjectOutputStream oos = new ObjectOutputStream(os);
-//				ObjectInputStream ois = new ObjectInputStream(is);
-
-//				oos.writeObject(tmp);
-//				oos.flush();
-
-
-//				byte[] head = new byte[4];
-//				is.read(head);
-//
-//				head[Protocol.LEN_TYPE + Protocol.LEN_CODE];
-//
-//				byte[] body = new byte[];
-//				is.read();
-				// Receiver 에게 전달...?
+				receiver.waiting();
 			}
 
-//			os.close();
-//			is.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -142,8 +59,27 @@ public class ServerMain {
 			System.out.println("BYE!");
 
 			// 통신 관련 종료
-			serverSocket.close();
-			socket.close();
+			try {
+				is.close();
+				os.close();
+				serverSocket.close();
+				socket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			System.out.println("--Server Down---");
+		}
+	}
+
+	public static void loadInitData() {
+		try {
+			// 학교 리스트 가져오기
+			serverCache.setUnivList(new UnivDAO().getUnivList());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 }

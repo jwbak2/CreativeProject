@@ -4,84 +4,76 @@ import java.io.*;
 
 public class Receiver {
 	/*
-	* 클라이언트의 패킷을 수신하고
-	* 패킷의 코드에 따라 적절한 행동을 취함
-	*/
+	 * 클라이언트의 패킷을 수신하고
+	 * 패킷의 코드에 따라 적절한 행동을 취함
+	 */
 	InputStream is;
-	OutputStream os;
-	Controller superman;
+	Sender sender;
 
-	public Receiver(InputStream is, OutputStream os) {
+	public Receiver(InputStream is, Sender sender) {
 		this.is = is;
-		this.os = os;
-		superman = new Controller(is, os);
+		this.sender = sender;
 	}
 
+	// Client 의 패킷 송신 대기
 	public void waiting() {
 		try {
 			byte[] head = new byte[4];
 			is.read(head);
+
 			Protocol tmp = new Protocol(head);
+
 			byte[] body = new byte[tmp.getBodyLength()];
 			is.read(body);
 			tmp.setPacket(body);
-//			tmp.getBody();
-			String univName = "";
-			try (ByteArrayInputStream bais = new ByteArrayInputStream(tmp.getBody())) {
-				try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-					Object objectMember = ois.readObject();
-					univName = (String) objectMember;
-
-				}
-				catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
 
 			System.out.println("---패킷 수신 완료---");
+			System.out.printf("---총 길이: %d---\n", tmp.getBodyLength() + 4);
 
-			int type = tmp.getProtocolType();
-			switch (type) {
-				case Protocol.PT_REQ:
-					handleRequest(univName, tmp.getProtocolCode());
-					break;
-
-				case Protocol.PT_RES:
-					// pass
-					break;
-
-				case Protocol.PT_SUCC:
-					// pass
-					break;
-
-				case Protocol.PT_FAIL:
-					// pass
-					break;
-
-				default:
-					// pass
-					break;
-			}
+			// 패킷 분류
+			classifyPacket(tmp);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void handleRequest(String univName, int code) {
-		switch (code) {
-			case Protocol.PT_REQ_UNIV_INF:
-				// 대학 정보를 요청
-				// 난 뭘 해야 할까
-				// 일단 클라이언트가 보낸 대학 이름의 ID가 있는지 확인하고 (2차원 스트링 배열 받아오고)
-				// 1. 아이디가 없다 -> fail 전송
-				// 2. 아이디가 있다 -> DAO를 통해서 조회 후에 DTO를 패킷에 담아서 전송
+	public void classifyPacket(Protocol p) {
+		System.out.println("---수신한 패킷 분류---");
 
-				// 아니 일단 진우 말대로 프로토콜 만들어서 전송이나 해주자.
-				superman.getUnivData(univName, new Protocol(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF));
+		int type = p.getProtocolType();
+		int code = p.getProtocolCode();
+		switch (type) {
+			case Protocol.PT_REQ:	// 요청
+				switch (code) {
+					case Protocol.PT_REQ_UNIV_INF:
+						sender.inquiryUnivInfo(p.getBody());
+
+				}
+				break;
+
+			case Protocol.PT_RES:	// 응답
+				switch (code) {
+
+				}
+				// pass
+				break;
+
+			case Protocol.PT_SUCC:	// 성공
+				switch (code) {
+
+				}
+				// pass
+				break;
+
+			case Protocol.PT_FAIL:	// 실패
+				switch (code) {
+
+				}
+				// pass
 				break;
 
 			default:
-				System.out.println("handleRequest default");
+				// pass
 				break;
 		}
 	}

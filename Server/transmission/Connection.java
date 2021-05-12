@@ -9,9 +9,9 @@ public class Connection {
 	ServerSocket serverSocket = null;
 	Socket socket = null;
 
-	public Connection(int port)
+	public Connection(final int PORT)
 	{
-		this.port = port;
+		this.port = PORT;
 	}
 
 	public ServerSocket connect() {
