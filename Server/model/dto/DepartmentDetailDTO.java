@@ -25,6 +25,10 @@ public class DepartmentDetailDTO {
     private Long outSchoolScholarship;
     private Long inSchoolScholarship;
     private Long scholarshipPerPerson;
+    private Long numOfFulltimeProfessor;
+    private Long thesisResultPerProfessor;
+    private Long rearchCostPerProfessor;
+    private Long employmentRate;
 
     public Long getYear() {
         return this.year;
@@ -216,5 +220,37 @@ public class DepartmentDetailDTO {
 
     public void setScholarshipPerPerson(Long scholarshipPerPerson) {
         this.scholarshipPerPerson = scholarshipPerPerson;
+    }
+
+    public Long getNumOfFulltimeProfessor() {
+        return this.numOfFulltimeProfessor;
+    }
+
+    public void setNumOfFulltimeProfessor(Long numOfFulltimeProfessor) {
+        this.numOfFulltimeProfessor = numOfFulltimeProfessor;
+    }
+
+    public Long getThesisResultPerProfessor() {
+        return this.thesisResultPerProfessor;
+    }
+
+    public void setThesisResultPerProfessor(Long thesisResultPerProfessor) {
+        this.thesisResultPerProfessor = thesisResultPerProfessor;
+    }
+
+    public Long getRearchCostPerProfessor() {
+        return this.rearchCostPerProfessor;
+    }
+
+    public void setRearchCostPerProfessor(Long rearchCostPerProfessor) {
+        this.rearchCostPerProfessor = rearchCostPerProfessor;
+    }
+
+    public Long getEmploymentRate() {
+        return this.employmentRate;
+    }
+
+    public void setEmploymentRate(Long employmentRate) {
+        this.employmentRate = employmentRate;
     }
 }
