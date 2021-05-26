@@ -49,14 +49,21 @@ public class UnivDetailDAO {
             Long artMusPhysTuition = rs.getLong("art_mus_phys_tuition");
             Long engineeringTuition = rs.getLong("engineering_tuition");
             Long medicalTuition = rs.getLong("medical_tuition");
+            Long dormitoryAccommodationRate = rs.getLong("DORMITORY_ACCOMMODATION_RATE");
+            Long dispatchedStudent = rs.getLong("DISPATCHED_STUDENT");
+            Long bookTotal = rs.getLong("BOOK_TOTAL");
+            Long univArea = rs.getLong("UNIV_AREA");
+            Long numOfFulltimeProfessor = rs.getLong("NUM_OF_FULLTIME_PROFESSOR");
+            Long researchCostPerProfessor = rs.getLong("RESEARCH_COST_PER_PROFESSOR");
+            Long numOfPatentRegistration = rs.getLong("NUM_OF_PATENT_REGISTRATION");
 
 
-
-            dto = new UnivDetailDTO(year, univId, studentNumber, admissionCompetitionRate, employmentRate, enteringRate,
-                    educationCostPerPerson, totalScholarshipBenefits, numberFounders, startCompanySales,
-                    startCompanyCapital, schoolStartCompanyFund, governmentStartCompanyFund, professorForStartCompany,
-                    staffForStartCompany, admissionFee, averageTuition, humanitiesSocialTuition, naturalScienceTuition,
-                    artMusPhysTuition, engineeringTuition, medicalTuition);
+            dto = new UnivDetailDTO(year, univId, studentNumber, employmentRate, admissionCompetitionRate,
+                    enteringRate, educationCostPerPerson, totalScholarshipBenefits, numberFounders,
+                    startCompanySales, startCompanyCapital, schoolStartCompanyFund, governmentStartCompanyFund,
+                    professorForStartCompany, staffForStartCompany, admissionFee, averageTuition, humanitiesSocialTuition,
+                    naturalScienceTuition, artMusPhysTuition, engineeringTuition, medicalTuition, dormitoryAccommodationRate,
+                    dispatchedStudent, bookTotal, univArea, numOfFulltimeProfessor, researchCostPerProfessor, numOfPatentRegistration);
 
 
         } catch (SQLException sqle) {

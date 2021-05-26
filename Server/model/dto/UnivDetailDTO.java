@@ -6,8 +6,8 @@ public class UnivDetailDTO implements Serializable {
     private Long year;
     private String univId;
     private Long studentNumber;
-    private Long admissionCompetitionRate;
     private Long employmentRate;
+    private Long admissionCompetitionRate;
     private Long enteringRate;
     private Long educationCostPerPerson;
     private Long totalScholarshipBenefits;
@@ -25,19 +25,25 @@ public class UnivDetailDTO implements Serializable {
     private Long artMusPhysTuition;
     private Long engineeringTuition;
     private Long medicalTuition;
+    private Long dormitoryAccommodationRate;
+    private Long dispatchedStudent;
+    private Long bookTotal;
+    private Long univArea;
+    private Long numOfFulltimeProfessor;
+    private Long researchCostPerProfessor;
+    private Long numOfPatentRegistration;
 
-    public UnivDetailDTO(Long year, String univId, Long studentNumber, Long admissionCompetitionRate, Long employmentRate,
+    public UnivDetailDTO(Long year, String univId, Long studentNumber, Long employmentRate, Long admissionCompetitionRate,
                          Long enteringRate, Long educationCostPerPerson, Long totalScholarshipBenefits, Long numberFounders,
-                         Long startCompanySales, Long startCompanyCapital, Long schoolStartCompanyFund,
-                         Long governmentStartCompanyFund, Long professorForStartCompany, Long staffForStartCompany,
-                         Long admissionFee, Long averageTuition, Long humanitiesSocialTuition, Long naturalScienceTuition,
-                         Long artMusPhysTuition, Long engineeringTuition, Long medicalTuition) {
-
+                         Long startCompanySales, Long startCompanyCapital, Long schoolStartCompanyFund, Long governmentStartCompanyFund,
+                         Long professorForStartCompany, Long staffForStartCompany, Long admissionFee, Long averageTuition, Long humanitiesSocialTuition,
+                         Long naturalScienceTuition, Long artMusPhysTuition, Long engineeringTuition, Long medicalTuition, Long dormitoryAccommodationRate,
+                         Long dispatchedStudent, Long bookTotal, Long univArea, Long numOfFulltimeProfessor, Long researchCostPerProfessor, Long numOfPatentRegistration) {
         this.year = year;
         this.univId = univId;
         this.studentNumber = studentNumber;
-        this.admissionCompetitionRate = admissionCompetitionRate;
         this.employmentRate = employmentRate;
+        this.admissionCompetitionRate = admissionCompetitionRate;
         this.enteringRate = enteringRate;
         this.educationCostPerPerson = educationCostPerPerson;
         this.totalScholarshipBenefits = totalScholarshipBenefits;
@@ -55,8 +61,15 @@ public class UnivDetailDTO implements Serializable {
         this.artMusPhysTuition = artMusPhysTuition;
         this.engineeringTuition = engineeringTuition;
         this.medicalTuition = medicalTuition;
-
+        this.dormitoryAccommodationRate = dormitoryAccommodationRate;
+        this.dispatchedStudent = dispatchedStudent;
+        this.bookTotal = bookTotal;
+        this.univArea = univArea;
+        this.numOfFulltimeProfessor = numOfFulltimeProfessor;
+        this.researchCostPerProfessor = researchCostPerProfessor;
+        this.numOfPatentRegistration = numOfPatentRegistration;
     }
+
 
     public Long getYear() {
         return this.year;
@@ -82,20 +95,20 @@ public class UnivDetailDTO implements Serializable {
         this.studentNumber = studentNumber;
     }
 
-    public Long getAdmissionCompetitionRate() {
-        return this.admissionCompetitionRate;
-    }
-
-    public void setAdmissionCompetitionRate(Long admissionCompetitionRate) {
-        this.admissionCompetitionRate = admissionCompetitionRate;
-    }
-
     public Long getEmploymentRate() {
         return this.employmentRate;
     }
 
     public void setEmploymentRate(Long employmentRate) {
         this.employmentRate = employmentRate;
+    }
+
+    public Long getAdmissionCompetitionRate() {
+        return this.admissionCompetitionRate;
+    }
+
+    public void setAdmissionCompetitionRate(Long admissionCompetitionRate) {
+        this.admissionCompetitionRate = admissionCompetitionRate;
     }
 
     public Long getEnteringRate() {
@@ -232,5 +245,61 @@ public class UnivDetailDTO implements Serializable {
 
     public void setMedicalTuition(Long medicalTuition) {
         this.medicalTuition = medicalTuition;
+    }
+
+    public Long getDormitoryAccommodationRate() {
+        return this.dormitoryAccommodationRate;
+    }
+
+    public void setDormitoryAccommodationRate(Long dormitoryAccommodationRate) {
+        this.dormitoryAccommodationRate = dormitoryAccommodationRate;
+    }
+
+    public Long getDispatchedStudent() {
+        return this.dispatchedStudent;
+    }
+
+    public void setDispatchedStudent(Long dispatchedStudent) {
+        this.dispatchedStudent = dispatchedStudent;
+    }
+
+    public Long getBookTotal() {
+        return this.bookTotal;
+    }
+
+    public void setBookTotal(Long bookTotal) {
+        this.bookTotal = bookTotal;
+    }
+
+    public Long getUnivArea() {
+        return this.univArea;
+    }
+
+    public void setUnivArea(Long univArea) {
+        this.univArea = univArea;
+    }
+
+    public Long getNumOfFulltimeProfessor() {
+        return this.numOfFulltimeProfessor;
+    }
+
+    public void setNumOfFulltimeProfessor(Long numOfFulltimeProfessor) {
+        this.numOfFulltimeProfessor = numOfFulltimeProfessor;
+    }
+
+    public Long getResearchCostPerProfessor() {
+        return this.researchCostPerProfessor;
+    }
+
+    public void setResearchCostPerProfessor(Long researchCostPerProfessor) {
+        this.researchCostPerProfessor = researchCostPerProfessor;
+    }
+
+    public Long getNumOfPatentRegistration() {
+        return this.numOfPatentRegistration;
+    }
+
+    public void setNumOfPatentRegistration(Long numOfPatentRegistration) {
+        this.numOfPatentRegistration = numOfPatentRegistration;
     }
 }
