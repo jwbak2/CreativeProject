@@ -2,8 +2,8 @@ package Client.controller;
 
 import Server.model.dto.UnivDetailDTO;
 import Server.model.dto.UnivDTO;
-import Client.controller.trasmission.Connection;
-import Client.controller.trasmission.Protocol;
+import Client.trasmission.Connection;
+import Client.trasmission.Protocol;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -14,10 +14,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
+import org.controlsfx.control.textfield.TextFields;
 
-import javax.imageio.ImageIO;
 import java.awt.Desktop;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -125,6 +124,8 @@ public class UnivDetail implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        String[] test = {"park", "pasd", "paaaaa", "appppp", "jin", "woo"};
+        TextFields.bindAutoCompletion(inputUniv, test); // 텍스트필드 자동완성
 //        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
     }
 
@@ -182,9 +183,6 @@ public class UnivDetail implements Initializable{
     }
 
     public Object receiveDTO() throws Exception {
-        /*
-            실패 로직 추가 필요
-         */
         Protocol receivePT = Connection.receive();
 
         if (receivePT.getProtocolType() == Protocol.PT_FAIL 

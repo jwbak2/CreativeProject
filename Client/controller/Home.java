@@ -52,5 +52,58 @@ public class Home implements Initializable {
         bp.setCenter(root);
     }
 
+    @FXML
+    void compareScore(MouseEvent event) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("../view/compareScore.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bp.setCenter(root);
+    }
 
+    @FXML
+    void compareUnivDepartment(MouseEvent event) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("../view/compareDepartment.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bp.setCenter(root);
+    }
+
+    @FXML
+    void userDetail(MouseEvent event) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("../view/userDetail.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bp.setCenter(root);
+    }
+
+    @FXML
+    void userStatistics(MouseEvent event) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("../view/userStatistics.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bp.setCenter(root);
+    }
+
+    @FXML
+    void compareUniv(MouseEvent event) {
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(getClass().getResource("../view/compareUniv.fxml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        bp.setCenter(root);
+    }
 }

@@ -1,6 +1,4 @@
-package Client.controller.trasmission;
-
-import Server.model.DBCP;
+package Client.trasmission;
 
 import java.io.*;
 import java.net.Socket;
