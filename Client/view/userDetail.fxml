@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.UserDetail" />
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.UserDetail">
+   <children>
+      <GridPane layoutX="78.0" layoutY="132.0" prefHeight="340.0" prefWidth="416.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="Email" />
+            <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="이름" GridPane.rowIndex="1" />
+            <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="전화번호" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="지역" GridPane.rowIndex="3" />
+            <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="주민번호" GridPane.rowIndex="4" />
+            <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="소속학교" GridPane.rowIndex="5" />
+            <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="소속학과" GridPane.rowIndex="6" />
+         </children>
+      </GridPane>
+      <Text layoutX="375.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="사용자 마이페이지" />
+      <ListView layoutX="68.0" layoutY="518.0" prefHeight="229.0" prefWidth="369.0" />
+      <ListView layoutX="477.0" layoutY="518.0" prefHeight="229.0" prefWidth="369.0" />
+      <Text layoutX="161.0" layoutY="639.0" strokeType="OUTSIDE" strokeWidth="0.0" text="사용자가 쓴 학교 평점 내역" />
+      <Text layoutX="562.0" layoutY="639.0" strokeType="OUTSIDE" strokeWidth="0.0" text="사용자가 쓴 학과 평점 내역" />
+      <ListView layoutX="469.0" layoutY="132.0" prefHeight="229.0" prefWidth="369.0" />
+      <Text layoutX="599.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="즐겨찾기 리스트" />
+      <Text layoutX="564.0" layoutY="285.0" strokeType="OUTSIDE" strokeWidth="0.0" text="해당 학교 누르면 하이퍼링크" />
+   </children>
+</AnchorPane>

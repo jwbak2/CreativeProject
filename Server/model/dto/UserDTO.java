@@ -11,6 +11,19 @@ public class UserDTO {
     private String affiliatedSchool;
     private String affiliatedDepartment;
 
+    public UserDTO(String userEmail, String userPassword, String userName, Long userPhoneNumber, String userArea,
+                   Long residentRegistrationNumber, String userCategory, String affiliatedSchool, String affiliatedDepartment) {
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
+        this.userName = userName;
+        this.userPhoneNumber = userPhoneNumber;
+        this.userArea = userArea;
+        this.residentRegistrationNumber = residentRegistrationNumber;
+        this.userCategory = userCategory;
+        this.affiliatedSchool = affiliatedSchool;
+        this.affiliatedDepartment = affiliatedDepartment;
+    }
+
     public String getUserEmail() {
         return this.userEmail;
     }
