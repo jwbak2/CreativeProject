@@ -124,19 +124,14 @@ public class UnivDetail implements Initializable{
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        String[] test = {"park", "pasd", "paaaaa", "appppp", "jin", "woo"};
-        TextFields.bindAutoCompletion(inputUniv, test); // 텍스트필드 자동완성
+//        String[] test = {"park", "pasd", "paaaaa", "appppp", "jin", "woo"};   // 자동완성 테스트용
+//        TextFields.bindAutoCompletion(inputUniv, test); // 텍스트필드 자동완성
+
 //        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
     }
 
     @FXML
     void clickRequestBtn(MouseEvent event) {
-        /*
-            직렬화, 역직렬화 추상화? 가능?
-            현재는 각 컨트롤러에서만 처리중
-            통합적으로 처리하는 함수 만들수 있을까
-            -> 중간발표 이후 처리할게요
-         */
         // input에 입력한 학교 이름 추출 + 공백 제거
         String univName = inputUniv.getText().replace(" ","");
         System.out.println("입력한 대학교 : " + univName);
@@ -147,12 +142,12 @@ public class UnivDetail implements Initializable{
             }
             requestUnivInf(univName);   // 학교 상세정보 요청
 
-            UnivDTO univDTO = (UnivDTO) receiveDTO();       // 학교 정보 receive
+            UnivDTO univDTO = (UnivDTO) receiveUnivDTO();       // 학교 정보 receive
             System.out.println("UnivInf DTO 수신 완료 ");
             setUnivInf(univDTO);
             System.out.println("학교 정보 GUI 출력 완료");
 
-            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveDTO(); // 학교 상세정보 receive
+            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
             System.out.println("UnivDetail DTO 수신 완료");
             setUnivDetailInf(univDetailDTO);
             System.out.println("학교 상세정보 GUI 출력 완료");
@@ -167,22 +162,14 @@ public class UnivDetail implements Initializable{
         Protocol pt = new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_INF);  // 학교 상세정보 조회 요청 송신 패킷 생성
 
         byte[] serializedDTO;  // 직렬화 결과가 담기는 바이트
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                oos.writeObject(univName);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
+        serializedDTO = Connection.serializeDTO(univName);
+        pt.setPacket(serializedDTO);
 
-                serializedDTO = baos.toByteArray();
-                pt.setPacket(serializedDTO);
-
-                System.out.println("학교 상세정보 조회 요청");
-                Connection.send(pt);        // 패킷 전송
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("학교 상세정보 조회 요청");
+        Connection.send(pt);        // 패킷 전송
     }
 
-    public Object receiveDTO() throws Exception {
+    public Object receiveUnivDTO() throws Exception {
         Protocol receivePT = Connection.receive();
 
         if (receivePT.getProtocolType() == Protocol.PT_FAIL 
@@ -190,17 +177,7 @@ public class UnivDetail implements Initializable{
             throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
         }
 
-        Object objectMember = null;
-
-        try (ByteArrayInputStream bais = new ByteArrayInputStream(receivePT.getBody())) {
-            try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return objectMember;
+        return Connection.deserializeDTO(receivePT.getBody());  // 역직렬화된 객체가 담기는 Object 반환
     }
 
     public void setUnivInf(UnivDTO univDTO){    // UnivDTO GUI에 뿌려주기

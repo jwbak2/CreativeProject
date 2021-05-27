@@ -1,5 +1,6 @@
 package Client;
 
+import Client.trasmission.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,7 +19,7 @@ public class ClientMain extends Application {
         String serverIp = "127.0.0.1";    // 사설 ip
         int port = 5500;
 
-        //new Connection(serverIp, port);
+        new Connection(serverIp, port);
         System.out.println("IP : " + serverIp + ", Port : " + port);
         System.out.println("서버 접속 성공");
     }
