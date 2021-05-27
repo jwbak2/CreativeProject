@@ -1,9 +1,9 @@
 package Client.controller;
 
-import Server.model.dto.UnivDetailDTO;
 import Server.model.dto.UnivDTO;
 import Client.controller.trasmission.Connection;
 import Client.controller.trasmission.Protocol;
+import Server.model.dto.UnivDetailDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -15,9 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 
-import javax.imageio.ImageIO;
 import java.awt.Desktop;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;

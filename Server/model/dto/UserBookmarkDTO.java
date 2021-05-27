@@ -4,6 +4,11 @@ public class UserBookmarkDTO {
     private String userEmail;
     private String univId;
 
+    public UserBookmarkDTO(String userEmail, String univId) {
+        this.userEmail = userEmail;
+        this.univId = univId;
+    }
+
     public String getUserEmail() {
         return this.userEmail;
     }

@@ -4,6 +4,11 @@ public class IndicatorSelectionStatisticsDTO {
     private String indicatorName;
     private Long selectionNumber;
 
+    public IndicatorSelectionStatisticsDTO(String indicatorName, Long selectionNumber) {
+        this.indicatorName = indicatorName;
+        this.selectionNumber = selectionNumber;
+    }
+
     public String getIndicatorName() {
         return this.indicatorName;
     }
