@@ -30,6 +30,45 @@ public class DepartmentDetailDTO {
     private Long rearchCostPerProfessor;
     private Long employmentRate;
 
+    public DepartmentDetailDTO(Long year, String departmentId, Long admissionFee, Long tuition, Long maleGr,
+                               Long femaleGr, Long enteringDomCmntyColl, Long enteringOverseasCmntyColl, Long enteringDomUniv,
+                               Long enteringOverseasUniv, Long enteringDomGrSchool, Long enteringOverseasGrSchool,
+                               Long domScholarNumber, Long overseasScholarNumber, Long maleEmploymentTarget,
+                               Long femaleEmploymentTarget, Long maleDomEmployee, Long femaleDomEmployee,
+                               Long maleOverseasEmployee, Long femaleOverseasEmployee, Long enteringRate,
+                               Long outSchoolScholarship, Long inSchoolScholarship, Long scholarshipPerPerson,
+                               Long numOfFulltimeProfessor, Long thesisResultPerProfessor, Long rearchCostPerProfessor,
+                               Long employmentRate) {
+        this.year = year;
+        this.departmentId = departmentId;
+        this.admissionFee = admissionFee;
+        this.tuition = tuition;
+        this.maleGr = maleGr;
+        this.femaleGr = femaleGr;
+        this.enteringDomCmntyColl = enteringDomCmntyColl;
+        this.enteringOverseasCmntyColl = enteringOverseasCmntyColl;
+        this.enteringDomUniv = enteringDomUniv;
+        this.enteringOverseasUniv = enteringOverseasUniv;
+        this.enteringDomGrSchool = enteringDomGrSchool;
+        this.enteringOverseasGrSchool = enteringOverseasGrSchool;
+        this.domScholarNumber = domScholarNumber;
+        this.overseasScholarNumber = overseasScholarNumber;
+        this.maleEmploymentTarget = maleEmploymentTarget;
+        this.femaleEmploymentTarget = femaleEmploymentTarget;
+        this.maleDomEmployee = maleDomEmployee;
+        this.femaleDomEmployee = femaleDomEmployee;
+        this.maleOverseasEmployee = maleOverseasEmployee;
+        this.femaleOverseasEmployee = femaleOverseasEmployee;
+        this.enteringRate = enteringRate;
+        this.outSchoolScholarship = outSchoolScholarship;
+        this.inSchoolScholarship = inSchoolScholarship;
+        this.scholarshipPerPerson = scholarshipPerPerson;
+        this.numOfFulltimeProfessor = numOfFulltimeProfessor;
+        this.thesisResultPerProfessor = thesisResultPerProfessor;
+        this.rearchCostPerProfessor = rearchCostPerProfessor;
+        this.employmentRate = employmentRate;
+    }
+
     public Long getYear() {
         return this.year;
     }

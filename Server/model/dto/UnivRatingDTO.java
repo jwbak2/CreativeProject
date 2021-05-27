@@ -1,11 +1,21 @@
 package Server.model.dto;
 
+import java.sql.Date;
+
 public class UnivRatingDTO {
     private String userEmail;
     private String univId;
     private String content;
     private Long score;
     private java.sql.Date creationDate;
+
+    public UnivRatingDTO(String userEmail, String univId, String content, Long score, Date creationDate) {
+        this.userEmail = userEmail;
+        this.univId = univId;
+        this.content = content;
+        this.score = score;
+        this.creationDate = creationDate;
+    }
 
     public String getUserEmail() {
         return this.userEmail;

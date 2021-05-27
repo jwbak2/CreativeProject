@@ -8,6 +8,16 @@ public class DepartmentDTO {
     private String dayNightCls;
     private String courseCls;
 
+    public DepartmentDTO(String departmentId, String univId, String departmentName, String departmentCls,
+                         String dayNightCls, String courseCls) {
+        this.departmentId = departmentId;
+        this.univId = univId;
+        this.departmentName = departmentName;
+        this.departmentCls = departmentCls;
+        this.dayNightCls = dayNightCls;
+        this.courseCls = courseCls;
+    }
+
     public String getDepartmentId() {
         return this.departmentId;
     }
