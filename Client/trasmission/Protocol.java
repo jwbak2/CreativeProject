@@ -1,4 +1,4 @@
-package Client.controller.trasmission;
+package Client.trasmission;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -104,7 +104,7 @@ public class Protocol {
     public void setPacket(byte[] data) { // 패킷 바이트 배열 중 데이터 영역에 데이터 set
         byte[] buffer = new byte[LEN_HEADER + data.length]; // 새로운 바이트 배열 buffer 생성해서 초기화
         // 기존 packet 바이트 배열 + data 바이트 배열
-        setBodyLength(data.length);
+        setBodyLength(data.length); // 데이터 길이를 dataLength 헤더에 저장
 
         System.arraycopy(packet, 0, buffer, 0, LEN_HEADER);
         System.arraycopy(data, 0, buffer, LEN_HEADER, data.length);
