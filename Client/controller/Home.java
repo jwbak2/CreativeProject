@@ -1,5 +1,7 @@
 package Client.controller;
 
+import Client.trasmission.Connection;
+import Client.trasmission.Protocol;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,6 +16,7 @@ import javafx.scene.shape.Circle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class Home implements Initializable {
@@ -28,12 +31,22 @@ public class Home implements Initializable {
     private ImageView imgUser;
 
     @FXML
-    private Circle test;
+    private Circle profile;
+
+    private static ArrayList<String> univList;
+
+    public static ArrayList<String> getUnivList(){
+        return univList;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // 프로필 이미지
         Image img = new Image("Client/resource/img/bonobono.jpg");
-        test.setFill(new ImagePattern(img));
+        profile.setFill(new ImagePattern(img));
+
+        // 학교 리스트 요청
+        //requestUnivList();
     }
 
     @FXML
@@ -106,4 +119,23 @@ public class Home implements Initializable {
         }
         bp.setCenter(root);
     }
+
+    void requestUnivList(){
+
+        Protocol pt = new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_LIST);  // 학교 상세정보 조회 요청 송신 패킷 생성
+
+
+        System.out.println("학교 리스트 요청");
+        Connection.send(pt);        // 패킷 전송
+
+        Protocol receivePT = Connection.receive();  // receive data
+
+        ArrayList<?> ar = (ArrayList<?>) Connection.deserializeDTO(receivePT.getBody());
+        for(Object obj : ar){
+            if(obj instanceof String){
+                univList.add((String) obj);
+            }
+        }
+    }
+
 }
