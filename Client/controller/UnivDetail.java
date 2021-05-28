@@ -221,38 +221,38 @@ public class UnivDetail implements Initializable {
             System.out.println("학교 정보 GUI 출력 완료");
 
 
-//            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
-//            System.out.println("UnivDetail DTO 수신 완료");
-//            setUnivDetailInf(univDetailDTO);
-//            System.out.println("학교 상세정보 GUI 출력 완료");
+            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
+            System.out.println("UnivDetail DTO 수신 완료");
+            setUnivDetailInf(univDetailDTO);
+            System.out.println("학교 상세정보 GUI 출력 완료");
 
-            // 학교 상세정보 3개년치 받아오기 univDtoList
-            univDtoList = new ArrayList<UnivDetailDTO>();
-
-            // FIXME 밑에 코드랑 중복되네 246
-            ArrayList<?> ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
-            for(Object obj : ar){
-                if(obj instanceof UnivDetailDTO){
-                    univDtoList.add((UnivDetailDTO) obj);
-                }
-            }
-
-            // 2020년 데이터만 학교 상세정보 tab에 set
-            // FIXME 0 - 2020, 1 - 2019, 2 - 2018 상수로 수정 필요
-            setUnivDetailInf(univDtoList.get(0));
-
-            // 학과 리스트
-            ArrayList<String> deptList = new ArrayList<String>();
-
-            ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
-            for(Object obj : ar){
-                if(obj instanceof String){
-                    deptList.add((String) obj);
-                }
-            }
-            setUnivDeptList(deptList);  // deptList Listview 추가
-
-            // TODO 즐겨찾기 리스트도 필요
+//            // 학교 상세정보 3개년치 받아오기 univDtoList
+//            univDtoList = new ArrayList<UnivDetailDTO>();
+//
+//            // FIXME 밑에 코드랑 중복되네 246
+//            ArrayList<?> ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
+//            for(Object obj : ar){
+//                if(obj instanceof UnivDetailDTO){
+//                    univDtoList.add((UnivDetailDTO) obj);
+//                }
+//            }
+//
+//            // 2020년 데이터만 학교 상세정보 tab에 set
+//            // FIXME 0 - 2020, 1 - 2019, 2 - 2018 상수로 수정 필요
+//            setUnivDetailInf(univDtoList.get(0));
+//
+//            // 학과 리스트
+//            ArrayList<String> deptList = new ArrayList<String>();
+//
+//            ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
+//            for(Object obj : ar){
+//                if(obj instanceof String){
+//                    deptList.add((String) obj);
+//                }
+//            }
+//            setUnivDeptList(deptList);  // deptList Listview 추가
+//
+//            // TODO 즐겨찾기 리스트도 필요
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -277,6 +277,9 @@ public class UnivDetail implements Initializable {
                 && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF) {    // 입력한 학교명이 존재하지 않을떄
             throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
         }
+
+        System.out.println(receivePT.getBodyLength());
+        System.out.println(receivePT.getBody().length);
 
         return Connection.deserializeDTO(receivePT.getBody());  // 역직렬화된 객체가 담기는 Object 반환
     }

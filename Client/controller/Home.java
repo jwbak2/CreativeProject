@@ -14,7 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -121,21 +121,23 @@ public class Home implements Initializable {
     }
 
     void requestUnivList(){
-
         Protocol pt = new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_LIST);  // 학교 상세정보 조회 요청 송신 패킷 생성
-
 
         System.out.println("학교 리스트 요청");
         Connection.send(pt);        // 패킷 전송
 
         Protocol receivePT = Connection.receive();  // receive data
 
+        System.out.println(receivePT.getBodyLength());
+        System.out.println(receivePT.getBody().length);
+
         ArrayList<?> ar = (ArrayList<?>) Connection.deserializeDTO(receivePT.getBody());
+
         for(Object obj : ar){
+            System.out.println(obj);
             if(obj instanceof String){
                 univList.add((String) obj);
             }
         }
     }
-
 }
