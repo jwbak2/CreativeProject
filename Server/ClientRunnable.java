@@ -4,14 +4,14 @@ import Server.transmission.Receiver;
 import Server.transmission.Sender;
 import Server.transmission.SocketManager;
 
-import java.io.IOException;
+
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
 // ProcessThread는 현재 클라이언트와의 TCP 연결(소켓)과 1:1 대응
 
-public class ProcessingThread extends Thread{
+public class ClientRunnable implements Runnable{
 
     public void run() {
 

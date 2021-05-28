@@ -20,7 +20,7 @@ public class SocketManager {
 		initServerSocket();
 	}
 
-	private static void initServerSocket(){		// 서버 소켓 초기ㅗ하
+	private static void initServerSocket(){		// 서버 소켓 초기화
 		try {
 			serverSocket = new ServerSocket(PORT);	// 서버 소켓 생성
 			serverSocket.setReuseAddress(true);		// 재사용 설정 켜기
@@ -38,7 +38,7 @@ public class SocketManager {
 
 	public static void listen() {
 
-		while(socket != null){};	// 소켓 fetch 대기
+		while(socket != null){}	// 소켓 fetch 대기
 
 		try {
 
