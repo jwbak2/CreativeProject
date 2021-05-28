@@ -2,69 +2,50 @@ package Server;
 
 import Server.model.Cache;
 import Server.model.DBCP;
-import Server.transmission.Connection;
+import Server.transmission.SocketManager;
 import Server.transmission.Receiver;
 import Server.transmission.Sender;
 
 import java.io.*;
-import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerMain {
 
+
+	static final int PORT = 5500;
+
+
 	public static void main(String[] args) {
 
-		final int PORT = 5500;
-		Connection conn = new Connection(PORT);
+		init();	// 서버 초기화
 
+	}
+
+
+	private static void init(){		// 서버 초기화 작업
+
+		System.out.println("서버 초기화");
+
+		SocketManager.init(PORT);	// 서버 소켓 초기화
 		DBCP.init();	  //DB 커넥션 풀 초기화
 		Cache.init(); 	  //Cache 초기화
 
-		ServerSocket serverSocket = null;
-		Socket socket = null;
 
+		ListenThread listen = new ListenThread();
+		listen.start();								// 클라이언트의 연결 요청 감시하는 스레드 생성
 
-		// 서버 연결
-		serverSocket = conn.connect();
-		System.out.println("서버 오픈");
-
-
-		OutputStream os = null;
-		InputStream is = null;
-
-		// 소켓 할당
-		socket = conn.getSocket();
-
-		try {
-			os = socket.getOutputStream();
-			is = socket.getInputStream();
-
-			Sender sender = new Sender(os);
-			Receiver receiver = new Receiver(is, sender);
-
-			while (true) {
-				receiver.waiting();
-			}
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			System.out.println("BYE!");
-
-			// 통신 관련 종료
-			try {
-				is.close();
-				os.close();
-				serverSocket.close();
-				socket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			System.out.println("--Server Down---");
-		}
+		System.out.println("서버 초기화 완료");
 	}
 
+
+	private static void terminate(){	// 서버 종료 작업
+
+		System.out.println("서버 종료 전 작업");
+
+		DBCP.terminate();
+		SocketManager.terminate();
+
+		System.out.println("서버 종료");
+	}
 
 }
