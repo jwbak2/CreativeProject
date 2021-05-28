@@ -7,7 +7,7 @@ public class Protocol {
 
     public static final int PT_UNDEFINED = -1;    // 프로토콜이 지정되어 있지 않은 경우
     public static final int PT_EXIT = 0;        // 프로그램 종료
-
+    //test
     //Type 요청, 응답, 성공, 실패
     public static final int PT_REQ = 0x01;
     public static final int PT_RES = 0x02;
