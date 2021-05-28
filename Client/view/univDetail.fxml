@@ -32,7 +32,7 @@
                   <Text fx:id="textUnivEstablishmentCls" layoutX="304.0" layoutY="161.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="104.9999937415123" />
                   <Label layoutX="37.0" layoutY="107.0" text="대표번호" />
                   <Text fx:id="textUnivRepresentativeNumber" layoutX="101.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="389.65137523412704" />
-                  <Button layoutX="399.0" layoutY="55.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="105.0" text="학교 평점" />
+                  <Button layoutX="405.0" layoutY="53.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="93.0" text="학교 평점" />
                </children>
             </AnchorPane>
             <Label id="univIntroduction" fx:id="textUnivIntroduction" layoutX="20.0" layoutY="240.0" prefHeight="208.0" prefWidth="861.0" wrapText="true" />
