@@ -4,12 +4,12 @@ import Server.model.dto.UnivDetailDTO;
 import Server.model.dto.UnivDTO;
 import Client.trasmission.Connection;
 import Client.trasmission.Protocol;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -25,6 +25,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.time.Year;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -121,15 +124,54 @@ public class UnivDetail implements Initializable {
     private Label averageTuition;
 
     @FXML
+    private Label dormitoryAccommodationRate;
+
+    @FXML
+    private Label dispatchedStudent;
+
+    @FXML
+    private Label bookTotal;
+
+    @FXML
+    private Label univArea;
+
+    @FXML
+    private Label numOfFulltimeProfessor;
+
+    @FXML
+    private Label researchCostPerProfessor;
+
+    @FXML
+    private Label numOfPatentRegistration;
+
+    @FXML
     private AnchorPane mainAp;
 
+    @FXML
+    private Tab tabUnivIntro;
+
+    @FXML
+    private Tab tabUnivDetail;
+
+    @FXML
+    private Tab tabYearCp;
+
+    @FXML
+    private Tab tabUnivDeptList;
+
+    @FXML
+    private ListView<?> tableDeptList;
+
     private String homepageURL;
+    private ArrayList<UnivDetailDTO> univDtoList;   // 2018 ~ 2020 UnivDetailDTO 담는 어레이리스트
+
+//    private final boolean[] checkTab;   // tab 이동
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 //        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
-
 //        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
+//        mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
 
         // 대학교 입력할떄 엔터누르는 이벤트 추가
         inputUniv.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -142,6 +184,24 @@ public class UnivDetail implements Initializable {
         btnRequestUnivInf.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             requestUniv();
         });
+
+//        tabUnivIntro.setOnSelectionChanged(event -> {
+//            if(!checkTab[0]){
+//                System.out.println("1");
+//            }
+//        });
+//
+//        tabUnivDetail.setOnSelectionChanged(event -> {
+//            System.out.println("2");
+//        });
+//
+//        tabYearCp.setOnSelectionChanged(event -> {
+//            System.out.println("3");
+//        });
+//
+//        tabUnivDeptList.setOnSelectionChanged(event -> {
+//            System.out.println("4");
+//        });
     }
 
     void requestUniv() {
@@ -160,12 +220,37 @@ public class UnivDetail implements Initializable {
             setUnivInf(univDTO);
             System.out.println("학교 정보 GUI 출력 완료");
 
-            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
-            System.out.println("UnivDetail DTO 수신 완료");
-            setUnivDetailInf(univDetailDTO);
-            System.out.println("학교 상세정보 GUI 출력 완료");
 
-//            mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
+//            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
+//            System.out.println("UnivDetail DTO 수신 완료");
+//            setUnivDetailInf(univDetailDTO);
+//            System.out.println("학교 상세정보 GUI 출력 완료");
+
+            // 학교 상세정보 3개년치 받아오기 univDtoList
+            univDtoList = new ArrayList<UnivDetailDTO>();
+
+            // 밑에 코드랑 중복되네 246
+            ArrayList<?> ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
+            for(Object obj : ar){
+                if(obj instanceof UnivDetailDTO){
+                    univDtoList.add((UnivDetailDTO) obj);
+                }
+            }
+
+            // 2020년 데이터만 학교 상세정보 tab에 set
+            setUnivDetailInf(univDtoList.get(0));
+
+            // 학과 리스트
+            ArrayList<String> deptList = new ArrayList<String>();
+
+            ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
+            for(Object obj : ar){
+                if(obj instanceof String){
+                    deptList.add((String) obj);
+                }
+            }
+            setUnivDeptList(deptList);  // deptList Listview 추가
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -229,6 +314,19 @@ public class UnivDetail implements Initializable {
         artMusPhysTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getArtMusPhysTuition()));
         engineeringTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getEngineeringTuition()));
         medicalTuition.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getMedicalTuition()));
+
+        dormitoryAccommodationRate.setText(String.valueOf(univDetailDTO.getDormitoryAccommodationRate()));
+        dispatchedStudent.setText(String.valueOf(univDetailDTO.getDispatchedStudent()));
+        bookTotal.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getBookTotal()));
+        univArea.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getUnivArea()));
+        numOfFulltimeProfessor.setText(String.valueOf(univDetailDTO.getNumOfFulltimeProfessor()));
+        researchCostPerProfessor.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getResearchCostPerProfessor()));
+        numOfPatentRegistration.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNumOfPatentRegistration()));
+    }
+
+    public void setUnivDeptList(ArrayList<String> deptList){
+        ObservableList list = FXCollections.observableArrayList(deptList);
+        tableDeptList.setItems(list);
     }
 
     @FXML
