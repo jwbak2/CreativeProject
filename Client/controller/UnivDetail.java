@@ -229,7 +229,7 @@ public class UnivDetail implements Initializable {
             // 학교 상세정보 3개년치 받아오기 univDtoList
             univDtoList = new ArrayList<UnivDetailDTO>();
 
-            // 밑에 코드랑 중복되네 246
+            // FIXME 밑에 코드랑 중복되네 246
             ArrayList<?> ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
             for(Object obj : ar){
                 if(obj instanceof UnivDetailDTO){
@@ -238,6 +238,7 @@ public class UnivDetail implements Initializable {
             }
 
             // 2020년 데이터만 학교 상세정보 tab에 set
+            // FIXME 0 - 2020, 1 - 2019, 2 - 2018 상수로 수정 필요
             setUnivDetailInf(univDtoList.get(0));
 
             // 학과 리스트
@@ -250,6 +251,8 @@ public class UnivDetail implements Initializable {
                 }
             }
             setUnivDeptList(deptList);  // deptList Listview 추가
+
+            // TODO 즐겨찾기 리스트도 필요
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -336,5 +339,10 @@ public class UnivDetail implements Initializable {
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    void moveUnivRatingPage(){
+        // TODO 학교 평가 페이지로 이동
+
     }
 }
