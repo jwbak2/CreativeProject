@@ -21,7 +21,6 @@ public class ProcessThread extends Thread{
             InputStream is = socket.getInputStream();
             OutputStream os = socket.getOutputStream()){
 
-            System.out.println("Thread - 2는 try문에 진입");
             Sender sender = new Sender(os);
             Receiver receiver = new Receiver(is, sender);
 
