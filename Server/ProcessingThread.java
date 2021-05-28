@@ -11,7 +11,7 @@ import java.net.Socket;
 
 // ProcessThread는 현재 클라이언트와의 TCP 연결(소켓)과 1:1 대응
 
-public class ProcessThread extends Thread{
+public class ProcessingThread extends Thread{
 
     public void run() {
 
@@ -28,13 +28,14 @@ public class ProcessThread extends Thread{
                 receiver.waiting();
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            System.out.println("Process Thread에서 예외발생");
             e.printStackTrace();
 
-        } finally {
-            System.out.println("Client Disconnected");
-
         }
+
+        System.out.println("Process Thread 종료");
+
     }
 
 }

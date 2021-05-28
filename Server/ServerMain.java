@@ -3,11 +3,6 @@ package Server;
 import Server.model.Cache;
 import Server.model.DBCP;
 import Server.transmission.SocketManager;
-import Server.transmission.Receiver;
-import Server.transmission.Sender;
-
-import java.io.*;
-import java.net.Socket;
 
 public class ServerMain {
 
@@ -31,7 +26,7 @@ public class ServerMain {
 		Cache.init(); 	  //Cache 초기화
 
 
-		ListenThread listen = new ListenThread();
+		ListeningThread listen = new ListeningThread();
 		listen.start();								// 클라이언트의 연결 요청 감시하는 스레드 생성
 
 		System.out.println("서버 초기화 완료");
