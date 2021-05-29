@@ -4,6 +4,7 @@ import Server.model.dto.UnivDetailDTO;
 import Server.model.dto.UnivDTO;
 import Client.trasmission.Connection;
 import Client.trasmission.Protocol;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -229,8 +230,14 @@ public class UnivDetail implements Initializable {
 
                 UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
                 System.out.println("UnivDetail DTO 수신 완료");
-                setUnivDetailInf(univDetailDTO);
-                System.out.println("학교 상세정보 GUI 출력 완료");
+
+
+                Runnable runnable2 = () -> {
+                    setUnivDetailInf(univDetailDTO);
+                };
+                Platform.runLater(runnable2);
+
+           //     System.out.println("학교 상세정보 GUI 출력 완료");
 
 //            // 학교 상세정보 3개년치 받아오기 univDtoList
 //            univDtoList = new ArrayList<UnivDetailDTO>();
