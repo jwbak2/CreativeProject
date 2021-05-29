@@ -21,7 +21,7 @@ public class ClientMain extends Application {
         int port = 5500;
 
         // TODO 서버 접속 실패시 예외처리 필요
-        new Connection(serverIp, port);
+        //new Connection(serverIp, port);
         System.out.println("IP : " + serverIp + ", Port : " + port);
         System.out.println("서버 접속 성공");
     }

@@ -8,7 +8,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -17,6 +20,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
@@ -275,11 +280,22 @@ public class UnivDetail implements Initializable {
 
         if (receivePT.getProtocolType() == Protocol.PT_FAIL
                 && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF) {    // 입력한 학교명이 존재하지 않을떄
+            // 조회 실패 팝업창
+            try{
+                Stage stage = (Stage) btnRequestUnivInf.getScene().getWindow(); //
+                Popup pu = new Popup();
+                Parent root = FXMLLoader.load(getClass().getResource("../view/popup.fxml"));
+
+                pu.getContent().add(root);
+                pu.setAutoHide(true); // 포커스 이동시 창 숨김
+                pu.show(stage);
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
+
+
             throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
         }
-
-        System.out.println(receivePT.getBodyLength());
-        System.out.println(receivePT.getBody().length);
 
         return Connection.deserializeDTO(receivePT.getBody());  // 역직렬화된 객체가 담기는 Object 반환
     }
