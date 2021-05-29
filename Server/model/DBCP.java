@@ -87,7 +87,7 @@ public class DBCP {   // 데이터베이스 커넥션 풀
 
 
 
-    static public void close() {    // DBCP를 close()하면 모든 connection들을 close()
+    static public void terminate() {    // DBCP를 close()하면 모든 connection들을 close()
 
         try {
             for (Connection x : POOL) {

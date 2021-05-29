@@ -35,7 +35,7 @@ public class Sender {
 			// 대학 DAO, 대학 상세정보 DAO, 대학 리스트
 			UnivDAO univDAO = new UnivDAO();
 			UnivDetailDAO univDetailDAO = new UnivDetailDAO();
-			String[][] univList = ServerMain.serverCache.getUnivList();
+			String[][] univList = Server.model.Cache.getUnivList();
 
 			// 대학 리스트 자료구조 및 탐색 개선 필요해보임
 			String univCode = "";
