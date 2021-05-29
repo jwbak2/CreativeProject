@@ -223,19 +223,12 @@ public class UnivDetail implements Initializable {
                 requestUnivInf(univName);   // 학교 상세정보 요청
 
                 UnivDTO univDTO = (UnivDTO) receiveUnivDTO();       // 학교 정보 receive
-                System.out.println("UnivInf DTO 수신 완료 ");
-                setUnivInf(univDTO);
-                System.out.println("학교 정보 GUI 출력 완료");
-
-
                 UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
-                System.out.println("UnivDetail DTO 수신 완료");
 
-
-                Runnable setUI = () -> {
+                Platform.runLater(() -> {   //UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
+                    setUnivInf(univDTO);    // 람다식으로 변경
                     setUnivDetailInf(univDetailDTO);
-                };
-                Platform.runLater(setUI);    //UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
+                });
 
            //     System.out.println("학교 상세정보 GUI 출력 완료");
 
