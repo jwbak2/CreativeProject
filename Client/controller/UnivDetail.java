@@ -4,12 +4,15 @@ import Server.model.dto.UnivDetailDTO;
 import Server.model.dto.UnivDTO;
 import Client.trasmission.Connection;
 import Client.trasmission.Protocol;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -20,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+//import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -27,7 +31,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -209,22 +215,29 @@ public class UnivDetail implements Initializable {
         String univName = inputUniv.getText().replace(" ", "");
         System.out.println("입력한 대학교 : " + univName);
 
-        try {
-            if (univName.equals("")) {               // 공백일시 예외처리
-                throw new Exception("univName of input is null");
-            }
-            requestUnivInf(univName);   // 학교 상세정보 요청
+        Runnable runnable = () -> {     // 다른 스레드로 처리
+            try {
+                if (univName.equals("")) {               // 공백일시 예외처리
+                    throw new Exception("univName of input is null");
+                }
+                requestUnivInf(univName);   // 학교 상세정보 요청
 
-            UnivDTO univDTO = (UnivDTO) receiveUnivDTO();       // 학교 정보 receive
-            System.out.println("UnivInf DTO 수신 완료 ");
-            setUnivInf(univDTO);
-            System.out.println("학교 정보 GUI 출력 완료");
+                UnivDTO univDTO = (UnivDTO) receiveUnivDTO();       // 학교 정보 receive
+                System.out.println("UnivInf DTO 수신 완료 ");
+                setUnivInf(univDTO);
+                System.out.println("학교 정보 GUI 출력 완료");
 
 
-            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
-            System.out.println("UnivDetail DTO 수신 완료");
-            setUnivDetailInf(univDetailDTO);
-            System.out.println("학교 상세정보 GUI 출력 완료");
+                UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
+                System.out.println("UnivDetail DTO 수신 완료");
+
+
+                Runnable setUI = () -> {
+                    setUnivDetailInf(univDetailDTO);
+                };
+                Platform.runLater(setUI);    //UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
+
+           //     System.out.println("학교 상세정보 GUI 출력 완료");
 
 //            // 학교 상세정보 3개년치 받아오기 univDtoList
 //            univDtoList = new ArrayList<UnivDetailDTO>();
@@ -254,9 +267,13 @@ public class UnivDetail implements Initializable {
 //
 //            // TODO 즐겨찾기 리스트도 필요
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
     }
 
     void requestUnivInf(String univName) {
@@ -279,7 +296,7 @@ public class UnivDetail implements Initializable {
             try{
                 Stage stage = (Stage) btnRequestUnivInf.getScene().getWindow(); //
                 Popup pu = new Popup();
-                Parent root = FXMLLoader.load(getClass().getResource("../view/popUp.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("../view/popup.fxml"));
 
                 pu.getContent().add(root);
                 pu.setAutoHide(true); // 포커스 이동시 창 숨김
