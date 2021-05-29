@@ -1,7 +1,6 @@
 package Client;
 
 import Client.trasmission.Connection;
-import Client.trasmission.Protocol;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,19 +10,23 @@ import javafx.stage.Stage;
 
 public class ClientMain extends Application {
 
+    static final String SERVER_IP = "220.122.124.124";
+    static final int PORT = 5500;
+
     public static void main(String[] args) {
         launch(args);
     }
 
+
     @Override
     public void init() {
-        String serverIp = "127.0.0.1";    // 사설 ip
-        int port = 5500;
 
-        new Connection(serverIp, port);
-        System.out.println("IP : " + serverIp + ", Port : " + port);
+        // TODO 서버 접속 실패시 예외처리 필요
+        new Connection(SERVER_IP, PORT);
+        System.out.println("IP : " + SERVER_IP + ", Port : " + PORT);
         System.out.println("서버 접속 성공");
     }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -37,9 +40,9 @@ public class ClientMain extends Application {
     }
 
     public static void terminate() {
-        Protocol packet = new Protocol(Protocol.PT_EXIT, Protocol.PT_EXIT);
-        Connection.send(packet);    // 종료 패킷 송신
-        Connection.terminate();                 // 소켓 통신 종료
+//        Protocol packet = new Protocol(Protocol.PT_EXIT, Protocol.PT_EXIT);
+//        Connection.send(packet);    // 종료 패킷 송신
+//        Connection.terminate();                 // 소켓 통신 종료
         System.exit(0);                   //클라이언트 종료
     }
 }

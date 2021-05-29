@@ -28,6 +28,8 @@ public class Connection {
     }
 
     static public void send(Protocol sendPT) { // 패킷 전송
+
+
         try {
             os.write(sendPT.getPacket());   // 전송
             os.flush();
@@ -36,15 +38,12 @@ public class Connection {
             e.printStackTrace();
         }
 
-//        Thread thread = new Thread(){
-//            public void run() {
-//
-//            }
-//        };
     }
 
     static public Protocol receive() {   // 서버 -> 클라이언트 패킷 수신, 받은 패킷으로 Protocol 생성해서 반환
         Protocol receivePT = null;       // header 패킷 수신후 bodyLength 확인후 body 패킷 부분 읽음
+
+
         byte[] header = new byte[Protocol.LEN_HEADER];              // header 길이 만크의 바이트 배열
         int bodyLength;
         byte[] body;
@@ -63,6 +62,8 @@ public class Connection {
             e.printStackTrace();
         }
 
+
+
         return receivePT;
     }
 
@@ -75,6 +76,7 @@ public class Connection {
                 synchronized (oos) {
                     oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
                 }
+
                 serializedDTO = baos.toByteArray();
             }
         } catch (Exception e) {

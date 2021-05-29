@@ -13,7 +13,7 @@
    <left>
       <AnchorPane prefHeight="900.0" prefWidth="300.0" style="-fx-background-color: #bdc3c7;" BorderPane.alignment="CENTER">
          <children>
-            <Circle fx:id="test" fill="DODGERBLUE" layoutX="48.0" layoutY="48.0" onMouseClicked="#userDetail" radius="41.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
+            <Circle fx:id="profile" fill="DODGERBLUE" layoutX="48.0" layoutY="48.0" onMouseClicked="#userDetail" radius="41.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" />
             <VBox layoutY="100.0" prefHeight="700.0" prefWidth="300.0" style="-fx-background-color: #bdc3c7;" styleClass="sidebar" stylesheets="@css/sidebar.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
                <children>
                   <Button mnemonicParsing="false" onMouseClicked="#home" prefHeight="70.0" prefWidth="300.0" text="Home">
