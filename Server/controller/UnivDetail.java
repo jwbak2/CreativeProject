@@ -2,6 +2,7 @@ package Server.controller;
 
 import Server.model.dao.UnivDAO;
 import Server.model.dao.UnivDetailDAO;
+import Server.model.dto.UnivDTO;
 import Server.transmission.Protocol;
 import Server.transmission.Sender;
 
@@ -21,18 +22,22 @@ public class UnivDetail implements RequestHandler{
 		bodyList = new ArrayList<Object>();
 	}
 
+	@Override
 	public int getType() {
 		return type;
 	}
 
+	@Override
 	public int getCode() {
 		return code;
 	}
 
+	@Override
 	public Object getBody() {
 		return bodyList.remove(0);
 	}
 
+	@Override
 	public boolean hasMessage() {
 		return bodyList.isEmpty() ? false : true;
 	}
@@ -41,6 +46,7 @@ public class UnivDetail implements RequestHandler{
 	@Override
 	public void handleRequest() {
 		try {
+
 			// 대학 이름(바이트 배열) 역 직렬화
 			String strUnivName = (String) clientMsg;
 			System.out.println("조회할 학교 이름: " + strUnivName);
@@ -71,7 +77,9 @@ public class UnivDetail implements RequestHandler{
 				code = Protocol.PT_RES_UNIV_INF;
 
 				// 전송할 패킷의 Body 설정 (아래는 바디 3개 저장 = 프로토콜 3개 보냄)
-				bodyList.add(univDAO.select(univCode));
+				UnivDTO univDTO = univDAO.select(univCode);
+				univDTO.setUnivLogoImageFile(new byte[1]);
+				bodyList.add(univDTO);
 				bodyList.add(univDetailDAO.select(univCode));
 //				bodyList.add(deptDAO.getDepartmentList(univCode));
 
@@ -80,10 +88,17 @@ public class UnivDetail implements RequestHandler{
 				type = Protocol.PT_RES;
 				code = Protocol.PT_RES_UNIV_INF;
 
-			}
 
-		} catch (ClassNotFoundException | IOException e) {
-			e.printStackTrace();
+			}
+//			type = Protocol.PT_RES;
+//			code = Protocol.PT_RES_UNIV_INF;
+//			String str = (String) clientMsg;
+//			System.out.println("사용자가 보낸 글 " + str);
+//			str = "가나다" + str + "마바사";
+//			bodyList.add(str);
+
+//	} catch (ClassNotFoundException | IOException e) {
+//			e.printStackTrace();
 
 		} catch (Exception e) {
 			e.printStackTrace();

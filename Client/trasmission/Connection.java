@@ -72,8 +72,9 @@ public class Connection {
         
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
-
+                synchronized (oos) {
+                    oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
+                }
                 serializedDTO = baos.toByteArray();
             }
         } catch (Exception e) {
@@ -89,7 +90,9 @@ public class Connection {
         
         try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
             try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
+                synchronized (ois) {
+                    objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package Server.transmission;
 
 import Server.controller.RequestHandler;
 import Server.controller.UnivDetail;
+import Server.controller.UnivList;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -21,7 +22,10 @@ public class Classifier {
 		// 패킷 분류
 		int type = p.getProtocolType();
 		int code = p.getProtocolCode();
-		Object body = deserializeByteArray(p.getBody());
+
+		Object body = null;
+		if (p.getBodyLength() > 0)
+			body = deserializeByteArray(p.getBody());
 
 		switch (type) {
 			case Protocol.PT_REQ:	// 요청
@@ -32,7 +36,7 @@ public class Classifier {
 
 						// 대학 리스트 요청
 					case Protocol.PT_REQ_UNIV_LIST:
-//						sender.inquiryUnivList();
+						return new UnivList(body);
 
 						// 학교 비교 요청
 					case Protocol.PT_REQ_UNIV_CP:

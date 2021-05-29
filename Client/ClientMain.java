@@ -17,7 +17,7 @@ public class ClientMain extends Application {
 
     @Override
     public void init() {
-        String serverIp = "192.168.238.72";    // 사설 ip
+        String serverIp = "127.0.0.1";    // 사설 ip
         int port = 5500;
 
         new Connection(serverIp, port);

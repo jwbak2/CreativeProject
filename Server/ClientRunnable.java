@@ -25,6 +25,7 @@ public class ClientRunnable implements Runnable{
             Classifier classifier = new Classifier();
 
             while (true) {
+
                 RequestHandler reqHandler = classifier.classify(receiver.receive());
                 reqHandler.handleRequest();
 

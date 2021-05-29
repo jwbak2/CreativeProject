@@ -45,6 +45,7 @@ public class Sender {
 
 		os.write(protocol.getPacket());
 		os.flush();
+		System.out.println("전송한 바디 길이 " + protocol.getBodyLength());
 	}
 
 
@@ -60,6 +61,7 @@ public class Sender {
 
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+				oos.reset();
 				oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
 
 				serializedDTO = baos.toByteArray();
