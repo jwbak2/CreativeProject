@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.util.Collection;
 
-public class Popup {
+public class PopUp {
     @FXML
     private Text textPopupContent;
 

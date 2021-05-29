@@ -6,12 +6,10 @@ import Client.trasmission.Connection;
 import Client.trasmission.Protocol;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -22,7 +20,6 @@ import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -30,9 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.NumberFormat;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -284,7 +279,7 @@ public class UnivDetail implements Initializable {
             try{
                 Stage stage = (Stage) btnRequestUnivInf.getScene().getWindow(); //
                 Popup pu = new Popup();
-                Parent root = FXMLLoader.load(getClass().getResource("../view/popup.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("../view/popUp.fxml"));
 
                 pu.getContent().add(root);
                 pu.setAutoHide(true); // 포커스 이동시 창 숨김
