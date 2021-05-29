@@ -1,0 +1,12 @@
+* {
+    -fx-font-family: "Noto Sans KR";
+}
+
+Button {
+    /*-fx-background-insets: 0 0 0 0, 0, 1, 2;*/
+    -fx-font-size: 20px;
+}
+
+Button:focused {
+    -fx-background-color: #e17055;
+}
