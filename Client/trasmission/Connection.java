@@ -29,24 +29,19 @@ public class Connection {
 
     static public void send(Protocol sendPT) { // 패킷 전송
 
-        Runnable runnable = () -> {
-            try {
-                os.write(sendPT.getPacket());   // 전송
-                os.flush();
-                System.out.println("send - 패킷 송신 완료");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        };
 
-        new Thread(runnable).start();
-
+        try {
+            os.write(sendPT.getPacket());   // 전송
+            os.flush();
+            System.out.println("send - 패킷 송신 완료");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
     static public Protocol receive() {   // 서버 -> 클라이언트 패킷 수신, 받은 패킷으로 Protocol 생성해서 반환
         Protocol receivePT = null;       // header 패킷 수신후 bodyLength 확인후 body 패킷 부분 읽음
-
 
 
         byte[] header = new byte[Protocol.LEN_HEADER];              // header 길이 만크의 바이트 배열

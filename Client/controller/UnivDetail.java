@@ -215,7 +215,7 @@ public class UnivDetail implements Initializable {
         String univName = inputUniv.getText().replace(" ", "");
         System.out.println("입력한 대학교 : " + univName);
 
-        Runnable runnable = () -> {
+        Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
                 if (univName.equals("")) {               // 공백일시 예외처리
                     throw new Exception("univName of input is null");
@@ -232,10 +232,10 @@ public class UnivDetail implements Initializable {
                 System.out.println("UnivDetail DTO 수신 완료");
 
 
-                Runnable runnable2 = () -> {
+                Runnable setUI = () -> {
                     setUnivDetailInf(univDetailDTO);
                 };
-                Platform.runLater(runnable2);
+                Platform.runLater(setUI);    //UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
 
            //     System.out.println("학교 상세정보 GUI 출력 완료");
 
