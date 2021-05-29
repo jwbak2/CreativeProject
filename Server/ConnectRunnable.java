@@ -1,8 +1,7 @@
 package Server;
 
-import Server.transmission.Receiver;
-import Server.transmission.Sender;
-import Server.transmission.SocketManager;
+import Server.controller.RequestHandler;
+import Server.transmission.*;
 
 
 import java.io.InputStream;
@@ -22,10 +21,19 @@ public class ConnectRunnable implements Runnable{
             OutputStream os = socket.getOutputStream()){
 
             Sender sender = new Sender(os);
-            Receiver receiver = new Receiver(is, sender);
+            Receiver receiver = new Receiver(is);
+            Classifier classifier = new Classifier();
 
             while (true) {
-                receiver.waiting();
+
+                RequestHandler reqHandler = classifier.classify(receiver.receive());
+                reqHandler.handleRequest();
+
+                System.out.println("요청 핸들링 끝");
+                do {
+                    System.out.println("응답 전송");
+                    sender.send(reqHandler.getType(), reqHandler.getCode(), reqHandler.getBody());
+                } while (reqHandler.hasMessage());
             }
 
         } catch (Exception e) {

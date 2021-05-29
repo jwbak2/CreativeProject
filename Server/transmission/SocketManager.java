@@ -3,6 +3,7 @@ package Server.transmission;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 
 // 서버 소켓을 가지고 있는 클래스
@@ -55,8 +56,7 @@ public class SocketManager {
 
 	}
 
-	public static Socket getSocket(){	// 서버 소켓 반환
-
+	public static Socket getSocket() throws SocketException {	// 서버 소켓 반환
 		Socket returnSocket = socket;
 		socket = null;
 

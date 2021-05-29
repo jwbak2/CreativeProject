@@ -42,7 +42,7 @@ public class Protocol {
     public static final int PT_RES_DEPT_RATING_LIST = 0x09;         // 학과 평가 페이지에서 기존에 있던 학교 평가 내역 응답
 
     //TYPE 0x03 (SUCCESS) CODE
-    public static final int PT_SUCC_UNIV_RATING = 0x01;             // 학과 상세정보 비교
+    public static final int PT_SUCC_UNIV_RATING = 0x01;             // 학교 평가 페이지에서 평가 내용 등록 성공
     public static final int PT_SUCC_DEPT_RATING = 0x02;             // 학과 평가 페이지에서 평가 내용 등록 성공
     public static final int PT_SUCC_LOGIN = 0x03;                   // 로그인 성공
 
