@@ -22,7 +22,7 @@ import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import org.controlsfx.control.textfield.TextFields;
+//import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -214,22 +214,23 @@ public class UnivDetail implements Initializable {
         String univName = inputUniv.getText().replace(" ", "");
         System.out.println("입력한 대학교 : " + univName);
 
-        try {
-            if (univName.equals("")) {               // 공백일시 예외처리
-                throw new Exception("univName of input is null");
-            }
-            requestUnivInf(univName);   // 학교 상세정보 요청
+        Runnable runnable = () -> {
+            try {
+                if (univName.equals("")) {               // 공백일시 예외처리
+                    throw new Exception("univName of input is null");
+                }
+                requestUnivInf(univName);   // 학교 상세정보 요청
 
-            UnivDTO univDTO = (UnivDTO) receiveUnivDTO();       // 학교 정보 receive
-            System.out.println("UnivInf DTO 수신 완료 ");
-            setUnivInf(univDTO);
-            System.out.println("학교 정보 GUI 출력 완료");
+                UnivDTO univDTO = (UnivDTO) receiveUnivDTO();       // 학교 정보 receive
+                System.out.println("UnivInf DTO 수신 완료 ");
+                setUnivInf(univDTO);
+                System.out.println("학교 정보 GUI 출력 완료");
 
 
-            UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
-            System.out.println("UnivDetail DTO 수신 완료");
-            setUnivDetailInf(univDetailDTO);
-            System.out.println("학교 상세정보 GUI 출력 완료");
+                UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
+                System.out.println("UnivDetail DTO 수신 완료");
+                setUnivDetailInf(univDetailDTO);
+                System.out.println("학교 상세정보 GUI 출력 완료");
 
 //            // 학교 상세정보 3개년치 받아오기 univDtoList
 //            univDtoList = new ArrayList<UnivDetailDTO>();
@@ -259,9 +260,13 @@ public class UnivDetail implements Initializable {
 //
 //            // TODO 즐겨찾기 리스트도 필요
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
     }
 
     void requestUnivInf(String univName) {
