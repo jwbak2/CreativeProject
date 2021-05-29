@@ -8,23 +8,77 @@ import Server.model.dto.DepartmentRatingDTO;
 import Server.model.dto.UnivRatingDTO;
 
 import java.io.*;
-import java.util.ArrayList;
 
 public class Sender {
 	/*
 	 * 클라이언트의 요청에 따라 적절한 데이터를 반환함
 	 */
-	OutputStream os;
+	private OutputStream os;
 
 	// 직렬화 및 역직렬화 스트림
-	ByteArrayInputStream bais;
-	ObjectInputStream ois;
-	ByteArrayOutputStream baos;
-	ObjectOutputStream oos;
+
+//	private ByteArrayOutputStream baos;
+//	private ObjectOutputStream oos;
 
 	public Sender(OutputStream os) {
 		this.os = os;
 	}
+
+	public void send(int type, int code) throws IOException {
+		os.write(new Protocol(type, code).getPacket());
+		os.flush();
+	}
+	public void send(int type, int code, byte[] body) throws IOException {
+		Protocol protocol = new Protocol(type, code);
+		protocol.setPacket(body);
+		os.write(protocol.getPacket());
+		os.flush();
+	}
+
+	public void send(int type, int code, Object body) throws IOException {
+		Protocol protocol = new Protocol(type, code);
+		byte[] tmp = serializeObject(body);
+		if (body != null)
+			protocol.setPacket(serializeObject(body));
+
+		System.out.println("전송한 body 길이 " + tmp.length);
+
+		os.write(protocol.getPacket());
+		os.flush();
+	}
+
+
+	public byte[] serializeObject(Object obj) throws IOException {
+
+//		baos = new ByteArrayOutputStream();
+//		oos = new ObjectOutputStream(baos);
+//		oos.writeObject(obj);	// obj 객체 직렬화
+//
+//		return baos.toByteArray();
+
+		byte[] serializedDTO = null;  // 직렬화 결과가 담기는 바이트
+
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+				oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
+
+				serializedDTO = baos.toByteArray();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return serializedDTO;
+	}
+
+//	public Object deserializeByteArray(byte[] obj) throws IOException, ClassNotFoundException {
+//		bais = new ByteArrayInputStream(obj);
+//		ois = new ObjectInputStream(bais);
+//
+//		return ois.readObject();
+//	}
+
+/*
 
 	public void inquiryUnivInfo(byte[] univName) {
 		// 대학 정보를 요청
@@ -39,7 +93,7 @@ public class Sender {
 			// 대학 DAO, 대학 상세정보 DAO, 대학 리스트
 			UnivDAO univDAO = new UnivDAO();
 			UnivDetailDAO univDetailDAO = new UnivDetailDAO();
-			String[][] univList = ServerMain.serverCache.getUnivList();
+			String[][] univList = Server.model.Cache.getUnivList();
 
 			// 대학 리스트 자료구조 및 탐색 개선 필요해보임
 			String univCode = "";
@@ -128,7 +182,7 @@ public class Sender {
 			e.printStackTrace();
 		}
 	}
-/*
+
 	public void registerUnivRating(byte[] univRating) {
 		// 대학 평점 등록 요청
 		try {
@@ -175,29 +229,5 @@ public class Sender {
 		}
 	}
 */
-	public void send(int type, int code) throws IOException {
-		os.write(new Protocol(type, code).getPacket());
-		os.flush();
-	}
-	public void send(int type, int code, byte[] body) throws IOException {
-		Protocol protocol = new Protocol(type, code);
-		protocol.setPacket(body);
-		os.write(protocol.getPacket());
-		os.flush();
-	}
 
-	public byte[] serializeObject(Object obj) throws IOException {
-		baos = new ByteArrayOutputStream();
-		oos = new ObjectOutputStream(baos);
-		oos.writeObject(obj);	// obj 객체 직렬화
-
-		return baos.toByteArray();
-	}
-
-	public Object deserializeByteArray(byte[] obj) throws IOException, ClassNotFoundException {
-		bais = new ByteArrayInputStream(obj);
-		ois = new ObjectInputStream(bais);
-
-		return ois.readObject();
-	}
 }
