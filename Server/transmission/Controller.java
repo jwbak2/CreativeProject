@@ -1,8 +1,13 @@
 package Server.transmission;
 
 import Server.controller.UnivDetail;
+import Client.vo.LoginReqVO;
+import Server.model.dao.UserDAO;
+import Server.model.dto.UserDTO;
 
 public class Controller {
+
+	private UserDTO curUser;
 
 	// 대학 리스트 조회
 	public void inquiryUnivList() {
@@ -24,6 +29,25 @@ public class Controller {
 			e.printStackTrace();
 
 		}
+
+	}
+
+	public void reqLogin(LoginReqVO loginInfo){
+
+		UserDAO userDAO = new UserDAO();
+		UserDTO result = userDAO.login(loginInfo.getID(), loginInfo.getPW());
+
+		if(result != null){
+
+			curUser = result;
+			Sender.send(Protocol.PT_SUCC, Protocol.PT_SUCC_LOGIN, null);
+
+		} else {
+
+			Sender.send(Protocol.PT_FAIL, Protocol.PT_FAIL_LOGIN, null);
+
+		}
+
 
 	}
 

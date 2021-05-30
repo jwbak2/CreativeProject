@@ -41,8 +41,10 @@ public class Login implements Initializable {
     }
 
     private void requestLogin(){
-        Runnable runnable = () -> {
 
+
+
+        Runnable runnable = () -> {
             // 로그인 정보 객체 생성하여 서버로 전송
             LoginReqVO loginReqInfo = new LoginReqVO(textFieldID.getText(), textFieldPW.getText());
             Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_LOGIN, loginReqInfo));
@@ -66,7 +68,7 @@ public class Login implements Initializable {
                 && receivePT.getProtocolCode() == Protocol.PT_SUCC_LOGIN) {
 
             // 로그인 성공 : 홈 화면
-            Platform.runLater(this::showHomePage);
+            Platform.runLater(this::showHome);
 
         } else {
 
@@ -78,11 +80,11 @@ public class Login implements Initializable {
 
     }
 
-    private void showHomePage(){
+    private void showHome(){
 
         try {
             Stage primaryStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("./view/home.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../view/home.fxml"));
             primaryStage.setTitle("대학 정보 제공 프로그램");
             primaryStage.setScene(new Scene(root));
             primaryStage.setResizable(false);   // 화면 크기 고정
@@ -93,6 +95,7 @@ public class Login implements Initializable {
         }
 
     }
+
     private void showLoginFailPopUp(){
 
         try {

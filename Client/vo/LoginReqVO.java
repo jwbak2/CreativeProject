@@ -1,6 +1,8 @@
 package Client.vo;
 
-public class LoginReqVO {
+import java.io.Serializable;
+
+public class LoginReqVO implements Serializable {
 
     private String id;
     private String pw;
@@ -10,11 +12,11 @@ public class LoginReqVO {
         this.pw = pw;
     }
 
-    public String getId() {
+    public String getID() {
         return id;
     }
 
-    public String getPw() {
+    public String getPW() {
         return pw;
     }
 

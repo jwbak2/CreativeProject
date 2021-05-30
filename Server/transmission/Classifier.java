@@ -1,5 +1,6 @@
 package Server.transmission;
 
+import Client.vo.LoginReqVO;
 import Server.controller.CompareUniv;
 import Server.controller.RequestHandler;
 import Server.controller.UnivDetail;
@@ -13,6 +14,8 @@ import java.io.ObjectInputStream;
 
 public class Classifier {
 
+	private final Controller controller = new Controller();
+
 	public void classify(Protocol pt) {
 		if (pt == null)
 			return;
@@ -21,8 +24,6 @@ public class Classifier {
 		int type = pt.getProtocolType();
 		int code = pt.getProtocolCode();
 		Object body = pt.getBody();
-
-		Controller controller = new Controller();
 
 		switch (type) {
 			case Protocol.PT_REQ:	// 요청
@@ -58,6 +59,9 @@ public class Classifier {
 //
 //					case Protocol.학과비교요청:
 //						sender.compareTwoDepartment(p.getBody());
+
+					case Protocol.PT_REQ_LOGIN:
+						controller.reqLogin((LoginReqVO)body);
 				}
 				break;
 
