@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Popup;
@@ -28,7 +29,7 @@ public class Login implements Initializable {
     private TextField textFieldID;
 
     @FXML
-    private TextField textFieldPW;
+    private PasswordField textFieldPW;
 
 
     @Override
@@ -81,6 +82,11 @@ public class Login implements Initializable {
     }
 
     private void showHome(){
+
+        // 로그인 창 닫기
+        Stage stage = (Stage) btnLogin.getScene().getWindow();
+        stage.close();
+
 
         try {
             Stage primaryStage = new Stage();
