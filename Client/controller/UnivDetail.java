@@ -198,15 +198,11 @@ public class UnivDetail implements Initializable {
         });
 
         // 조회 버튼 클릭 이벤트 추가
-        btnRequestUnivInf.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            requestUniv();
-        });
+        btnRequestUnivInf.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> requestUniv());
 
         // 학과 리스트에서 학과 선택 이벤트 추가
         tableDeptList.getSelectionModel().selectedItemProperty().addListener(
-                (ObservableValue<?> observable, Object oldValue, Object newValue) -> {
-                    selectedDeptName = newValue.toString();
-                }
+                (ObservableValue<?> observable, Object oldValue, Object newValue) -> selectedDeptName = newValue.toString()
         );
 
 //        tabUnivIntro.setOnSelectionChanged(event -> {
@@ -309,7 +305,7 @@ public class UnivDetail implements Initializable {
         Object receivedBody = receivePT.getBody();
 
         // 학교 상세정보 3개년치 받아오기 univDtoList
-        ArrayList<UnivDetailDTO> tmp = new ArrayList<UnivDetailDTO>();   // 
+        ArrayList<UnivDetailDTO> tmp = new ArrayList<>();   //
 
         // 타입 처리
         ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
@@ -397,9 +393,8 @@ public class UnivDetail implements Initializable {
             Parent root = loader.load();    // Parent load, 여기서 controller init도 됨
 
             DepartmentDetail controller = loader.getController();
-            controller.setTextDeptName(selectedDeptName);     // 학과 이름 set
+            controller.setDeptName(selectedDeptName);     // 학과 이름 set
 
-//            apUnivMain.setVisible(false);
             spUnivDetail.getChildren().add(root);
         } catch (IOException e) {
             e.printStackTrace();
