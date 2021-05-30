@@ -2,6 +2,7 @@ package Client.trasmission;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Connection {
     static Socket socket;
@@ -28,8 +29,6 @@ public class Connection {
     }
 
     static public void send(Protocol sendPT) { // 패킷 전송
-
-
         try {
             os.write(sendPT.getPacket());   // 전송
             os.flush();
@@ -37,7 +36,6 @@ public class Connection {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     static public Protocol receive() {   // 서버 -> 클라이언트 패킷 수신, 받은 패킷으로 Protocol 생성해서 반환
@@ -56,12 +54,14 @@ public class Connection {
             body = new byte[bodyLength];            // header에 포함된 bodyLength따라 만들어진 가변 배열
             is.read(body);
             System.out.println("receive - 패킷 수신 완료");
-            
+
+
             receivePT.setPacket(body);
+            System.out.println("pt len : " + receivePT.getPacket().length);
+            System.out.println("receive : " + body.length);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         return receivePT;
@@ -73,11 +73,12 @@ public class Connection {
         
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                synchronized (oos) {
-                    oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
-                }
+                oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
 
                 serializedDTO = baos.toByteArray();
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -89,17 +90,23 @@ public class Connection {
     // 역직렬화 후 Object 객체 반환
     static public Object deserializeDTO(byte[] bodyData){ // bodyData = 프로토콜 패킷의 바디
         Object objectMember = null;
-        
+        System.out.println("역직렬화 : " + bodyData.length);
+
         try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
             try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                synchronized (ois) {
-                    objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
-                }
+                System.out.println(bais.available());
+                System.out.println(ois.available());
+
+                objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return objectMember;
+
     }
 }

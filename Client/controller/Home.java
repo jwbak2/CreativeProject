@@ -39,11 +39,16 @@ public class Home implements Initializable {
         return univList;
     }
 
+    public BorderPane getBp(){
+        return bp;
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 프로필 이미지
         Image img = new Image("Client/resource/img/bonobono.jpg");
         profile.setFill(new ImagePattern(img));
+
 
         // 학교 리스트 요청
         //requestUnivList();
@@ -131,13 +136,18 @@ public class Home implements Initializable {
         System.out.println(receivePT.getBodyLength());
         System.out.println(receivePT.getBody().length);
 
-        ArrayList<?> ar = (ArrayList<?>) Connection.deserializeDTO(receivePT.getBody());
+        univList = (ArrayList<String>) Connection.deserializeDTO(receivePT.getBody());
+//        ArrayList<?> ar = (ArrayList<?>) Connection.deserializeDTO(receivePT.getBody());
+//
+//        for(Object obj : ar){
+//            System.out.println(obj);
+//            if(obj instanceof String){
+//                univList.add((String) obj);
+//            }
+//        }
+    }
 
-        for(Object obj : ar){
-            System.out.println(obj);
-            if(obj instanceof String){
-                univList.add((String) obj);
-            }
-        }
+    void hi(){
+        System.out.println("hi");
     }
 }

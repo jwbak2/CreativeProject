@@ -3,7 +3,6 @@ package Server.model.dto;
 import java.io.Serializable;
 
 public class UnivDetailDTO implements Serializable {
-    private static final long serialVersionUID = -4865946674835353945L;
     private Long year;
     private String univId;
     private Long studentNumber;

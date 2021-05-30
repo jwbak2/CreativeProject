@@ -5,6 +5,8 @@ import Server.model.dto.UnivDTO;
 import Client.trasmission.Connection;
 import Client.trasmission.Protocol;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -19,11 +21,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-//import org.controlsfx.control.textfield.TextFields;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -38,6 +41,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UnivDetail implements Initializable {
+
+    @FXML
+    private StackPane spUnivDetail;
 
     @FXML
     private ImageView imageUnivLogo;
@@ -168,13 +174,25 @@ public class UnivDetail implements Initializable {
     @FXML
     private ListView<?> tableDeptList;
 
+    @FXML
+    private Button btnDeptDetail;
+
+    @FXML
+    private AnchorPane apUnivMain;
+
     private String homepageURL;
+    private String selectedDeptName;
     private ArrayList<UnivDetailDTO> univDtoList;   // 2018 ~ 2020 UnivDetailDTO 담는 어레이리스트
 
 //    private final boolean[] checkTab;   // tab 이동
 
+    public StackPane getSpUnivDetail() {
+        return spUnivDetail;
+    }
+
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL location, ResourceBundle resources){
+        setUnivDeptList();
 //        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
 //        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
 //        mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
@@ -190,6 +208,13 @@ public class UnivDetail implements Initializable {
         btnRequestUnivInf.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             requestUniv();
         });
+
+        // 학과 리스트에서 학과 선택 이벤트 추가
+        tableDeptList.getSelectionModel().selectedItemProperty().addListener(
+                (ObservableValue<?> observable, Object oldValue, Object newValue) -> {
+                    selectedDeptName = newValue.toString();
+                }
+        );
 
 //        tabUnivIntro.setOnSelectionChanged(event -> {
 //            if(!checkTab[0]){
@@ -225,7 +250,7 @@ public class UnivDetail implements Initializable {
                 UnivDTO univDTO = (UnivDTO) receiveUnivDTO();       // 학교 정보 receive
                 UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
 
-                Platform.runLater(() -> {   //UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
+                Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     setUnivInf(univDTO);    // 람다식으로 변경
                     setUnivDetailInf(univDetailDTO);
                 });
@@ -285,6 +310,7 @@ public class UnivDetail implements Initializable {
 
         if (receivePT.getProtocolType() == Protocol.PT_FAIL
                 && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF) {    // 입력한 학교명이 존재하지 않을떄
+
             // 조회 실패 팝업창
             try{
                 Stage stage = (Stage) btnRequestUnivInf.getScene().getWindow(); //
@@ -294,10 +320,12 @@ public class UnivDetail implements Initializable {
                 pu.getContent().add(root);
                 pu.setAutoHide(true); // 포커스 이동시 창 숨김
                 pu.show(stage);
-            }catch(Exception e) {
+            } catch(Exception e) {
                 e.printStackTrace();
             }
 
+            System.out.println(receivePT.getBodyLength());
+            System.out.println(receivePT.getBody().length);
 
             throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
         }
@@ -351,7 +379,13 @@ public class UnivDetail implements Initializable {
         numOfPatentRegistration.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNumOfPatentRegistration()));
     }
 
-    public void setUnivDeptList(ArrayList<String> deptList){
+    public void setUnivDeptList(){  // ArrayList<String> deptList
+
+        ArrayList<String> deptList = new ArrayList<String>();
+        deptList.add("park");
+        deptList.add("jin");
+        deptList.add("woo");
+
         ObservableList list = FXCollections.observableArrayList(deptList);
         tableDeptList.setItems(list);
     }
@@ -368,5 +402,21 @@ public class UnivDetail implements Initializable {
     void moveUnivRatingPage(){
         // TODO 학교 평가 페이지로 이동
 
+    }
+
+    @FXML
+    void clickBtnDeptDetail(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/departmentDetail.fxml"));
+            Parent root = loader.load();    // Parent load, 여기서 controller init도 됨
+
+            DepartmentDetail controller = loader.getController();
+            controller.setTextDeptName(selectedDeptName);     // 학과 이름 set
+
+//            apUnivMain.setVisible(false);
+            spUnivDetail.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
