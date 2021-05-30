@@ -4,114 +4,55 @@ import Server.model.dao.UnivDAO;
 import Server.model.dao.UnivDetailDAO;
 import Server.model.dto.UnivDTO;
 import Server.model.dto.UnivDetailDTO;
-import Server.transmission.Protocol;
 
 import java.util.ArrayList;
 
-public class UnivDetail implements RequestHandler{
+public class UnivDetail {
 
-	private Object clientMsg;	// Client Message
-
-	private int type;
-	private int code;
-	private ArrayList<Object> bodyList;
 
 	public UnivDetail() {
-
-	}
-	public UnivDetail (Object message) {
-		clientMsg = message;
-		bodyList = new ArrayList<Object>();
+		// pass
 	}
 
-	@Override
-	public int getType() {
-		return type;
-	}
 
-	@Override
-	public int getCode() {
-		return code;
-	}
-
-	@Override
-	public Object getBody() {
-		return bodyList.remove(0);
-	}
-
-	@Override
-	public boolean hasMessage() {
-		return bodyList.isEmpty() ? false : true;
-	}
-
-	// 대학 정보 요청 처리
-	@Override
-	public void handleRequest() {
-		try {
-
-			// 대학 이름(바이트 배열) 역 직렬화
-			String strUnivName = (String) clientMsg;
-
-			String univCode = getUnivCode(strUnivName);
-
-			if (!univCode.equals("null"))
-			{
-				// DAO 선언
-				UnivDAO univDAO = new UnivDAO();
-				UnivDetailDAO univDetailDAO = new UnivDetailDAO();
-//				DepartmentDAO deptDAO = new UnivDAO();
-
-				// 전송할 패킷의 Type, Code 설정
-				type = Protocol.PT_RES;
-				code = Protocol.PT_RES_UNIV_INF;
-
-				// 전송할 패킷의 Body 설정 (아래는 바디 3개 저장 = 프로토콜 3개 보냄)
-				UnivDTO univDTO = univDAO.select(univCode);
-//				univDTO.setUnivLogoImageFile(new byte[1]);
-				bodyList.add(univDTO);
-				bodyList.add(univDetailDAO.select(univCode));
-//				bodyList.add(deptDAO.getDepartmentList(univCode));
-
-			} else {
-				System.out.println("---조회된 대학 없음---");
-				type = Protocol.PT_FAIL;
-				code = Protocol.PT_FAIL_UNIV_INF;
-
-			}
-
-//	} catch (ClassNotFoundException | IOException e) {
-//			e.printStackTrace();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-
-	}
-
-	public ArrayList<String> getUnivList() {
+	public String[] getUnivList() {
 		// 대학 리스트
 		String[][] univList = Server.model.Cache.getUnivList();
-		ArrayList<String> list = new ArrayList<String>();
+		String[] list = new String[univList.length];
 
 		for (int i = 0; i < univList.length; i++)
 		{
-			list.add(univList[i][0]);
+			list[i] = univList[i][1];
 		}
 
 		return list;
 	}
 
 	public UnivDTO getUniv(String univName) throws Exception {
+		// 대학 정보 반환
+
 		UnivDAO dao = new UnivDAO();
 
 		return dao.select(getUnivCode(univName));
 	}
 
-	public UnivDetailDTO getUnivDetail(String univName) throws Exception {
+	public ArrayList<UnivDetailDTO> getUnivDetail(String univName) throws Exception {
+		// 대학 상세정보 반환
+
+		final int START_YEAR = 2018;
+		final int END_YEAR = 2020;
+		String univCode = getUnivCode(univName);
+
 		UnivDetailDAO dao = new UnivDetailDAO();
 
-		return dao.select(getUnivCode(univName));
+		// 2018, 2019, 2020 대학 상세정보 데이터 받아오기
+		ArrayList<UnivDetailDTO> tmp = new ArrayList<UnivDetailDTO>();
+		for (int i = START_YEAR; i <= END_YEAR; i++) {
+			tmp.add(dao.select(univCode, i));
+		}
+
+		// 연도별 대학 상세정보가 담긴 ArrayList 반환
+		return tmp;
 	}
 
 	public String getUnivCode(String univName) {

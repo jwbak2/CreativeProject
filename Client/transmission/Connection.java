@@ -31,6 +31,7 @@ public class Connection {
 
     static public void send(Protocol sendPT) { // 패킷 전송
 
+
         try {
             oos.writeObject(sendPT);   // 전송
             oos.flush();

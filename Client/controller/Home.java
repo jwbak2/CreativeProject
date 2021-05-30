@@ -46,7 +46,7 @@ public class Home implements Initializable {
         profile.setFill(new ImagePattern(img));
 
         // 학교 리스트 요청
-        //requestUnivList();
+        requestUnivList();
     }
 
     @FXML
