@@ -2,6 +2,9 @@ package Server.transmission;
 
 import Server.controller.DepartmentDetail;
 import Server.controller.UnivDetail;
+import Client.vo.LoginReqVO;
+import Server.model.dao.UserDAO;
+import Server.model.dto.UserDTO;
 import Server.model.dao.DepartmentDAO;
 import Server.model.dto.DepartmentRatingDTO;
 import Server.model.dto.UnivRatingDTO;
@@ -11,6 +14,9 @@ import java.util.ArrayList;
 public class Controller {
 
 	// 대학 리스트 조회 요청 처리
+	private UserDTO curUser;
+
+	// 대학 리스트 조회
 	public void inquiryUnivList() {
 		UnivDetail univDetail = new UnivDetail();
 		Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_LIST, univDetail.getUnivList());
@@ -64,4 +70,25 @@ public class Controller {
 	public void registerDepartmentRating(DepartmentRatingDTO rating) {
 		// TODO: 로직 필요
 	}
+
+	// 로그인 요청 처리
+	public void reqLogin(LoginReqVO loginInfo){
+
+		UserDAO userDAO = new UserDAO();
+		UserDTO result = userDAO.login(loginInfo.getID(), loginInfo.getPW());
+
+		if(result != null){
+
+			curUser = result;
+			Sender.send(Protocol.PT_SUCC, Protocol.PT_SUCC_LOGIN, null);
+
+		} else {
+
+			Sender.send(Protocol.PT_FAIL, Protocol.PT_FAIL_LOGIN, null);
+
+		}
+
+
+	}
+
 }
