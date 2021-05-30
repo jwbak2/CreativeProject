@@ -3,18 +3,14 @@ package Client.controller;
 import Client.transmission.Connection;
 import Server.transmission.Protocol;
 import Server.model.dto.UnivDetailDTO;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -213,20 +209,49 @@ public class CompareUniv implements Initializable {
 
     @FXML
     void compareUnivDetail(MouseEvent event) {
-        ArrayList<String> univList = new ArrayList<String>();
 
-        String firstUniv = inputFirstUniv.getText().replace(" ", "");
-        String secondUniv = inputSecondUniv.getText().replace(" ", "");
+        Runnable runnable = () -> {     // 다른 스레드로 처리
+            try {
+                String[] univList = new String[2];
 
-        univList.add(firstUniv);
-        univList.add(secondUniv);
+                univList[0] = inputFirstUniv.getText().replace(" ", "");
+                univList[1] = inputSecondUniv.getText().replace(" ", "");
 
-        requestTwoOfUnivDetail(univList);
+                Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_CP, univList));        // 패킷 전송
+
+                ArrayList<UnivDetailDTO> receivedUnivDetailList = receiveUnivCp();
+
+
+                Platform.runLater(() -> {
+                    // FIXME  0, 1 코드 수정할거임 test용
+                    setUnivDetailInf(receivedUnivDetailList.get(0));    // 첫번쨰 학교 상세정보 화면에 세팅
+                    setUnivDetailInf(receivedUnivDetailList.get(1));    // 두번쨰 학교 상세정보 화면에 세팅
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
+    }
+
+    void sendUnivCp(String[] univList) {
+        // 학교 상세정보 조회 요청 송신 패킷 생성
+
+        System.out.println("학교 상세정보 비교 요청");
+    }
+
+    public ArrayList<UnivDetailDTO> receiveUnivCp() throws Exception {
+        Protocol receivePT = Connection.receive();
+        Object receivedBody = receivePT.getBody();
 
         ArrayList<UnivDetailDTO> result = new ArrayList<UnivDetailDTO>();
 
         try {
-            ArrayList<?> tmp = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
+            ArrayList<?> tmp = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+
+            // 타입 처리
             for(Object obj : tmp){
                 if(obj instanceof UnivDetailDTO){
                     result.add((UnivDetailDTO) obj);
@@ -236,41 +261,7 @@ public class CompareUniv implements Initializable {
             e.printStackTrace();
         }
 
-        // FIXME  0, 1 코드 수정할거임 test용
-        setUnivDetailInf(result.get(0));    // 첫번쨰 학교 상세정보 화면에 세팅
-        setUnivDetailInf(result.get(1));    // 두번쨰 학교 상세정보 화면에 세팅
-    }
-
-    void requestTwoOfUnivDetail(ArrayList<String> univList) {
-        // 학교 상세정보 조회 요청 송신 패킷 생성
-        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_CP, univList));        // 패킷 전송
-
-        System.out.println("학교 상세정보 비교 요청");
-    }
-
-    public Object receiveUnivDTO() throws Exception {
-        Protocol receivePT = Connection.receive();
-
-        // 입력한 학교명이 존재하지 않을때
-//        if (receivePT.getProtocolType() == Protocol.PT_FAIL
-//                && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF) {    // 입력한 학교명이 존재하지 않을떄
-//
-//            try{
-//                Stage stage = (Stage) BtnCompareUnivDetail.getScene().getWindow();
-//                Popup pu = new Popup();
-//                Parent root = FXMLLoader.load(getClass().getResource("../view/popup.fxml"));
-//
-//                pu.getContent().add(root);
-//                pu.setAutoHide(true); // 포커스 이동시 창 숨김
-//                pu.show(stage);
-//            } catch(Exception e) {
-//                e.printStackTrace();
-//            }
-//
-//            throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
-//        }
-
-        return receivePT.getBody();  // UnivDTO 타입인 Object 반환
+        return result;  // UnivDTO 타입인 Object 반환
     }
 
     public void setUnivDetailInf(UnivDetailDTO univDetailDTO) {  // UnivDetailDTO GUI에 뿌려주기
