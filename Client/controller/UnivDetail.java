@@ -5,6 +5,8 @@ import Server.model.dto.UnivDTO;
 import Client.transmission.Connection;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -17,11 +19,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-//import org.controlsfx.control.textfield.TextFields;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -34,6 +37,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UnivDetail implements Initializable {
+
+    @FXML
+    private StackPane spUnivDetail;
 
     @FXML
     private ImageView imageUnivLogo;
@@ -164,16 +170,25 @@ public class UnivDetail implements Initializable {
     @FXML
     private ListView<?> tableDeptList;
 
+    @FXML
+    private Button btnDeptDetail;
+
+    @FXML
+    private AnchorPane apUnivMain;
+
     private String homepageURL;
+    private String selectedDeptName;
     private ArrayList<UnivDetailDTO> univDtoList;   // 2018 ~ 2020 UnivDetailDTO 담는 어레이리스트
 
 //    private final boolean[] checkTab;   // tab 이동
 
+    public StackPane getSpUnivDetail() {
+        return spUnivDetail;
+    }
+
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-//        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
-//        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
-//        mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
+    public void initialize(URL location, ResourceBundle resources){
+//        TextFields.bindAutoCompletion(inputUniv, Home.getArr()); // 텍스트필드 자동완성
 
         // 대학교 입력할떄 엔터누르는 이벤트 추가
         inputUniv.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -183,9 +198,12 @@ public class UnivDetail implements Initializable {
         });
 
         // 조회 버튼 클릭 이벤트 추가
-        btnRequestUnivInf.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            requestUniv();
-        });
+        btnRequestUnivInf.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> requestUniv());
+
+        // 학과 리스트에서 학과 선택 이벤트 추가
+        tableDeptList.getSelectionModel().selectedItemProperty().addListener(
+                (ObservableValue<?> observable, Object oldValue, Object newValue) -> selectedDeptName = newValue.toString()
+        );
 
 //        tabUnivIntro.setOnSelectionChanged(event -> {
 //            if(!checkTab[0]){
@@ -207,55 +225,31 @@ public class UnivDetail implements Initializable {
     }
 
     void requestUniv() {
-        // input에 입력한 학교 이름 추출 + 공백 제거
-        String univName = inputUniv.getText().replace(" ", "");
-        System.out.println("입력한 대학교 : " + univName);
-
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
-                if (univName.equals("")) {               // 공백일시 예외처리
-                    throw new Exception("univName of input is null");
-                }
-                requestUnivInf(univName);   // 학교 상세정보 요청
+                // 학교 상세정보 요청
+                requestUnivInf();
 
-                UnivDTO univDTO = (UnivDTO) receiveUnivDTO();       // 학교 정보 receive
-                UnivDetailDTO univDetailDTO = (UnivDetailDTO) receiveUnivDTO(); // 학교 상세정보 receive
+                // 응답 처리
+                UnivDTO univDTO = receiveUnivDTO();
+                univDtoList =  receiveUnivDetailDTO();
+                String[] univDeptList = receiveUnivDeptList();
 
-                Platform.runLater(() -> {   //UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
+
+                Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
+                    // 학교 소개 tab
                     setUnivInf(univDTO);    // 람다식으로 변경
-                    setUnivDetailInf(univDetailDTO);
+
+                    // 2020년 데이터만 학교 상세정보 tab에 set
+                    // FIXME 0 - 2020, 1 - 2019, 2 - 2018 상수로 수정 필요
+                    setUnivDetailInf(univDtoList.get(0));   // 멤버변수의 ArrayList에서 가져옴
+
+                    // 학과 리스트 tab
+                    setUnivDeptList(univDeptList);  // deptList Listview 추가
+
+                    // TODO 즐겨찾기 리스트도 필요
+
                 });
-
-           //     System.out.println("학교 상세정보 GUI 출력 완료");
-
-//            // 학교 상세정보 3개년치 받아오기 univDtoList
-//            univDtoList = new ArrayList<UnivDetailDTO>();
-//
-//            // FIXME 밑에 코드랑 중복되네 246
-//            ArrayList<?> ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
-//            for(Object obj : ar){
-//                if(obj instanceof UnivDetailDTO){
-//                    univDtoList.add((UnivDetailDTO) obj);
-//                }
-//            }
-//
-//            // 2020년 데이터만 학교 상세정보 tab에 set
-//            // FIXME 0 - 2020, 1 - 2019, 2 - 2018 상수로 수정 필요
-//            setUnivDetailInf(univDtoList.get(0));
-//
-//            // 학과 리스트
-//            ArrayList<String> deptList = new ArrayList<String>();
-//
-//            ar = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
-//            for(Object obj : ar){
-//                if(obj instanceof String){
-//                    deptList.add((String) obj);
-//                }
-//            }
-//            setUnivDeptList(deptList);  // deptList Listview 추가
-//
-//            // TODO 즐겨찾기 리스트도 필요
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -265,16 +259,28 @@ public class UnivDetail implements Initializable {
         th.start();
     }
 
-    void requestUnivInf(String univName) {
+
+    void requestUnivInf() throws Exception {
+        // input에 입력한 학교 이름 추출 + 공백 제거
+        String univName = inputUniv.getText().replace(" ", "");
+        System.out.println("입력한 대학교 : " + univName);
+
         System.out.println("학교 상세정보 조회 요청");
+
+        if (univName.equals("")) {               // 공백일시 예외처리
+            throw new Exception("univName of input is null");
+        }
+
         Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_INF, univName));        // 패킷 전송
     }
 
-    public Object receiveUnivDTO() throws Exception {
+    public UnivDTO receiveUnivDTO() throws Exception {
         Protocol receivePT = Connection.receive();
-
+        Object receivedBody = receivePT.getBody();
+        
         if (receivePT.getProtocolType() == Protocol.PT_FAIL
                 && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF) {    // 입력한 학교명이 존재하지 않을떄
+
             // 조회 실패 팝업창
             try {
                 Stage stage = (Stage) btnRequestUnivInf.getScene().getWindow(); //
@@ -288,11 +294,36 @@ public class UnivDetail implements Initializable {
                 e.printStackTrace();
             }
 
-
             throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
         }
+        
+        return (UnivDTO) receivedBody;       // 학교 정보 receive
+    }
+    
+    public ArrayList<UnivDetailDTO> receiveUnivDetailDTO() {
+        Protocol receivePT = Connection.receive();
+        Object receivedBody = receivePT.getBody();
 
-        return receivePT.getBody();  // 역직렬화된 객체가 담기는 Object 반환
+        // 학교 상세정보 3개년치 받아오기 univDtoList
+        ArrayList<UnivDetailDTO> tmp = new ArrayList<>();   //
+
+        // 타입 처리
+        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+        for(Object obj : ar){
+            if(obj instanceof UnivDetailDTO){
+                tmp.add((UnivDetailDTO) obj);
+            }
+        }
+        
+        return tmp;
+    }
+
+    public String[] receiveUnivDeptList(){
+        Protocol receivePT = Connection.receive();
+        Object receivedBody = receivePT.getBody();
+
+        // 학과 리스트
+        return (String [])receivedBody;
     }
 
     public void setUnivInf(UnivDTO univDTO) {    // UnivDTO GUI에 뿌려주기
@@ -341,7 +372,7 @@ public class UnivDetail implements Initializable {
         numOfPatentRegistration.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNumOfPatentRegistration()));
     }
 
-    public void setUnivDeptList(ArrayList<String> deptList){
+    public void setUnivDeptList(String[] deptList){  //
         ObservableList list = FXCollections.observableArrayList(deptList);
         tableDeptList.setItems(list);
     }
@@ -355,8 +386,18 @@ public class UnivDetail implements Initializable {
         }
     }
 
-    void moveUnivRatingPage(){
-        // TODO 학교 평가 페이지로 이동
+    @FXML
+    void clickBtnDeptDetail(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/departmentDetail.fxml"));
+            Parent root = loader.load();    // Parent load, 여기서 controller init도 됨
 
+            DepartmentDetail controller = loader.getController();
+            controller.setDeptName(selectedDeptName);     // 학과 이름 set
+
+            spUnivDetail.getChildren().add(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

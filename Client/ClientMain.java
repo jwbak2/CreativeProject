@@ -22,7 +22,7 @@ public class ClientMain extends Application {
     public void init() {
 
         // TODO 서버 접속 실패시 예외처리 필요
-        new Connection(SERVER_IP, PORT);
+//        new Connection(SERVER_IP, PORT);
         System.out.println("IP : " + SERVER_IP + ", Port : " + PORT);
         System.out.println("서버 접속 성공");
     }

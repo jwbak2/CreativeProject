@@ -30,11 +30,11 @@ public class Connection {
     }
 
     static public void send(Protocol sendPT) { // 패킷 전송
-
         try {
             oos.writeObject(sendPT);   // 전송
             oos.flush();
             System.out.println("send - 패킷 송신 완료");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,37 +56,5 @@ public class Connection {
         }
 
         return receivePT;
-    }
-
-    // 직렬화 후 바이트 배열 반환
-    static public byte[] serializeDTO(Object obj){
-        byte[] serializedDTO = null;  // 직렬화 결과가 담기는 바이트
-        
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                    oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
-
-                serializedDTO = baos.toByteArray();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } 
-        
-        return serializedDTO;
-    }
-
-    // 역직렬화 후 Object 객체 반환
-    static public Object deserializeDTO(byte[] bodyData){ // bodyData = 프로토콜 패킷의 바디
-        Object objectMember = null;
-        try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
-            try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-
-        return objectMember;
     }
 }

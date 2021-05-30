@@ -4,12 +4,17 @@ import Client.transmission.Connection;
 import Server.transmission.Protocol;
 import Server.model.dto.UnivDetailDTO;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -220,11 +225,15 @@ public class CompareUniv implements Initializable {
 
         ArrayList<UnivDetailDTO> result = new ArrayList<UnivDetailDTO>();
 
-        ArrayList<?> tmp = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
-        for(Object obj : tmp){
-            if(obj instanceof UnivDetailDTO){
-                result.add((UnivDetailDTO) obj);
+        try {
+            ArrayList<?> tmp = (ArrayList<?>) receiveUnivDTO();  // 읽어온 어레이리스트 처리 과정
+            for(Object obj : tmp){
+                if(obj instanceof UnivDetailDTO){
+                    result.add((UnivDetailDTO) obj);
+                }
             }
+        } catch (Exception e){
+            e.printStackTrace();
         }
 
         // FIXME  0, 1 코드 수정할거임 test용
@@ -239,11 +248,25 @@ public class CompareUniv implements Initializable {
         System.out.println("학교 상세정보 비교 요청");
     }
 
-    public Object receiveUnivDTO() {
+    public Object receiveUnivDTO() throws Exception {
         Protocol receivePT = Connection.receive();
 
+        // 입력한 학교명이 존재하지 않을때
 //        if (receivePT.getProtocolType() == Protocol.PT_FAIL
 //                && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF) {    // 입력한 학교명이 존재하지 않을떄
+//
+//            try{
+//                Stage stage = (Stage) BtnCompareUnivDetail.getScene().getWindow();
+//                Popup pu = new Popup();
+//                Parent root = FXMLLoader.load(getClass().getResource("../view/popup.fxml"));
+//
+//                pu.getContent().add(root);
+//                pu.setAutoHide(true); // 포커스 이동시 창 숨김
+//                pu.show(stage);
+//            } catch(Exception e) {
+//                e.printStackTrace();
+//            }
+//
 //            throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
 //        }
 

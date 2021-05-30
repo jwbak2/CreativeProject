@@ -33,11 +33,18 @@ public class Home implements Initializable {
     @FXML
     private Circle profile;
 
-    private static ArrayList<String> univList;
+//    private static ArrayList<String> univList;
 
-    public static ArrayList<String> getUnivList(){
-        return univList;
+//    public static ArrayList<String> getUnivList(){
+//        return Home.univList;
+//    }
+
+    public static String[] arr;
+
+    public static String[] getArr(){
+        return arr;
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -46,7 +53,7 @@ public class Home implements Initializable {
         profile.setFill(new ImagePattern(img));
 
         // 학교 리스트 요청
-        //requestUnivList();
+//        requestUnivList();
     }
 
     @FXML
@@ -127,15 +134,13 @@ public class Home implements Initializable {
 
         Protocol receivePT = Connection.receive();  // receive data
 
-//        System.out.println(receivePT.getBodyLength());
-//        System.out.println(receivePT.getBody().length);
-
         ArrayList<String> ar = (ArrayList<String>) receivePT.getBody();
+        arr = new String[3];
 
-        for (String i : ar) {
-            System.out.println(i);
+        for(int i = 0 ; i < 3;i ++){
+            arr[i] = ar.get(i);
         }
-//
+
 //        for(Object obj : ar){
 //            System.out.println(obj);
 //            if(obj instanceof String){
