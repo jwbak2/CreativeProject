@@ -1,7 +1,7 @@
 package Client.controller;
 
-import Client.trasmission.Connection;
-import Client.trasmission.Protocol;
+import Client.transmission.Connection;
+import Server.transmission.Protocol;
 import Server.model.dto.UnivDetailDTO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -242,14 +242,10 @@ public class CompareUniv implements Initializable {
     }
 
     void requestTwoOfUnivDetail(ArrayList<String> univList) {
-        Protocol pt = new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_CP);  // 학교 상세정보 조회 요청 송신 패킷 생성
-
-        byte[] serializedDTO;  // 직렬화 결과가 담기는 바이트
-        serializedDTO = Connection.serializeDTO(univList);
-        pt.setPacket(serializedDTO);
+        // 학교 상세정보 조회 요청 송신 패킷 생성
+        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_CP, univList));        // 패킷 전송
 
         System.out.println("학교 상세정보 비교 요청");
-        Connection.send(pt);        // 패킷 전송
     }
 
     public Object receiveUnivDTO() throws Exception {
@@ -274,7 +270,7 @@ public class CompareUniv implements Initializable {
 //            throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
 //        }
 
-        return Connection.deserializeDTO(receivePT.getBody());  // 역직렬화된 객체가 담기는 Object 반환
+        return receivePT.getBody();  // UnivDTO 타입인 Object 반환
     }
 
     public void setUnivDetailInf(UnivDetailDTO univDetailDTO) {  // UnivDetailDTO GUI에 뿌려주기

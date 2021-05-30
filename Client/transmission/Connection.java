@@ -1,19 +1,20 @@
-package Client.trasmission;
+package Client.transmission;
 
 import java.io.*;
+import java.lang.instrument.Instrumentation;
 import java.net.Socket;
-import java.util.ArrayList;
+import Server.transmission.Protocol;
 
 public class Connection {
     static Socket socket;
-    static OutputStream os;
-    static InputStream is;
+    static ObjectOutputStream oos;
+    static ObjectInputStream ois;
 
     public Connection(String ip, int port) {
         try {
             socket = new Socket(ip, port);  //통신 소켓 생성
-            os = socket.getOutputStream();
-            is = socket.getInputStream();   //get stream
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());   //get stream
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -21,48 +22,39 @@ public class Connection {
 
     public static void terminate(){    // 소켓 통신 연결 종료 시 스트림 close
         try {
-            Connection.is.close();
-            Connection.os.close();
+            Connection.ois.close();
+            Connection.oos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     static public void send(Protocol sendPT) { // 패킷 전송
+
+
         try {
-            os.write(sendPT.getPacket());   // 전송
-            os.flush();
+            oos.writeObject(sendPT);   // 전송
+            oos.flush();
             System.out.println("send - 패킷 송신 완료");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     static public Protocol receive() {   // 서버 -> 클라이언트 패킷 수신, 받은 패킷으로 Protocol 생성해서 반환
-        Protocol receivePT = null;       // header 패킷 수신후 bodyLength 확인후 body 패킷 부분 읽음
-
-
-        byte[] header = new byte[Protocol.LEN_HEADER];              // header 길이 만크의 바이트 배열
-        int bodyLength;
-        byte[] body;
+        Protocol receivePT = null;
 
         try {
-            is.read(header);
-            receivePT = new Protocol(header);
-            bodyLength = receivePT.getBodyLength();
+            receivePT = (Protocol) ois.readObject();
 
-            body = new byte[bodyLength];            // header에 포함된 bodyLength따라 만들어진 가변 배열
-            is.read(body);
             System.out.println("receive - 패킷 수신 완료");
 
-
-            receivePT.setPacket(body);
-            System.out.println("pt len : " + receivePT.getPacket().length);
-            System.out.println("receive : " + body.length);
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
+            System.out.println("receive() - 패킷 수신 오류");
             e.printStackTrace();
-        }
 
+        }
 
         return receivePT;
     }
@@ -73,12 +65,9 @@ public class Connection {
         
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
+                    oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
 
                 serializedDTO = baos.toByteArray();
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,23 +79,15 @@ public class Connection {
     // 역직렬화 후 Object 객체 반환
     static public Object deserializeDTO(byte[] bodyData){ // bodyData = 프로토콜 패킷의 바디
         Object objectMember = null;
-        System.out.println("역직렬화 : " + bodyData.length);
-
         try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
             try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                System.out.println(bais.available());
-                System.out.println(ois.available());
-
                 objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
-
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
+
         }
 
         return objectMember;
-
     }
 }

@@ -1,12 +1,10 @@
 package Server;
 
-import Server.transmission.Receiver;
-import Server.transmission.Sender;
-import Server.transmission.SocketManager;
+import Server.controller.RequestHandler;
+import Server.transmission.*;
 
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 
 // ProcessThread는 현재 클라이언트와의 TCP 연결(소켓)과 1:1 대응
@@ -18,14 +16,24 @@ public class ConnectRunnable implements Runnable{
         System.out.println("Process Thread 생성완료");
 
         try(Socket socket = SocketManager.getSocket();
-            InputStream is = socket.getInputStream();
-            OutputStream os = socket.getOutputStream()){
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream ois = new ObjectInputStream(socket.getInputStream())){
 
-            Sender sender = new Sender(os);
-            Receiver receiver = new Receiver(is, sender);
+            Sender sender = new Sender(oos);
+            Receiver receiver = new Receiver(ois);
+            Classifier classifier = new Classifier();
 
             while (true) {
-                receiver.waiting();
+                classifier.classify(receiver.receive());
+
+//              RequestHandler reqHandler = classifier.classify(receiver.receive());
+//              reqHandler.handleRequest();
+
+//              System.out.println("요청 핸들링 끝");
+//              do {
+//                  System.out.println("응답 전송");
+//                  sender.send(reqHandler.getType(), reqHandler.getCode(), reqHandler.getBody());
+//              } while (reqHandler.hasMessage());
             }
 
         } catch (Exception e) {

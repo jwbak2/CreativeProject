@@ -1,6 +1,6 @@
 package Client;
 
-import Client.trasmission.Connection;
+import Client.transmission.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class ClientMain extends Application {
 
-    static final String SERVER_IP = "127.0.0.1"; // 220.122.124.124 192.168.231.243
+    static final String SERVER_IP = "127.0.0.1";
     static final int PORT = 5500;
 
     public static void main(String[] args) {
@@ -20,8 +20,9 @@ public class ClientMain extends Application {
 
     @Override
     public void init() {
+
         // TODO 서버 접속 실패시 예외처리 필요
-        //new Connection(SERVER_IP, PORT);
+        new Connection(SERVER_IP, PORT);
         System.out.println("IP : " + SERVER_IP + ", Port : " + PORT);
         System.out.println("서버 접속 성공");
     }

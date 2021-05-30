@@ -2,19 +2,17 @@ package Client.controller;
 
 import Server.model.dto.UnivDetailDTO;
 import Server.model.dto.UnivDTO;
-import Client.trasmission.Connection;
-import Client.trasmission.Protocol;
+import Client.transmission.Connection;
+import Server.transmission.Protocol;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -34,9 +32,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.NumberFormat;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -295,14 +291,8 @@ public class UnivDetail implements Initializable {
     }
 
     void requestUnivInf(String univName) {
-        Protocol pt = new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_INF);  // 학교 상세정보 조회 요청 송신 패킷 생성
-
-        byte[] serializedDTO;  // 직렬화 결과가 담기는 바이트
-        serializedDTO = Connection.serializeDTO(univName);
-        pt.setPacket(serializedDTO);
-
         System.out.println("학교 상세정보 조회 요청");
-        Connection.send(pt);        // 패킷 전송
+        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_INF, univName));        // 패킷 전송
     }
 
     public Object receiveUnivDTO() throws Exception {
@@ -312,7 +302,7 @@ public class UnivDetail implements Initializable {
                 && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF) {    // 입력한 학교명이 존재하지 않을떄
 
             // 조회 실패 팝업창
-            try{
+            try {
                 Stage stage = (Stage) btnRequestUnivInf.getScene().getWindow(); //
                 Popup pu = new Popup();
                 Parent root = FXMLLoader.load(getClass().getResource("../view/popup.fxml"));
@@ -330,7 +320,7 @@ public class UnivDetail implements Initializable {
             throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
         }
 
-        return Connection.deserializeDTO(receivePT.getBody());  // 역직렬화된 객체가 담기는 Object 반환
+        return receivePT.getBody();  // 역직렬화된 객체가 담기는 Object 반환
     }
 
     public void setUnivInf(UnivDTO univDTO) {    // UnivDTO GUI에 뿌려주기
