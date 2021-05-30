@@ -5,9 +5,7 @@ import Server.model.dao.UnivDetailDAO;
 import Server.model.dto.UnivDTO;
 import Server.model.dto.UnivDetailDTO;
 import Server.transmission.Protocol;
-import Server.transmission.Sender;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class UnivDetail implements RequestHandler{
@@ -18,6 +16,9 @@ public class UnivDetail implements RequestHandler{
 	private int code;
 	private ArrayList<Object> bodyList;
 
+	public UnivDetail() {
+
+	}
 	public UnivDetail (Object message) {
 		clientMsg = message;
 		bodyList = new ArrayList<Object>();
@@ -50,23 +51,10 @@ public class UnivDetail implements RequestHandler{
 
 			// 대학 이름(바이트 배열) 역 직렬화
 			String strUnivName = (String) clientMsg;
-			System.out.println("조회할 학교 이름: " + strUnivName);
 
-			// 대학 리스트
-			String[][] univList = Server.model.Cache.getUnivList();
+			String univCode = getUnivCode(strUnivName);
 
-			// 대학 리스트 자료구조 및 탐색 - 개선 필요해보임
-			String univCode = "";
-			for (int i = 0; i < univList.length; i++)
-			{
-				if (univList[i][1].equals(strUnivName))
-				{
-					univCode = univList[i][0];
-					break;
-				}
-			}
-
-			if (!univCode.equals(""))
+			if (!univCode.equals("null"))
 			{
 				// DAO 선언
 				UnivDAO univDAO = new UnivDAO();
@@ -101,15 +89,49 @@ public class UnivDetail implements RequestHandler{
 
 	}
 
-	public UnivDTO inquiryUniv(String univCode) throws Exception {
+	public ArrayList<String> getUnivList() {
+		// 대학 리스트
+		String[][] univList = Server.model.Cache.getUnivList();
+		ArrayList<String> list = new ArrayList<String>();
+
+		for (int i = 0; i < univList.length; i++)
+		{
+			list.add(univList[i][0]);
+		}
+
+		return list;
+	}
+
+	public UnivDTO getUniv(String univName) throws Exception {
 		UnivDAO dao = new UnivDAO();
 
-		return dao.select(univCode);
+		return dao.select(getUnivCode(univName));
 	}
 
-	public UnivDetailDTO inquiryUnivDetail(String univCode) throws Exception {
+	public UnivDetailDTO getUnivDetail(String univName) throws Exception {
 		UnivDetailDAO dao = new UnivDetailDAO();
 
-		return dao.select(univCode);
+		return dao.select(getUnivCode(univName));
 	}
+
+	public String getUnivCode(String univName) {
+		System.out.println("조회할 학교 이름: " + univName);
+
+		// 대학 리스트
+		String[][] univList = Server.model.Cache.getUnivList();
+
+		// 대학 리스트 자료구조 및 탐색 - 개선 필요해보임
+		String univCode = "null";
+		for (int i = 0; i < univList.length; i++)
+		{
+			if (univList[i][1].equals(univName))
+			{
+				univCode = univList[i][0];
+				break;
+			}
+		}
+
+		return univCode;
+	}
+
 }

@@ -1,11 +1,9 @@
 package Server.controller;
 
-import Server.model.dao.DepartmentDAO;
 import Server.model.dao.UnivDAO;
 import Server.model.dao.UnivDetailDAO;
 import Server.model.dto.UnivDTO;
 import Server.model.dto.UnivDetailDTO;
-import Server.transmission.Protocol;
 
 import java.util.ArrayList;
 
@@ -43,6 +41,7 @@ public class CompareUniv implements RequestHandler {
 
 	@Override
 	public void handleRequest() {
+		/*
 		try {
 
 			// 두 개의 대학 이름이 담김 ArrayList 역 직렬화
@@ -117,6 +116,7 @@ public class CompareUniv implements RequestHandler {
 			e.printStackTrace();
 
 		}
+		*/
 	}
 
 	public UnivDTO inquiryUniv(String univCode) throws Exception {

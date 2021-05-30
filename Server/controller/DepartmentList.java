@@ -1,9 +1,8 @@
 package Server.controller;
 
-import Client.trasmission.Protocol;
+import Server.transmission.Protocol;
 import Server.model.Cache;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class DepartmentList implements RequestHandler {

@@ -1,7 +1,7 @@
 package Client.controller;
 
-import Client.trasmission.Connection;
-import Client.trasmission.Protocol;
+import Client.transmission.Connection;
+import Server.transmission.Protocol;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -46,7 +46,7 @@ public class Home implements Initializable {
         profile.setFill(new ImagePattern(img));
 
         // 학교 리스트 요청
-        //requestUnivList();
+        requestUnivList();
     }
 
     @FXML
@@ -121,23 +121,26 @@ public class Home implements Initializable {
     }
 
     void requestUnivList(){
-        Protocol pt = new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_LIST);  // 학교 상세정보 조회 요청 송신 패킷 생성
-
         System.out.println("학교 리스트 요청");
-        Connection.send(pt);        // 패킷 전송
+        // 학교 상세정보 조회 요청 송신 패킷 생성
+        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_LIST));        // 패킷 전송
 
         Protocol receivePT = Connection.receive();  // receive data
 
-        System.out.println(receivePT.getBodyLength());
-        System.out.println(receivePT.getBody().length);
+//        System.out.println(receivePT.getBodyLength());
+//        System.out.println(receivePT.getBody().length);
 
-        ArrayList<?> ar = (ArrayList<?>) Connection.deserializeDTO(receivePT.getBody());
+        ArrayList<String> ar = (ArrayList<String>) receivePT.getBody();
 
-        for(Object obj : ar){
-            System.out.println(obj);
-            if(obj instanceof String){
-                univList.add((String) obj);
-            }
+        for (String i : ar) {
+            System.out.println(i);
         }
+//
+//        for(Object obj : ar){
+//            System.out.println(obj);
+//            if(obj instanceof String){
+//                univList.add((String) obj);
+//            }
+//        }
     }
 }

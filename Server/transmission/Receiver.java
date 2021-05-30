@@ -8,44 +8,34 @@ import java.util.ArrayList;
 
 public class Receiver {
 
-	private InputStream is;
+	private ObjectInputStream ois;
 
-	public Receiver(InputStream is) {
-		this.is = is;
+	public Receiver(ObjectInputStream ois) {
+		this.ois = ois;
 	}
 
 
 	public Protocol receive() {
-		Protocol tmp = null;
+		Protocol pt = null;
 
 		try {
 			// head 수신 및 설정
-			byte[] head = new byte[Protocol.LEN_HEADER];
-			is.read(head);
-
-			tmp = new Protocol(head);
-
-
-			// body 수신 및 설정
-			byte[] body = new byte[tmp.getBodyLength()];
-			is.read(body);
-
-			tmp.setPacket(body);
+			pt = (Protocol) ois.readObject();
 			System.out.println("패킷 수신 완료");
 
-		} catch (SocketException e) {
-			System.out.println("소켓 예외 발생");
-			e.printStackTrace();
-			tmp = null;
+//		} catch (SocketException e) {
+//			System.out.println("소켓 예외 발생");
+//			e.printStackTrace();
+//			pt = null;
 
-		} catch (IOException e) {
+		} catch (ClassNotFoundException | IOException e) {
 			System.out.println("입출력 예외 발생");
 			e.printStackTrace();
-			tmp = null;
+			pt = null;
 
 		}
 
-		return tmp;
+		return pt;
 	}
 
 }

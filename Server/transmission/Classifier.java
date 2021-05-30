@@ -13,33 +13,34 @@ import java.io.ObjectInputStream;
 
 public class Classifier {
 
-	public RequestHandler classify(Protocol p) {
-		if (p == null)
-			return null;
+	public void classify(Protocol pt) {
+		if (pt == null)
+			return;
 
 		// 패킷 분류
-		int type = p.getProtocolType();
-		int code = p.getProtocolCode();
+		int type = pt.getProtocolType();
+		int code = pt.getProtocolCode();
+		Object body = pt.getBody();
 
-		Object body = null;
-		if (p.getBodyLength() > 0)
-			body = deserializeByteArray(p.getBody());
+		Controller controller = new Controller();
 
 		switch (type) {
 			case Protocol.PT_REQ:	// 요청
 				switch (code) {
 					// 대학 조회 요청
 					case Protocol.PT_REQ_UNIV_INF:
-						return new UnivDetail(body);
+						controller.inquiryUnivInfo( (String) body);
+						break;
 
 						// 대학 리스트 요청
 					case Protocol.PT_REQ_UNIV_LIST:
-						return new UnivList(body);
+						controller.inquiryUnivList();
+						break;
 
 						// 학교 비교 요청
 					case Protocol.PT_REQ_UNIV_CP:
-						return new CompareUniv(body);
 
+						break;
 
 						// 대학 평점 등록
 //					case Protocol.PT_REQ_REG_UNIV_RATING:
@@ -86,7 +87,7 @@ public class Classifier {
 				break;
 		}
 
-		return null;
+		return;
 	}
 
 	// 역직렬화 후 Object 객체 반환

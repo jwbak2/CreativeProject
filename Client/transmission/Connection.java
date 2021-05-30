@@ -1,18 +1,20 @@
-package Client.trasmission;
+package Client.transmission;
 
 import java.io.*;
+import java.lang.instrument.Instrumentation;
 import java.net.Socket;
+import Server.transmission.Protocol;
 
 public class Connection {
     static Socket socket;
-    static OutputStream os;
-    static InputStream is;
+    static ObjectOutputStream oos;
+    static ObjectInputStream ois;
 
     public Connection(String ip, int port) {
         try {
             socket = new Socket(ip, port);  //통신 소켓 생성
-            os = socket.getOutputStream();
-            is = socket.getInputStream();   //get stream
+            oos = new ObjectOutputStream(socket.getOutputStream());
+            ois = new ObjectInputStream(socket.getInputStream());   //get stream
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -20,8 +22,8 @@ public class Connection {
 
     public static void terminate(){    // 소켓 통신 연결 종료 시 스트림 close
         try {
-            Connection.is.close();
-            Connection.os.close();
+            Connection.ois.close();
+            Connection.oos.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,8 +33,8 @@ public class Connection {
 
 
         try {
-            os.write(sendPT.getPacket());   // 전송
-            os.flush();
+            oos.writeObject(sendPT);   // 전송
+            oos.flush();
             System.out.println("send - 패킷 송신 완료");
         } catch (IOException e) {
             e.printStackTrace();
@@ -41,32 +43,18 @@ public class Connection {
     }
 
     static public Protocol receive() {   // 서버 -> 클라이언트 패킷 수신, 받은 패킷으로 Protocol 생성해서 반환
-        Protocol receivePT = null;       // header 패킷 수신후 bodyLength 확인후 body 패킷 부분 읽음
-
-
-        byte[] header = new byte[Protocol.LEN_HEADER];              // header 길이 만크의 바이트 배열
-        int bodyLength;
-        byte[] body;
+        Protocol receivePT = null;
 
         try {
-            System.out.println("point1: " + is.available());
-            is.read(header);
-            System.out.println("point2: " + is.available());
-            receivePT = new Protocol(header);
-            bodyLength = receivePT.getBodyLength();
+            receivePT = (Protocol) ois.readObject();
 
-            body = new byte[bodyLength];            // header에 포함된 bodyLength따라 만들어진 가변 배열
-            System.out.println("point3: " + is.available());
-            is.read(body);
-            System.out.println("point4: " + is.available());
             System.out.println("receive - 패킷 수신 완료");
 
-            receivePT.setPacket(body);
-        } catch (IOException e) {
+        } catch (ClassNotFoundException | IOException e) {
+            System.out.println("receive() - 패킷 수신 오류");
             e.printStackTrace();
+
         }
-
-
 
         return receivePT;
     }
@@ -93,11 +81,7 @@ public class Connection {
         Object objectMember = null;
         try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
             try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                System.out.println("역직렬화 point1: " + ois.available());
-                System.out.println("역직렬화 point2: " + ois.available());
                 objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
-                System.out.println("역직렬화 point3: " + ois.available());
-                System.out.println("역직렬화 point4: " + ois.available());
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,6 +1,6 @@
 package Client;
 
-import Client.trasmission.Connection;
+import Client.transmission.Connection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
