@@ -1,13 +1,11 @@
 package Server.transmission;
 
-import Server.controller.CompareUniv;
-import Server.controller.RequestHandler;
-import Server.controller.UnivDetail;
-import Server.controller.UnivList;
+import Server.model.dto.DepartmentRatingDTO;
+import Server.model.dto.UnivRatingDTO;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 
 // Client 로부터 수신한 패킷을 분류
 
@@ -32,23 +30,28 @@ public class Classifier {
 						controller.inquiryUnivInfo( (String) body);
 						break;
 
-						// 대학 리스트 요청
+						// 학과 조회 요청
+					case Protocol.PT_REQ_DEPT_INF:
+						controller.inquiryDepartmentInfo( (String) body);
+						break;
+
+					// 대학 리스트 요청
 					case Protocol.PT_REQ_UNIV_LIST:
 						controller.inquiryUnivList();
 						break;
 
-						// 학교 비교 요청
+					// 학교 비교 요청
 					case Protocol.PT_REQ_UNIV_CP:
-
+						controller.compareTwoUniv( (ArrayList<String>) body);
 						break;
 
-						// 대학 평점 등록
-//					case Protocol.PT_REQ_REG_UNIV_RATING:
-//						sender.registerUnivRating(p.getBody());
+					// 대학 평점 등록
+					case Protocol.PT_REQ_UNIV_RATING:
+						controller.registerUnivRating( (UnivRatingDTO) body);
 
 						// 학과 평점 등록
-//					case Protocol.PT_REQ_REG_DEPA_RATING:
-//						sender.registerDepartmentRating(p.getBody());
+					case Protocol.PT_REQ_DEPT_RATING:
+						controller.registerDepartmentRating( (DepartmentRatingDTO) body);
 
 						// 대학, 학과 비교 -> 아마 분리 해아할 듯
 						// 대학 학과를 비교하려면 대학, 학과를 선택할 수 있어야지

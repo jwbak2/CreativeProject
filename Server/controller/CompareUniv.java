@@ -7,39 +7,13 @@ import Server.model.dto.UnivDetailDTO;
 
 import java.util.ArrayList;
 
-public class CompareUniv implements RequestHandler {
-	private Object clientMsg;	// Client Message
+public class CompareUniv {
 
-	private int type;
-	private int code;
-	private ArrayList<Object> bodyList;
 
-	public CompareUniv (Object message) {
-		clientMsg = message;
-		bodyList = new ArrayList<Object>();
+	public CompareUniv () {
 	}
 
-	@Override
-	public int getType() {
-		return type;
-	}
 
-	@Override
-	public int getCode() {
-		return code;
-	}
-
-	@Override
-	public Object getBody() {
-		return bodyList.remove(0);
-	}
-
-	@Override
-	public boolean hasMessage() {
-		return bodyList.isEmpty() ? false : true;
-	}
-
-	@Override
 	public void handleRequest() {
 		/*
 		try {
