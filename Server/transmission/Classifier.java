@@ -1,5 +1,6 @@
 package Server.transmission;
 
+import Server.controller.CompareUniv;
 import Server.controller.RequestHandler;
 import Server.controller.UnivDetail;
 import Server.controller.UnivList;
@@ -11,9 +12,6 @@ import java.io.ObjectInputStream;
 // Client 로부터 수신한 패킷을 분류
 
 public class Classifier {
-
-	private ByteArrayInputStream bais;
-	private ObjectInputStream ois;
 
 	public RequestHandler classify(Protocol p) {
 		if (p == null)
@@ -40,7 +38,7 @@ public class Classifier {
 
 						// 학교 비교 요청
 					case Protocol.PT_REQ_UNIV_CP:
-//						sender.resUnivComp(p.getBody());
+						return new CompareUniv(body);
 
 
 						// 대학 평점 등록
@@ -91,22 +89,36 @@ public class Classifier {
 		return null;
 	}
 
-	public Object deserializeByteArray(byte[] obj) {
-		try {
-			bais = new ByteArrayInputStream(obj);
-			ois = new ObjectInputStream(bais);
-
-			return ois.readObject();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-
-		} catch (IOException e) {
+	// 역직렬화 후 Object 객체 반환
+	static public Object deserializeByteArray(byte[] bodyData) { // bodyData = 프로토콜 패킷의 바디
+		Object obj = null;
+		try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
+			try (ObjectInputStream ois = new ObjectInputStream(bais)) {
+				obj = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
 
-		return null;
+		return obj;
 	}
 
+//	public Object deserializeByteArray(byte[] obj) {
+//		try {
+//			bais = new ByteArrayInputStream(obj);
+//			ois = new ObjectInputStream(bais);
+//
+//			return ois.readObject();
+//
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//
+//		}
+//
+//		return null;
+//	}
 }

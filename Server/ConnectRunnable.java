@@ -17,8 +17,8 @@ public class ConnectRunnable implements Runnable{
         System.out.println("Process Thread 생성완료");
 
         try(Socket socket = SocketManager.getSocket();
-            InputStream is = socket.getInputStream();
-            OutputStream os = socket.getOutputStream()){
+            OutputStream os = socket.getOutputStream();
+            InputStream is = socket.getInputStream()){
 
             Sender sender = new Sender(os);
             Receiver receiver = new Receiver(is);

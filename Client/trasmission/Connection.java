@@ -49,14 +49,18 @@ public class Connection {
         byte[] body;
 
         try {
+            System.out.println("point1: " + is.available());
             is.read(header);
+            System.out.println("point2: " + is.available());
             receivePT = new Protocol(header);
             bodyLength = receivePT.getBodyLength();
 
             body = new byte[bodyLength];            // header에 포함된 bodyLength따라 만들어진 가변 배열
+            System.out.println("point3: " + is.available());
             is.read(body);
+            System.out.println("point4: " + is.available());
             System.out.println("receive - 패킷 수신 완료");
-            
+
             receivePT.setPacket(body);
         } catch (IOException e) {
             e.printStackTrace();
@@ -73,9 +77,7 @@ public class Connection {
         
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
-                synchronized (oos) {
                     oos.writeObject(obj);  // 객체 직렬화 object(string) 학교이름 to byte array -> packet data에 set
-                }
 
                 serializedDTO = baos.toByteArray();
             }
@@ -89,17 +91,19 @@ public class Connection {
     // 역직렬화 후 Object 객체 반환
     static public Object deserializeDTO(byte[] bodyData){ // bodyData = 프로토콜 패킷의 바디
         Object objectMember = null;
-        
         try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
             try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-                synchronized (ois) {
-                    objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
-                }
+                System.out.println("역직렬화 point1: " + ois.available());
+                System.out.println("역직렬화 point2: " + ois.available());
+                objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
+                System.out.println("역직렬화 point3: " + ois.available());
+                System.out.println("역직렬화 point4: " + ois.available());
             }
         } catch (Exception e) {
             e.printStackTrace();
+
         }
-        
+
         return objectMember;
     }
 }

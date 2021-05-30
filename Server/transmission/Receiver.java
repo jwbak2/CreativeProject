@@ -30,13 +30,8 @@ public class Receiver {
 			byte[] body = new byte[tmp.getBodyLength()];
 			is.read(body);
 
-//			ArrayList<String> arr = (ArrayList<String>) deserializeDTO(body);
-
-//			int cnt = 0;
-//			for (int i = 0; i < arr.size(); i++)
-//				System.out.println(arr.remove(i));
-
 			tmp.setPacket(body);
+			System.out.println("패킷 수신 완료");
 
 		} catch (SocketException e) {
 			System.out.println("소켓 예외 발생");
@@ -51,21 +46,6 @@ public class Receiver {
 		}
 
 		return tmp;
-	}
-
-	static public Object deserializeDTO(byte[] bodyData){ // bodyData = 프로토콜 패킷의 바디
-		Object objectMember = null;
-
-		try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
-			try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-//				ois.reset();
-				objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return objectMember;
 	}
 
 }

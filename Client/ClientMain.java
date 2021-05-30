@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class ClientMain extends Application {
 
-    static final String SERVER_IP = "220.122.124.124";
+    static final String SERVER_IP = "127.0.0.1";
     static final int PORT = 5500;
 
     public static void main(String[] args) {

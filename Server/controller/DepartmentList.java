@@ -6,7 +6,7 @@ import Server.model.Cache;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class UnivList implements RequestHandler {
+public class DepartmentList implements RequestHandler {
 
 	private Object clientMsg;	// Client Message
 
@@ -14,7 +14,7 @@ public class UnivList implements RequestHandler {
 	private int code;
 	private ArrayList<String> body;
 
-	public UnivList (Object message) {
+	public DepartmentList (Object message) {
 		clientMsg = message;
 		body = null;
 	}
