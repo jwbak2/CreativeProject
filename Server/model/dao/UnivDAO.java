@@ -7,7 +7,7 @@ import Server.model.dto.UnivDTO;
 public class UnivDAO {
 
     //id로 select 연산 수행
-    public UnivDTO select(String univID) throws Exception {
+    public UnivDTO select(String univID) {
 
         Connection conn = DBCP.getConnection();
 

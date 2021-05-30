@@ -58,23 +58,29 @@ public class DBCP {   // 데이터베이스 커넥션 풀
 
 
 
-    static public Connection getConnection() throws Exception {     // 연결 객체들이 존재하는 pool stack에서 연결을 하나 pop하여 반환하는 함수
+    static public Connection getConnection() {     // 연결 객체들이 존재하는 pool stack에서 연결을 하나 pop하여 반환하는 함수
         // 연결 객체가 부족하면 연결 객체를 만드는 함수를 호출하여 반환
 
-        Connection result;
+        Connection result = null;
 
-        if(!POOL.empty()) {
-            result = POOL.pop();
+        try {
 
-        } else {
-
-            if(curPoolSize < MAX_POOL_SIZE){
-                result = createConnection();
+            if (!POOL.empty()) {
+                result = POOL.pop();
 
             } else {
-                throw new Exception("Exception : DB 최대 연결 초과");
+
+                if (curPoolSize < MAX_POOL_SIZE) {
+                    result = createConnection();
+
+                } else {
+                    throw new Exception("Exception : DB 최대 연결 초과");
+
+                }
 
             }
+        } catch(Exception E){
+            System.out.println(E);
 
         }
 

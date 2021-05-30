@@ -8,7 +8,7 @@ import java.sql.*;
 public class UnivDetailDAO {
 
     //id로 select 연산 수행
-    public UnivDetailDTO select(String univID) throws Exception {
+    public UnivDetailDTO select(String univID) {
 
         Connection conn = DBCP.getConnection();
 
