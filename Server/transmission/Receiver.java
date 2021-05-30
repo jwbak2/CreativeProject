@@ -8,64 +8,34 @@ import java.util.ArrayList;
 
 public class Receiver {
 
-	private InputStream is;
+	private ObjectInputStream ois;
 
-	public Receiver(InputStream is) {
-		this.is = is;
+	public Receiver(ObjectInputStream ois) {
+		this.ois = ois;
 	}
 
 
 	public Protocol receive() {
-		Protocol tmp = null;
+		Protocol pt = null;
 
 		try {
 			// head 수신 및 설정
-			byte[] head = new byte[Protocol.LEN_HEADER];
-			is.read(head);
+			pt = (Protocol) ois.readObject();
+			System.out.println("패킷 수신 완료");
 
-			tmp = new Protocol(head);
+//		} catch (SocketException e) {
+//			System.out.println("소켓 예외 발생");
+//			e.printStackTrace();
+//			pt = null;
 
-
-			// body 수신 및 설정
-			byte[] body = new byte[tmp.getBodyLength()];
-			is.read(body);
-
-//			ArrayList<String> arr = (ArrayList<String>) deserializeDTO(body);
-
-//			int cnt = 0;
-//			for (int i = 0; i < arr.size(); i++)
-//				System.out.println(arr.remove(i));
-
-			tmp.setPacket(body);
-
-		} catch (SocketException e) {
-			System.out.println("소켓 예외 발생");
-			e.printStackTrace();
-			tmp = null;
-
-		} catch (IOException e) {
+		} catch (ClassNotFoundException | IOException e) {
 			System.out.println("입출력 예외 발생");
 			e.printStackTrace();
-			tmp = null;
+			pt = null;
 
 		}
 
-		return tmp;
-	}
-
-	static public Object deserializeDTO(byte[] bodyData){ // bodyData = 프로토콜 패킷의 바디
-		Object objectMember = null;
-
-		try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
-			try (ObjectInputStream ois = new ObjectInputStream(bais)) {
-//				ois.reset();
-				objectMember = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return objectMember;
+		return pt;
 	}
 
 }

@@ -1,5 +1,6 @@
 package Server.transmission;
 
+import Server.controller.CompareUniv;
 import Server.controller.RequestHandler;
 import Server.controller.UnivDetail;
 import Server.controller.UnivList;
@@ -12,36 +13,34 @@ import java.io.ObjectInputStream;
 
 public class Classifier {
 
-	private ByteArrayInputStream bais;
-	private ObjectInputStream ois;
-
-	public RequestHandler classify(Protocol p) {
-		if (p == null)
-			return null;
+	public void classify(Protocol pt) {
+		if (pt == null)
+			return;
 
 		// 패킷 분류
-		int type = p.getProtocolType();
-		int code = p.getProtocolCode();
+		int type = pt.getProtocolType();
+		int code = pt.getProtocolCode();
+		Object body = pt.getBody();
 
-		Object body = null;
-		if (p.getBodyLength() > 0)
-			body = deserializeByteArray(p.getBody());
+		Controller controller = new Controller();
 
 		switch (type) {
 			case Protocol.PT_REQ:	// 요청
 				switch (code) {
 					// 대학 조회 요청
 					case Protocol.PT_REQ_UNIV_INF:
-						return new UnivDetail(body);
+						controller.inquiryUnivInfo( (String) body);
+						break;
 
 						// 대학 리스트 요청
 					case Protocol.PT_REQ_UNIV_LIST:
-						return new UnivList(body);
+						controller.inquiryUnivList();
+						break;
 
 						// 학교 비교 요청
 					case Protocol.PT_REQ_UNIV_CP:
-//						sender.resUnivComp(p.getBody());
 
+						break;
 
 						// 대학 평점 등록
 //					case Protocol.PT_REQ_REG_UNIV_RATING:
@@ -88,25 +87,39 @@ public class Classifier {
 				break;
 		}
 
-		return null;
+		return;
 	}
 
-	public Object deserializeByteArray(byte[] obj) {
-		try {
-			bais = new ByteArrayInputStream(obj);
-			ois = new ObjectInputStream(bais);
-
-			return ois.readObject();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-
-		} catch (IOException e) {
+	// 역직렬화 후 Object 객체 반환
+	static public Object deserializeByteArray(byte[] bodyData) { // bodyData = 프로토콜 패킷의 바디
+		Object obj = null;
+		try (ByteArrayInputStream bais = new ByteArrayInputStream(bodyData)) {
+			try (ObjectInputStream ois = new ObjectInputStream(bais)) {
+				obj = ois.readObject();  // 역직렬화된 dto 객체를 읽어온다.
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 
 		}
 
-		return null;
+		return obj;
 	}
 
+//	public Object deserializeByteArray(byte[] obj) {
+//		try {
+//			bais = new ByteArrayInputStream(obj);
+//			ois = new ObjectInputStream(bais);
+//
+//			return ois.readObject();
+//
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//
+//		}
+//
+//		return null;
+//	}
 }

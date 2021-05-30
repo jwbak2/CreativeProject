@@ -1,9 +1,8 @@
 package Server.controller;
 
-import Client.trasmission.Protocol;
+import Server.transmission.Protocol;
 import Server.model.Cache;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class UnivList implements RequestHandler {
@@ -47,11 +46,15 @@ public class UnivList implements RequestHandler {
 			String[][] univList = Cache.getUnivList();
 			body = new ArrayList<String>();
 
-
+			int cnt = 0;
 			for (int i = 0; i < univList.length; i++)
 			{
+				System.out.println(univList[i][1]);
 				body.add(univList[i][1]);
+				cnt++;
 			}
+
+			System.out.println("대학 리스트 개수: " + cnt);
 
 			type = Protocol.PT_RES_UNIV_LIST;
 			code = Protocol.PT_RES_UNIV_LIST;
