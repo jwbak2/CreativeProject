@@ -51,7 +51,7 @@ public class Home implements Initializable {
 
 
         // 학교 리스트 요청
-        //requestUnivList();
+        requestUnivList();
     }
 
     @FXML
@@ -147,7 +147,4 @@ public class Home implements Initializable {
 //        }
     }
 
-    void hi(){
-        System.out.println("hi");
-    }
 }

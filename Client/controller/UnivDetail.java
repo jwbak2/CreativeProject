@@ -193,7 +193,7 @@ public class UnivDetail implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources){
         setUnivDeptList();
-//        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
+        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
 //        mainAp.setVisible(false);   // 처음에 hide 였다가 조회누르면 show되게
 //        mainAp.setVisible(true);   // 처음에 hide 였다가 조회누르면 show되게
 
