@@ -32,9 +32,6 @@ public class SocketManager {
 
 	}
 
-	public static ServerSocket getServerSocket(){
-		return serverSocket;
-	}
 
 
 	public static void listen() {
