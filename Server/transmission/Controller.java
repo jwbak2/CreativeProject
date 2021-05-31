@@ -30,7 +30,7 @@ public class Controller {
 			DepartmentDetail deptDetail = new DepartmentDetail();
 
 			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUniv(univName));
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUnivDetail(univName));
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getAllUnivDetail(univName));
 			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, deptDetail.getDepartmentList(univDetail.getUnivCode(univName)));
 
 		} catch (Exception e) {
@@ -59,10 +59,13 @@ public class Controller {
 
 	// 대학 비교 요청 처리
 	public void compareTwoUniv(ArrayList<String> list) {
+
+		final int YEAR = 2020;
+
 		try {
 			UnivDetail univDetail = new UnivDetail();
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUnivDetail(list.get(0)));
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUnivDetail(list.get(1)));
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUnivDetail(list.get(0), YEAR));
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUnivDetail(list.get(1), YEAR));
 
 		} catch (Exception e) {
 			System.out.println("Controller - 대학 비교 오류");
