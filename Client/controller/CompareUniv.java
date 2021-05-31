@@ -187,13 +187,16 @@ public class CompareUniv implements Initializable {
     private Label averageTuitionOne;
 
     @FXML
+    private Label averageTuitionTwo;
+
+    @FXML
     private Label studentNumberOne;
 
     @FXML
     private Label admissionCompetitionRateTwo;
 
     @FXML
-    private Label startCompanyCapitalOne1;
+    private Label startCompanyCapitalOne;
 
     @FXML
     private Label firstUnivName;
@@ -216,10 +219,10 @@ public class CompareUniv implements Initializable {
 
         Runnable runnable = () -> {
             try {
-                String[] univList = new String[2];
+                ArrayList<String> univList = new ArrayList<String>();
 
-                univList[0] = inputFirstUniv.getText().replace(" ", "");
-                univList[1] = inputSecondUniv.getText().replace(" ", "");
+                univList.add(inputFirstUniv.getText().replace(" ", ""));
+                univList.add(inputSecondUniv.getText().replace(" ", ""));
 
                 Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_CP, univList));        // 패킷 전송
 
@@ -235,12 +238,6 @@ public class CompareUniv implements Initializable {
 
         Thread th = new Thread(runnable);
         th.start();
-    }
-
-    void sendUnivCp(String[] univList) {
-        // 학교 상세정보 조회 요청 송신 패킷 생성
-
-        System.out.println("학교 상세정보 비교 요청");
     }
 
     public ArrayList<UnivDetailDTO> receiveUnivCp() throws Exception {
@@ -275,14 +272,116 @@ public class CompareUniv implements Initializable {
         studentNumberTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getStudentNumber()));
         compareUnivDetailElement(studentNumberOne, studentNumberTwo, firstUnivDetail.getStudentNumber(), secondUnivDetail.getStudentNumber());
 
+        admissionCompetitionRateOne.setText(firstUnivDetail.getAdmissionCompetitionRate() + "%");
+        admissionCompetitionRateTwo.setText(secondUnivDetail.getAdmissionCompetitionRate() + "%");
+        compareUnivDetailElement(admissionCompetitionRateOne, admissionCompetitionRateTwo, firstUnivDetail.getAdmissionCompetitionRate(), secondUnivDetail.getAdmissionCompetitionRate());
 
+        employmentRateOne.setText(firstUnivDetail.getEmploymentRate() + "%");
+        employmentRateTwo.setText(secondUnivDetail.getEmploymentRate() + "%");
+        compareUnivDetailElement(employmentRateOne, employmentRateTwo, firstUnivDetail.getEmploymentRate(), secondUnivDetail.getEmploymentRate());
+
+        enteringRateOne.setText(firstUnivDetail.getEnteringRate() + "%");
+        enteringRateTwo.setText(secondUnivDetail.getEnteringRate() + "%");
+        compareUnivDetailElement(enteringRateOne, enteringRateTwo, firstUnivDetail.getEnteringRate(), secondUnivDetail.getEnteringRate());
+
+        educationCostPerPersonOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getEducationCostPerPerson()));
+        educationCostPerPersonTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getEducationCostPerPerson()));
+        compareUnivDetailElement(educationCostPerPersonOne, educationCostPerPersonTwo, firstUnivDetail.getEducationCostPerPerson(), secondUnivDetail.getEducationCostPerPerson());
+
+        totalScholarshipBenefitOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getTotalScholarshipBenefits()));
+        totalScholarshipBenefitTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getTotalScholarshipBenefits()));
+        compareUnivDetailElement(totalScholarshipBenefitOne, totalScholarshipBenefitTwo, firstUnivDetail.getTotalScholarshipBenefits(), secondUnivDetail.getTotalScholarshipBenefits());
+
+        foundersNumberOne.setText(String.valueOf(firstUnivDetail.getNumberFounders()));
+        foundersNumberTwo.setText(String.valueOf(secondUnivDetail.getNumberFounders()));
+        compareUnivDetailElement(foundersNumberOne, foundersNumberTwo, firstUnivDetail.getNumberFounders(), secondUnivDetail.getNumberFounders());
+
+        startCompanySaleOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getStartCompanySales()));
+        startCompanySaleTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getStartCompanySales()));
+        compareUnivDetailElement(startCompanySaleOne, startCompanySaleTwo, firstUnivDetail.getStartCompanySales(), secondUnivDetail.getStartCompanySales());
+
+        startCompanyCapitalOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getStartCompanyCapital()));
+        startCompanyCapitalTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getStartCompanyCapital()));
+        compareUnivDetailElement(startCompanyCapitalOne, startCompanyCapitalTwo, firstUnivDetail.getStartCompanyCapital(), secondUnivDetail.getStartCompanyCapital());
+
+        schoolStartCompanyFundOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getSchoolStartCompanyFund()));
+        schoolStartCompanyFundTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getSchoolStartCompanyFund()));
+        compareUnivDetailElement(schoolStartCompanyFundOne, schoolStartCompanyFundTwo, firstUnivDetail.getSchoolStartCompanyFund(), secondUnivDetail.getSchoolStartCompanyFund());
+
+        govermentStartCompanyFundOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getGovernmentStartCompanyFund()));
+        govermentStartCompanyFundTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getGovernmentStartCompanyFund()));
+        compareUnivDetailElement(govermentStartCompanyFundOne, govermentStartCompanyFundTwo, firstUnivDetail.getGovernmentStartCompanyFund(), secondUnivDetail.getGovernmentStartCompanyFund());
+
+        profesorForStartCompanyOne.setText(String.valueOf(firstUnivDetail.getProfessorForStartCompany()));
+        profesorForStartCompanyTwo.setText(String.valueOf(secondUnivDetail.getProfessorForStartCompany()));
+        compareUnivDetailElement(profesorForStartCompanyOne, profesorForStartCompanyTwo, firstUnivDetail.getProfessorForStartCompany(), secondUnivDetail.getProfessorForStartCompany());
+
+        staffForStartCompanyOne.setText(String.valueOf(firstUnivDetail.getStaffForStartCompany()));
+        staffForStartCompanyTwo.setText(String.valueOf(secondUnivDetail.getStaffForStartCompany()));
+        compareUnivDetailElement(staffForStartCompanyOne, staffForStartCompanyTwo, firstUnivDetail.getStaffForStartCompany(), secondUnivDetail.getStaffForStartCompany());
+
+        admissionFeeOne.setText(String.valueOf(firstUnivDetail.getAdmissionFee()));
+        admissionFeeTwo.setText(String.valueOf(secondUnivDetail.getAdmissionFee()));
+        compareUnivDetailElement(admissionFeeOne, admissionFeeTwo, firstUnivDetail.getAdmissionFee(), secondUnivDetail.getAdmissionFee());
+
+        averageTuitionOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getAverageTuition()));
+        averageTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getAverageTuition()));
+        compareUnivDetailElement(averageTuitionOne, averageTuitionTwo, firstUnivDetail.getAverageTuition(), secondUnivDetail.getAverageTuition());
+
+        humanitiesSocialTuitionOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getHumanitiesSocialTuition()));
+        humanitiesSocialTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getHumanitiesSocialTuition()));
+        compareUnivDetailElement(humanitiesSocialTuitionOne, humanitiesSocialTuitionTwo, firstUnivDetail.getHumanitiesSocialTuition(), secondUnivDetail.getHumanitiesSocialTuition());
+
+        naturalScienceTuitionOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getNaturalScienceTuition()));
+        naturalScienceTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getNaturalScienceTuition()));
+        compareUnivDetailElement(naturalScienceTuitionOne, naturalScienceTuitionTwo, firstUnivDetail.getNaturalScienceTuition(), secondUnivDetail.getNaturalScienceTuition());
+
+        artMusPhysTuitionOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getArtMusPhysTuition()));
+        artMusPhysTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getArtMusPhysTuition()));
+        compareUnivDetailElement(artMusPhysTuitionOne, artMusPhysTuitionTwo, firstUnivDetail.getArtMusPhysTuition(), secondUnivDetail.getArtMusPhysTuition());
+
+        engineeringTuitionOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getEngineeringTuition()));
+        engineeringTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getEngineeringTuition()));
+        compareUnivDetailElement(engineeringTuitionOne, engineeringTuitionTwo, firstUnivDetail.getEngineeringTuition(), secondUnivDetail.getEngineeringTuition());
+
+        medicalTuitionOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getMedicalTuition()));
+        medicalTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getMedicalTuition()));
+        compareUnivDetailElement(medicalTuitionOne, medicalTuitionTwo, firstUnivDetail.getMedicalTuition(), secondUnivDetail.getMedicalTuition());
+
+        dormitoryAccommodationRateOne.setText(String.valueOf(firstUnivDetail.getDormitoryAccommodationRate()));
+        dormitoryAccommodationRateTwo.setText(String.valueOf(secondUnivDetail.getDormitoryAccommodationRate()));
+        compareUnivDetailElement(dormitoryAccommodationRateOne, dormitoryAccommodationRateTwo, firstUnivDetail.getDormitoryAccommodationRate(), secondUnivDetail.getDormitoryAccommodationRate());
+
+        dispatchedStudentOne.setText(String.valueOf(firstUnivDetail.getDispatchedStudent()));
+        dispatchedStudentTwo.setText(String.valueOf(secondUnivDetail.getDispatchedStudent()));
+        compareUnivDetailElement(dispatchedStudentOne, dispatchedStudentTwo, firstUnivDetail.getDispatchedStudent(), secondUnivDetail.getDispatchedStudent());
+
+        bookTotalOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getBookTotal()));
+        bookTotalTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getBookTotal()));
+        compareUnivDetailElement(bookTotalOne, bookTotalTwo, firstUnivDetail.getBookTotal(), secondUnivDetail.getBookTotal());
+
+        univAreaOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getUnivArea()));
+        univAreaTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getUnivArea()));
+        compareUnivDetailElement(univAreaOne, univAreaTwo, firstUnivDetail.getUnivArea(), secondUnivDetail.getUnivArea());
+
+        numOfFulltimeProfessorOne.setText(String.valueOf(firstUnivDetail.getNumOfFulltimeProfessor()));
+        numOfFulltimeProfessorTwo.setText(String.valueOf(secondUnivDetail.getNumOfFulltimeProfessor()));
+        compareUnivDetailElement(numOfFulltimeProfessorOne, numOfFulltimeProfessorTwo, firstUnivDetail.getNumOfFulltimeProfessor(), secondUnivDetail.getNumOfFulltimeProfessor());
+
+        researchCostPerProfessorOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getResearchCostPerProfessor()));
+        researchCostPerProfessorTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getResearchCostPerProfessor()));
+        compareUnivDetailElement(researchCostPerProfessorOne, researchCostPerProfessorTwo, firstUnivDetail.getResearchCostPerProfessor(), secondUnivDetail.getResearchCostPerProfessor());
+
+        numOfPatentRegistrationOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getNumOfPatentRegistration()));
+        numOfPatentRegistrationTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getNumOfPatentRegistration()));
+        compareUnivDetailElement(numOfPatentRegistrationOne, numOfPatentRegistrationTwo, firstUnivDetail.getNumOfPatentRegistration(), secondUnivDetail.getNumOfPatentRegistration());
     }
 
     public void compareUnivDetailElement(Label n1, Label n2, Long el1, Long el2) {
         if (el1 < el2) {
-            n1.setTextFill(Color.RED);
-        } else {
             n2.setTextFill(Color.RED);
+        } else if(el1 > el2){
+            n1.setTextFill(Color.RED);
         }
     }
 }

@@ -201,7 +201,7 @@
                                     <Button fx:id="btnUnivDetailYearCp" layoutX="803.0" layoutY="17.0" mnemonicParsing="false" onMouseClicked="#clickUnivDetailYearCp" text="조회" />
                                     <BarChart fx:id="barChart" layoutX="14.0" layoutY="17.0" prefHeight="373.0" prefWidth="558.0">
                                       <xAxis>
-                                        <CategoryAxis side="BOTTOM" />
+                                        <CategoryAxis prefHeight="23.0" prefWidth="494.0" side="BOTTOM" />
                                       </xAxis>
                                       <yAxis>
                                         <NumberAxis side="LEFT" />
