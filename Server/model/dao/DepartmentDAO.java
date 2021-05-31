@@ -1,6 +1,8 @@
 package Server.model.dao;
 
 import Server.model.DBCP;
+import Server.model.dto.DepartmentDetailDTO;
+import Server.model.dto.UnivDTO;
 
 import java.sql.*;
 

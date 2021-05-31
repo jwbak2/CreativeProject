@@ -4,7 +4,7 @@ import Server.model.dto.DepartmentRatingDTO;
 
 public class DepartmentRatingDAO {
 
-	public boolean insertDepartmentRating(DepartmentRatingDTO rating) {
+	public boolean insert(DepartmentRatingDTO rating) {
 		return true;
 	}
 
