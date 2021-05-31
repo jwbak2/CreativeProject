@@ -23,7 +23,7 @@ public class ServerMain {
 		System.out.println("서버 초기화");
 
 		TP.init(5, 15, 5); 	// 쓰레드 풀 초기화 (시간단위 : 초)
-		DBCP.init();	  										//DB 커넥션 풀 초기화
+		DBCP.init();	  										// DB 커넥션 풀 초기화
 		SocketManager.init(PORT);								// 서버 소켓 초기화
 		Cache.init(); 										    // Cache 초기화
 

@@ -53,7 +53,7 @@ public class SocketManager {
 
 	}
 
-	public static Socket getSocket() throws SocketException {	// 서버 소켓 반환
+	public static Socket getSocket() {	// 소켓 반환
 		Socket returnSocket = socket;
 		socket = null;
 
