@@ -6,11 +6,13 @@ import Server.model.dto.UnivDetailDTO;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -199,6 +201,8 @@ public class CompareUniv implements Initializable {
     @FXML
     private Label secondUnivName;
 
+    private static final int FIRST_UNIV_DETAIL = 0;
+    private static final int SECOND_UNIV_DETAIL = 1;
 
 
     @Override
@@ -210,7 +214,7 @@ public class CompareUniv implements Initializable {
     @FXML
     void compareUnivDetail(MouseEvent event) {
 
-        Runnable runnable = () -> {     // 다른 스레드로 처리
+        Runnable runnable = () -> {
             try {
                 String[] univList = new String[2];
 
@@ -221,11 +225,8 @@ public class CompareUniv implements Initializable {
 
                 ArrayList<UnivDetailDTO> receivedUnivDetailList = receiveUnivCp();
 
-
                 Platform.runLater(() -> {
-                    // FIXME  0, 1 코드 수정할거임 test용
-                    setUnivDetailInf(receivedUnivDetailList.get(0));    // 첫번쨰 학교 상세정보 화면에 세팅
-                    setUnivDetailInf(receivedUnivDetailList.get(1));    // 두번쨰 학교 상세정보 화면에 세팅
+                    setUnivDetailInf(receivedUnivDetailList);    // 첫번쨰 학교 상세정보 화면에 세팅
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -246,58 +247,42 @@ public class CompareUniv implements Initializable {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
 
+        // TODO 학교이름 찾기 실패 패킷 수신 예외처리
+
         ArrayList<UnivDetailDTO> result = new ArrayList<UnivDetailDTO>();
 
         try {
             ArrayList<?> tmp = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
 
             // 타입 처리
-            for(Object obj : tmp){
-                if(obj instanceof UnivDetailDTO){
+            for (Object obj : tmp) {
+                if (obj instanceof UnivDetailDTO) {
                     result.add((UnivDetailDTO) obj);
                 }
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return result;  // UnivDTO 타입인 Object 반환
     }
 
-    public void setUnivDetailInf(UnivDetailDTO univDetailDTO) {  // UnivDetailDTO GUI에 뿌려주기
-        studentNumberOne.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getStudentNumber()));
-        admissionCompetitionRateOne.setText(univDetailDTO.getAdmissionCompetitionRate() + "%");
-        employmentRateOne.setText(univDetailDTO.getEmploymentRate() + "%");
-        enteringRateOne.setText(univDetailDTO.getEnteringRate() + "%");
-        educationCostPerPersonOne.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getEducationCostPerPerson()));
-        totalScholarshipBenefitOne.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getTotalScholarshipBenefits()));
+    public void setUnivDetailInf(ArrayList<UnivDetailDTO> receivedUnivDetailList) {  // UnivDetailDTO GUI에 뿌려주기
+        UnivDetailDTO firstUnivDetail = receivedUnivDetailList.get(FIRST_UNIV_DETAIL);
+        UnivDetailDTO secondUnivDetail = receivedUnivDetailList.get(SECOND_UNIV_DETAIL);
 
-        foundersNumberOne.setText(String.valueOf(univDetailDTO.getNumberFounders()));
-        startCompanySaleOne.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getStartCompanySales()));
-        //startCompanyCapitalOne.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getStartCompanyCapital()));
-        schoolStartCompanyFundOne.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getSchoolStartCompanyFund()));
-        govermentStartCompanyFundOne.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getGovernmentStartCompanyFund()));
-        profesorForStartCompanyOne.setText(String.valueOf(univDetailDTO.getProfessorForStartCompany()));
-        staffForStartCompanyOne.setText(String.valueOf(univDetailDTO.getStaffForStartCompany()));
+        studentNumberOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstUnivDetail.getStudentNumber()));
+        studentNumberTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondUnivDetail.getStudentNumber()));
+        compareUnivDetailElement(studentNumberOne, studentNumberTwo, firstUnivDetail.getStudentNumber(), secondUnivDetail.getStudentNumber());
 
-        admissionFeeTwo.setText(String.valueOf(univDetailDTO.getAdmissionFee()));
-        //averageTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getAverageTuition()));
-        humanitiesSocialTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getHumanitiesSocialTuition()));
-        naturalScienceTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNaturalScienceTuition()));
-        artMusPhysTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getArtMusPhysTuition()));
-        engineeringTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getEngineeringTuition()));
-        medicalTuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getMedicalTuition()));
 
-        dormitoryAccommodationRateTwo.setText(String.valueOf(univDetailDTO.getDormitoryAccommodationRate()));
-        dispatchedStudentTwo.setText(String.valueOf(univDetailDTO.getDispatchedStudent()));
-        bookTotalTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getBookTotal()));
-        univAreaTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getUnivArea()));
-        numOfFulltimeProfessorTwo.setText(String.valueOf(univDetailDTO.getNumOfFulltimeProfessor()));
-        researchCostPerProfessorTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getResearchCostPerProfessor()));
-        numOfPatentRegistrationTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNumOfPatentRegistration()));
     }
 
-    public void compareUnivDetailElement(Long el1, Long el2){
-
+    public void compareUnivDetailElement(Label n1, Label n2, Long el1, Long el2) {
+        if (el1 < el2) {
+            n1.setTextFill(Color.RED);
+        } else {
+            n2.setTextFill(Color.RED);
+        }
     }
 }
