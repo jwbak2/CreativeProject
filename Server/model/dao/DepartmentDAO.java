@@ -16,7 +16,7 @@ public class DepartmentDAO {
 		Connection conn = DBCP.getConnection();
 		ResultSet rs = null;
 
-		try(PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+		try(PreparedStatement pstmt = conn.prepareStatement(SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
 
 			pstmt.setString(1, univCode);
 

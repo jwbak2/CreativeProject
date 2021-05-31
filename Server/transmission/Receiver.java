@@ -20,18 +20,23 @@ public class Receiver {
 
 		try {
 			// head 수신 및 설정
-			pt = (Protocol) ois.readObject();
+			while ((pt = (Protocol) ois.readObject()) == null) {
+				System.out.println("Receiver.receive() - null");
+				return null;
+			}
 			System.out.println("패킷 수신 완료");
 
-//		} catch (SocketException e) {
-//			System.out.println("소켓 예외 발생");
-//			e.printStackTrace();
-//			pt = null;
+		} catch (EOFException e) {
+			System.out.print("End Of File 예외 발생");
+			e.printStackTrace();
+
+		} catch (SocketException e) {
+			System.out.println("소켓 예외 발생");
+			e.printStackTrace();
 
 		} catch (ClassNotFoundException | IOException e) {
 			System.out.println("입출력 예외 발생");
 			e.printStackTrace();
-			pt = null;
 
 		}
 
