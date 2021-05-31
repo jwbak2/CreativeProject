@@ -32,7 +32,7 @@ public class Classifier {
 						break;
 
 						// 학과 조회 요청
-					case Protocol.PT_REQ_DEPT_INF:
+					case Protocol.PT_REQ_DEPT_DETAIL:
 						controller.inquiryDepartmentInfo( (String) body);
 						break;
 

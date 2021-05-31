@@ -23,16 +23,19 @@ public class ConnectRunnable implements Runnable{
             Classifier classifier = new Classifier();
 
             while (true) {
-                classifier.classify(receiver.receive());
+                if (socket.isConnected() && !socket.isClosed())
+                {
+                    // 소켓 연결 상태 확인 완료
+                    classifier.classify(receiver.receive());
+                }
+                else
+                {
+                    // 소켓 연결 끊어짐
+                    System.out.println("---클라이언트 통신 종료---");
+                    socket.close();
+                    break;
+                }
 
-//              RequestHandler reqHandler = classifier.classify(receiver.receive());
-//              reqHandler.handleRequest();
-
-//              System.out.println("요청 핸들링 끝");
-//              do {
-//                  System.out.println("응답 전송");
-//                  sender.send(reqHandler.getType(), reqHandler.getCode(), reqHandler.getBody());
-//              } while (reqHandler.hasMessage());
             }
 
         } catch (Exception e) {

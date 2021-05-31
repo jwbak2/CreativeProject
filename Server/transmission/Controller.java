@@ -1,6 +1,7 @@
 package Server.transmission;
 
 import Server.controller.DepartmentDetail;
+import Server.controller.Rating;
 import Server.controller.UnivDetail;
 import Client.vo.LoginReqVO;
 import Server.model.dao.UserDAO;
@@ -34,6 +35,7 @@ public class Controller {
 
 		} catch (Exception e) {
 			System.out.println("Controller - 대학 상세정보 조회 오류");
+			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_UNIV_INF));
 			e.printStackTrace();
 
 		}
@@ -42,9 +44,17 @@ public class Controller {
 
 	// 학과 상세정보 조회 요청 처리
 	public void inquiryDepartmentInfo(String deptName) {
+		try	{
 			DepartmentDetail deptDetail = new DepartmentDetail();
 
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_DEPT_INF, deptDetail.getDepartmentDetail(deptName));
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_DEPT_DETAIL, deptDetail.getDepartmentDetail(deptName));
+
+		} catch (Exception e) {
+			System.out.println("Controller - 학과 상세정보 조회 오류");
+			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_DEPT_INF));
+			e.printStackTrace();
+
+		}
 	}
 
 	// 대학 비교 요청 처리
@@ -56,19 +66,39 @@ public class Controller {
 
 		} catch (Exception e) {
 			System.out.println("Controller - 대학 비교 오류");
+			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_UNIV_CP));
 			e.printStackTrace();
 
 		}
 	}
 
 	// 대학 평가 등록 요청 처리
-	public void registerUnivRating(UnivRatingDTO rating) {
+	public void registerUnivRating(UnivRatingDTO content) {
 		// TODO: 로직 필요
+		Rating rating = new Rating();
+
+		if (rating.registerUnivRating(content)) {
+			Sender.send(new Protocol(Protocol.PT_SUCC, Protocol.PT_SUCC_UNIV_RATING));
+		}
+		else {
+			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_UNIV_RATING));
+		}
+
 	}
 
 	// 학과 평가 등록 요청 처리
-	public void registerDepartmentRating(DepartmentRatingDTO rating) {
+	public void registerDepartmentRating(DepartmentRatingDTO content) {
 		// TODO: 로직 필요
+		// TODO: 로직 필요
+		Rating rating = new Rating();
+
+		if (rating.registerDeptRating(content)) {
+			Sender.send(new Protocol(Protocol.PT_SUCC, Protocol.PT_SUCC_DEPT_RATING));
+		}
+		else {
+			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_DEPT_RATING));
+		}
+
 	}
 
 	// 로그인 요청 처리
