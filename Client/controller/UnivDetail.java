@@ -5,7 +5,6 @@ import Server.model.dto.UnivDTO;
 import Client.transmission.Connection;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,7 +23,6 @@ import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -204,37 +202,24 @@ public class UnivDetail implements Initializable {
         tableDeptList.getSelectionModel().selectedItemProperty().addListener(
                 (ObservableValue<?> observable, Object oldValue, Object newValue) -> selectedDeptName = newValue.toString()
         );
-
-//        tabUnivIntro.setOnSelectionChanged(event -> {
-//            if(!checkTab[0]){
-//                System.out.println("1");
-//            }
-//        });
-//
-//        tabUnivDetail.setOnSelectionChanged(event -> {
-//            System.out.println("2");
-//        });
-//
-//        tabYearCp.setOnSelectionChanged(event -> {
-//            System.out.println("3");
-//        });
-//
-//        tabUnivDeptList.setOnSelectionChanged(event -> {
-//            System.out.println("4");
-//        });
     }
 
     void requestUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
+                long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
                 // 학교 상세정보 요청
-                requestUnivInf();
+                sendUnivInf();
 
                 // 응답 처리
                 UnivDTO univDTO = receiveUnivDTO();
                 univDtoList =  receiveUnivDetailDTO();
                 String[] univDeptList = receiveUnivDeptList();
 
+
+                long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+
+                System.out.println("송수신 시간 : " +  (afterTime - beforeTime));
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
@@ -248,6 +233,8 @@ public class UnivDetail implements Initializable {
                     setUnivDeptList(univDeptList);  // deptList Listview 추가
 
                     // TODO 즐겨찾기 리스트도 필요
+                    long b = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+
 
                 });
             } catch (Exception e) {
@@ -259,8 +246,7 @@ public class UnivDetail implements Initializable {
         th.start();
     }
 
-
-    void requestUnivInf() throws Exception {
+    void sendUnivInf() throws Exception {
         // input에 입력한 학교 이름 추출 + 공백 제거
         String univName = inputUniv.getText().replace(" ", "");
         System.out.println("입력한 대학교 : " + univName);
@@ -392,8 +378,10 @@ public class UnivDetail implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/departmentDetail.fxml"));
             Parent root = loader.load();    // Parent load, 여기서 controller init도 됨
 
+            // UnivDetail 컨트롤러에서 DepartmentDetail 컨트롤러로 값넘겨줌
             DepartmentDetail controller = loader.getController();
-            controller.setDeptName(selectedDeptName);     // 학과 이름 set
+            controller.setUnivName(textUnivName.getText()); // 학교 이름
+            controller.setDeptName(selectedDeptName);       // 학과 이름
 
             spUnivDetail.getChildren().add(root);
         } catch (IOException e) {
