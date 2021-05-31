@@ -162,7 +162,8 @@
                         <Label fx:id="averageTuitionOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="14" />
                         <Label fx:id="studentNumberOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" />
                         <Label fx:id="admissionCompetitionRateTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label fx:id="startCompanyCapitalOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="8" />
+                        <Label fx:id="startCompanyCapitalOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="8" />
+                        <Label fx:id="averageTuitionTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="14" />
                      </children>
                   </GridPane>
                </children>

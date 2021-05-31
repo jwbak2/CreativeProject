@@ -5,7 +5,6 @@ import Server.model.dto.UnivDTO;
 import Client.transmission.Connection;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -24,7 +25,6 @@ import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -176,8 +176,17 @@ public class UnivDetail implements Initializable {
     @FXML
     private AnchorPane apUnivMain;
 
+    @FXML
+    private ComboBox<String> comboIndicator;
+
+    @FXML
+    private BarChart<String, Number> barChart;
+
+
     private String homepageURL;
+
     private String selectedDeptName;
+
     private ArrayList<UnivDetailDTO> univDtoList;   // 2018 ~ 2020 UnivDetailDTO 담는 어레이리스트
 
 //    private final boolean[] checkTab;   // tab 이동
@@ -187,7 +196,7 @@ public class UnivDetail implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources){
+    public void initialize(URL location, ResourceBundle resources) {
 //        TextFields.bindAutoCompletion(inputUniv, Home.getArr()); // 텍스트필드 자동완성
 
         // 대학교 입력할떄 엔터누르는 이벤트 추가
@@ -204,37 +213,24 @@ public class UnivDetail implements Initializable {
         tableDeptList.getSelectionModel().selectedItemProperty().addListener(
                 (ObservableValue<?> observable, Object oldValue, Object newValue) -> selectedDeptName = newValue.toString()
         );
-
-//        tabUnivIntro.setOnSelectionChanged(event -> {
-//            if(!checkTab[0]){
-//                System.out.println("1");
-//            }
-//        });
-//
-//        tabUnivDetail.setOnSelectionChanged(event -> {
-//            System.out.println("2");
-//        });
-//
-//        tabYearCp.setOnSelectionChanged(event -> {
-//            System.out.println("3");
-//        });
-//
-//        tabUnivDeptList.setOnSelectionChanged(event -> {
-//            System.out.println("4");
-//        });
     }
 
     void requestUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
+                long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
                 // 학교 상세정보 요청
-                requestUnivInf();
+                sendUnivInf();
 
                 // 응답 처리
                 UnivDTO univDTO = receiveUnivDTO();
-                univDtoList =  receiveUnivDetailDTO();
+                univDtoList = receiveUnivDetailDTO();
                 String[] univDeptList = receiveUnivDeptList();
 
+
+                long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+
+                System.out.println("송수신 시간 : " + (afterTime - beforeTime));
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
@@ -248,6 +244,8 @@ public class UnivDetail implements Initializable {
                     setUnivDeptList(univDeptList);  // deptList Listview 추가
 
                     // TODO 즐겨찾기 리스트도 필요
+                    long b = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+
 
                 });
             } catch (Exception e) {
@@ -259,8 +257,7 @@ public class UnivDetail implements Initializable {
         th.start();
     }
 
-
-    void requestUnivInf() throws Exception {
+    void sendUnivInf() throws Exception {
         // input에 입력한 학교 이름 추출 + 공백 제거
         String univName = inputUniv.getText().replace(" ", "");
         System.out.println("입력한 대학교 : " + univName);
@@ -277,7 +274,7 @@ public class UnivDetail implements Initializable {
     public UnivDTO receiveUnivDTO() throws Exception {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
-        
+
         if (receivePT.getProtocolType() == Protocol.PT_FAIL
                 && receivePT.getProtocolCode() == Protocol.PT_FAIL_UNIV_INF) {    // 입력한 학교명이 존재하지 않을떄
 
@@ -290,16 +287,16 @@ public class UnivDetail implements Initializable {
                 pu.getContent().add(root);
                 pu.setAutoHide(true); // 포커스 이동시 창 숨김
                 pu.show(stage);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
             throw new Exception("입력한 학교명은 존재하지 않습니다.");             // 실패 패킷 수신 예외처리
         }
-        
+
         return (UnivDTO) receivedBody;       // 학교 정보 receive
     }
-    
+
     public ArrayList<UnivDetailDTO> receiveUnivDetailDTO() {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
@@ -309,21 +306,21 @@ public class UnivDetail implements Initializable {
 
         // 타입 처리
         ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
-        for(Object obj : ar){
-            if(obj instanceof UnivDetailDTO){
+        for (Object obj : ar) {
+            if (obj instanceof UnivDetailDTO) {
                 tmp.add((UnivDetailDTO) obj);
             }
         }
-        
+
         return tmp;
     }
 
-    public String[] receiveUnivDeptList(){
+    public String[] receiveUnivDeptList() {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
 
         // 학과 리스트
-        return (String [])receivedBody;
+        return (String[]) receivedBody;
     }
 
     public void setUnivInf(UnivDTO univDTO) {    // UnivDTO GUI에 뿌려주기
@@ -372,7 +369,7 @@ public class UnivDetail implements Initializable {
         numOfPatentRegistration.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNumOfPatentRegistration()));
     }
 
-    public void setUnivDeptList(String[] deptList){  //
+    public void setUnivDeptList(String[] deptList) {  //
         ObservableList list = FXCollections.observableArrayList(deptList);
         tableDeptList.setItems(list);
     }
@@ -392,12 +389,49 @@ public class UnivDetail implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/departmentDetail.fxml"));
             Parent root = loader.load();    // Parent load, 여기서 controller init도 됨
 
+            // UnivDetail 컨트롤러에서 DepartmentDetail 컨트롤러로 값넘겨줌
             DepartmentDetail controller = loader.getController();
-            controller.setDeptName(selectedDeptName);     // 학과 이름 set
+            controller.setUnivName(textUnivName.getText()); // 학교 이름
+            controller.setDeptName(selectedDeptName);       // 학과 이름
 
             spUnivDetail.getChildren().add(root);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void clickUnivDetailYearCp(MouseEvent event) {
+        String indicatorName = comboIndicator.getValue();
+
+        // barChart 요소 init
+        XYChart.Series[] series = new XYChart.Series[3];
+
+        for(int i = 0; i < 3; i++){
+            series[i] = new XYChart.Series<String, Number>();
+        }
+
+        series[0].setName("2018");
+        series[1].setName("2019");
+        series[2].setName("2020");
+
+        switch (indicatorName) {
+            case "지표1":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("진학률", univDtoList.get(i).getEnteringRate())
+                    ));
+                }
+
+                break;
+            case "지표2":
+
+                break;
+        }
+
+        // barChart에 series 추가
+        for(int i = 0; i < 3; i++){
+            barChart.getData().add(series[i]);
         }
     }
 }
