@@ -25,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -197,7 +198,7 @@ public class UnivDetail implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        TextFields.bindAutoCompletion(inputUniv, Home.getArr()); // 텍스트필드 자동완성
+        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
 
         // 대학교 입력할떄 엔터누르는 이벤트 추가
         inputUniv.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -406,6 +407,8 @@ public class UnivDetail implements Initializable {
 
         // barChart 요소 init
         XYChart.Series[] series = new XYChart.Series[3];
+
+        // FIXME XYseries 초기화
 
         for(int i = 0; i < 3; i++){
             series[i] = new XYChart.Series<String, Number>();

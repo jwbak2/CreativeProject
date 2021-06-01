@@ -1,6 +1,7 @@
 package Client.controller;
 
 import Client.transmission.Connection;
+import Server.model.dto.UnivDetailDTO;
 import Server.transmission.Protocol;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,18 +34,11 @@ public class Home implements Initializable {
     @FXML
     private Circle profile;
 
-//    private static ArrayList<String> univList;
+    private static ArrayList<String> univList;
 
-//    public static ArrayList<String> getUnivList(){
-//        return Home.univList;
-//    }
-
-    public static String[] arr;
-
-    public static String[] getArr(){
-        return arr;
+    public static ArrayList<String> getUnivList(){
+        return Home.univList;
     }
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -53,7 +47,8 @@ public class Home implements Initializable {
         profile.setFill(new ImagePattern(img));
 
         // 학교 리스트 요청
-//        requestUnivList();
+        univList = new ArrayList<String>();
+        requestUnivList();
     }
 
     @FXML
@@ -133,19 +128,14 @@ public class Home implements Initializable {
         Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_LIST));        // 패킷 전송
 
         Protocol receivePT = Connection.receive();  // receive data
+        Object receivedBody = receivePT.getBody();
 
-        ArrayList<String> ar = (ArrayList<String>) receivePT.getBody();
-        arr = new String[3];
-
-        for(int i = 0 ; i < 3;i ++){
-            arr[i] = ar.get(i);
+        // 타입 처리
+        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+        for (Object obj : ar) {
+            if (obj instanceof String) {
+                univList.add((String) obj);
+            }
         }
-
-//        for(Object obj : ar){
-//            System.out.println(obj);
-//            if(obj instanceof String){
-//                univList.add((String) obj);
-//            }
-//        }
     }
 }
