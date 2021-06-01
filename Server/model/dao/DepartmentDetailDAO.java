@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class DepartmentDetailDAO {
 
 	//id로 select 연산 수행
-	public DepartmentDetailDTO select(String deptID, int deptYear) throws Exception {
+	public DepartmentDetailDTO select(String deptID, int deptYear) {
 
 		Connection conn = DBCP.getConnection();
 
@@ -73,10 +73,16 @@ public class DepartmentDetailDAO {
 			sqle.printStackTrace();
 
 		} finally {
-			if (conn != null)
+			if (conn != null) {
 				DBCP.returnConnection(conn);
-			if (rs != null)
-				try { rs.close(); } catch(SQLException sqle){System.out.println("Exception : SELECT"); sqle.printStackTrace();}
+			} if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException sqle) {
+					System.out.println("Exception : SELECT");
+					sqle.printStackTrace();
+				}
+			}
 
 		}
 

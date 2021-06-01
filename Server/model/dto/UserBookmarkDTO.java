@@ -1,6 +1,8 @@
 package Server.model.dto;
 
-public class UserBookmarkDTO {
+import java.io.Serializable;
+
+public class UserBookmarkDTO implements Serializable {
     private String userEmail;
     private String univId;
 

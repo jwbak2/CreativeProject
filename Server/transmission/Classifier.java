@@ -1,5 +1,6 @@
 package Server.transmission;
 
+import Client.vo.DeptInfoReqVO;
 import Client.vo.LoginReqVO;
 import Server.model.dto.DepartmentRatingDTO;
 import Server.model.dto.UnivRatingDTO;
@@ -31,9 +32,9 @@ public class Classifier {
 						controller.inquiryUnivInfo( (String) body);
 						break;
 
-						// 학과 조회 요청
+					// 학과 조회 요청
 					case Protocol.PT_REQ_DEPT_DETAIL:
-						controller.inquiryDepartmentInfo( (String) body);
+						controller.inquiryDepartmentInfo( (DeptInfoReqVO) body);
 						break;
 
 					// 대학 리스트 요청
@@ -46,17 +47,24 @@ public class Classifier {
 						controller.compareTwoUniv( (ArrayList<String>) body);
 						break;
 
+					// 학과 비교 요청
+					case Protocol.PT_REQ_DEPT_CP:
+						controller.compareTwoDept((ArrayList<String>) body);
+						break;
+
 					// 대학 평점 등록
 					case Protocol.PT_REQ_UNIV_RATING:
 						controller.registerUnivRating( (UnivRatingDTO) body);
 
-						// 학과 평점 등록
+					// 학과 평점 등록
 					case Protocol.PT_REQ_DEPT_RATING:
 						controller.registerDepartmentRating( (DepartmentRatingDTO) body);
 
-						// 대학, 학과 비교 -> 아마 분리 해아할 듯
-						// 대학 학과를 비교하려면 대학, 학과를 선택할 수 있어야지
-						// 대학 리스트 요청, 학과 리스트 요청도 있을 듯?
+					case Protocol.PT_REQ_DEPT_RATING_LIST:
+//						controller.inquiryDepartmentRatingList();
+						// TODO: 학과 평가 리스트 요청 로직 필요
+						break;
+
 //					case Protocol.대학비교요청:
 //						sender.compareTwoUniv(p.getBody());
 //

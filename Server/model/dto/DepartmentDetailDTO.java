@@ -1,6 +1,8 @@
 package Server.model.dto;
 
-public class DepartmentDetailDTO {
+import java.io.Serializable;
+
+public class DepartmentDetailDTO implements Serializable {
     private Long year;
     private String departmentId;
     private Long admissionFee;

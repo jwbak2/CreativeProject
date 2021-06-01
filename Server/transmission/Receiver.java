@@ -27,16 +27,16 @@ public class Receiver {
 			System.out.println("패킷 수신 완료");
 
 		} catch (EOFException e) {
-			System.out.print("End Of File 예외 발생");
-			e.printStackTrace();
+			System.out.println("receive() - End Of File 예외 발생");
+			try { ois.close(); } catch (IOException ioe) { e.printStackTrace(); }
 
 		} catch (SocketException e) {
-			System.out.println("소켓 예외 발생");
-			e.printStackTrace();
+			System.out.println("receive() - 소켓 예외 발생");
+			try { ois.close(); } catch (IOException ioe) { e.printStackTrace(); }
 
 		} catch (ClassNotFoundException | IOException e) {
-			System.out.println("입출력 예외 발생");
-			e.printStackTrace();
+			System.out.println("receive() - 입출력 예외 발생");
+			try { ois.close(); } catch (IOException ioe) { e.printStackTrace(); }
 
 		}
 
