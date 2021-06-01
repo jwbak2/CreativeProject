@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -120,6 +121,11 @@ public class DepartmentDetail implements Initializable{
     @FXML
     private AnchorPane apDeptDetail;
 
+    @FXML
+    private Tab tabDeptRating;
+
+    private boolean checkTabDeptRating;
+
     private String univName;         // 해당 학과의 학교 이름
 
     private String deptName;        // 학교 상세정보에서 누른 학과 이름
@@ -136,6 +142,18 @@ public class DepartmentDetail implements Initializable{
     public void initialize(URL location, ResourceBundle resources) {
         // 학과 상세정보 및 학과 평가 리스트 요청
         requestDeptInf();
+
+        // SelectionChanged는 tab open, close 둘다 이벤트 발생해서 boolean 변수 사용해서 처음 한번만 처리
+        checkTabDeptRating = false;
+
+        // 탭 클릭 시 학과 평가 리스트 요청 이벤트 등록
+        tabDeptRating.setOnSelectionChanged(event -> {
+            if (!checkTabDeptRating){
+                checkTabDeptRating = true;
+
+                requestDeptRatingList();
+            }
+        });
     }
 
     public void requestDeptInf(){
@@ -157,19 +175,10 @@ public class DepartmentDetail implements Initializable{
                     // 학과 상세정보 리스트 수신
                     deptDtoList = receiveDeptDetailDTOList();
 
-                    // 학과 평가 리스트 요청
-                    Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST));
-
-                    // 학과 평가 리스트 수신
-                    ArrayList<DepartmentRatingDTO> departmentRatingList = receiveDeptRatingDTOList();
-
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018
                     Platform.runLater(() -> {
                         // set 학과 상세정보
                         setUnivDeptList(deptDtoList.get(0));
-
-                        // set 학과 평가 리스트
-                        setDeptRatingList(departmentRatingList);
                     });
 
                 } catch (Exception e) {
@@ -181,6 +190,23 @@ public class DepartmentDetail implements Initializable{
         timer.schedule(timerTask, 1000);
     }
 
+    public void requestDeptRatingList(){
+        Runnable runnable = () -> {
+            // 학과 평가 리스트 요청
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST));
+
+            // 학과 평가 리스트 수신
+            ArrayList<DepartmentRatingDTO> departmentRatingList = receiveDeptRatingDTOList();
+
+            Platform.runLater(() -> {
+                // set 학과 평가 리스트
+                setDeptRatingList(departmentRatingList);
+            });
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
+    }
 
     @FXML
     void clickDeptDetailExit(MouseEvent event) {
