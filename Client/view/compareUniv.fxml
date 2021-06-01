@@ -14,13 +14,13 @@
    <children>
       <TextField fx:id="inputFirstUniv" layoutX="84.0" layoutY="47.0" prefHeight="51.0" prefWidth="263.0" />
 <!--      <Button fx:id="btnCp" layoutX="788.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#clickBtnCp" prefHeight="51.0" prefWidth="98.0" text="비교" />-->
-      <TextField fx:id="inputSecondUniv" layoutX="501.0" layoutY="47.0" prefHeight="51.0" prefWidth="263.0" />
-      <Button fx:id="BtnCompareUnivDetail" layoutX="788.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#compareUnivDetail" prefHeight="51.0" prefWidth="92.0" text="비교" />
+      <TextField fx:id="inputSecondUniv" layoutX="552.0" layoutY="47.0" prefHeight="51.0" prefWidth="263.0" />
+      <Button fx:id="BtnCompareUnivDetail" layoutX="404.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#compareUnivDetail" prefHeight="51.0" prefWidth="92.0" text="비교" />
       <ScrollPane hbarPolicy="NEVER" layoutY="177.0" prefHeight="623.0" prefWidth="900.0">
          <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="1019.0" prefWidth="902.0">
                <children>
-                  <GridPane fx:id="cpPaneOne1" layoutX="211.0" layoutY="580.0" prefHeight="582.0" prefWidth="421.0">
+                  <GridPane fx:id="cpPaneOne1" layoutX="240.0" layoutY="580.0" prefHeight="582.0" prefWidth="421.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -94,7 +94,7 @@
                         <Label fx:id="humanitiesSocialTuitionOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" />
                      </children>
                   </GridPane>
-                  <GridPane fx:id="cpPaneOne" layoutX="211.0" prefHeight="582.0" prefWidth="421.0">
+                  <GridPane fx:id="cpPaneOne" layoutX="240.0" prefHeight="582.0" prefWidth="421.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

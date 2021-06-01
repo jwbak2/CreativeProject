@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 
 public class ClientMain extends Application {
 
-    static final String SERVER_IP = "127.0.0.1";
-    static final int PORT = 5500;
+    public static final String SERVER_IP = "127.0.0.1";
+    public static final int PORT = 5500;
 
     public static void main(String[] args) {
         launch(args);
@@ -23,8 +23,7 @@ public class ClientMain extends Application {
 
         // TODO 서버 접속 실패시 예외처리 필요
         new Connection(SERVER_IP, PORT);
-        System.out.println("IP : " + SERVER_IP + ", Port : " + PORT);
-        System.out.println("서버 접속 성공");
+
     }
 
 
@@ -32,7 +31,7 @@ public class ClientMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         Font.loadFont(getClass().getResourceAsStream("./resource/font/NotoSansKR-Bold.otf"), 10);    // 외부 폰트 사용
 
-        Parent root = FXMLLoader.load(getClass().getResource("./view/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("./view/home.fxml"));
         primaryStage.setTitle("로그인");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);   // 화면 크기 고정

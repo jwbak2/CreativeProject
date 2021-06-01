@@ -188,7 +188,7 @@ public class UnivDetail implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
+//        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
 
         // tab 처음 상태 초기화
         checkTabUnivDeptList = false;
@@ -445,16 +445,43 @@ public class UnivDetail implements Initializable {
         series[2].setName("2020");
 
         switch (indicatorName) {
-            case "지표1":
+            case "재학생 수":
                 for (int i = 0; i < 3; i++) {
                     series[i].setData(FXCollections.observableArrayList(
-                            new XYChart.Data<String, Number>("진학률", univDtoList.get(i).getEnteringRate())
+                            new XYChart.Data<String, Number>("재학생 수", univDtoList.get(i).getStudentNumber())
                     ));
                 }
-
                 break;
-            case "지표2":
-
+            case "입학경쟁률":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("입학경쟁률", univDtoList.get(i).getAdmissionCompetitionRate())
+                    ));
+                }
+                break;
+            case "취업률":
+                break;
+            case "진학률":
+                break;
+            case "1인당 교육비":
+                break;
+            case "장학금 수혜 현황":
+                break;
+            case "학생의 창업 및 창업 지원 현황":
+                break;
+            case "등록금 현황":
+                break;
+            case "기숙사 수용률":
+                break;
+            case "외국대학 파견인원":
+                break;
+            case "도서자료 총계":
+                break;
+            case "교지 면적":
+                break;
+            case "연구비 수혜 실적":
+                break;
+            case "특허 출원 및 등록 실적":
                 break;
         }
 

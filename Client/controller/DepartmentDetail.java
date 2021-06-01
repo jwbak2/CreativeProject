@@ -187,7 +187,7 @@ public class DepartmentDetail implements Initializable{
             }
         };
 
-        timer.schedule(timerTask, 1000);
+        timer.schedule(timerTask, 500);
     }
 
     public void requestDeptRatingList(){
