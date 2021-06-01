@@ -157,15 +157,6 @@ public class UnivDetail implements Initializable {
     private AnchorPane mainAp;
 
     @FXML
-    private Tab tabUnivIntro;
-
-    @FXML
-    private Tab tabUnivDetail;
-
-    @FXML
-    private Tab tabYearCp;
-
-    @FXML
     private Tab tabUnivDeptList;
 
     @FXML
@@ -183,14 +174,13 @@ public class UnivDetail implements Initializable {
     @FXML
     private BarChart<String, Number> barChart;
 
+    private boolean checkTabUnivDeptList;
 
     private String homepageURL;
 
     private String selectedDeptName;
 
     private ArrayList<UnivDetailDTO> univDtoList;   // 2018 ~ 2020 UnivDetailDTO 담는 어레이리스트
-
-//    private final boolean[] checkTab;   // tab 이동
 
     public StackPane getSpUnivDetail() {
         return spUnivDetail;
@@ -199,6 +189,9 @@ public class UnivDetail implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
+
+        // tab 처음 상태 초기화
+        checkTabUnivDeptList = false;
 
         // 대학교 입력할떄 엔터누르는 이벤트 추가
         inputUniv.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -214,12 +207,18 @@ public class UnivDetail implements Initializable {
         tableDeptList.getSelectionModel().selectedItemProperty().addListener(
                 (ObservableValue<?> observable, Object oldValue, Object newValue) -> selectedDeptName = newValue.toString()
         );
+
+        // 학과 리스트 탭 클릭 시 학과 리스트 요청 이벤트 추가
+        tabUnivDeptList.setOnSelectionChanged((event) -> {
+            checkTabUnivDeptList = true;
+
+            requestDeptListOfUniv();
+        });
     }
 
     void requestUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
-                long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
                 // 학교 상세정보 요청
                 sendUnivInf();
 
@@ -227,11 +226,6 @@ public class UnivDetail implements Initializable {
                 UnivDTO univDTO = receiveUnivDTO();
                 univDtoList = receiveUnivDetailDTO();
                 ArrayList<String> univDeptList = receiveUnivDeptList();
-
-
-                long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-
-                System.out.println("송수신 시간 : " + (afterTime - beforeTime));
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
@@ -248,6 +242,26 @@ public class UnivDetail implements Initializable {
                     long b = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
 
 
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
+    }
+
+    void requestDeptListOfUniv() {
+        Runnable runnable = () -> {     // 다른 스레드로 처리
+            try {
+                Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV));
+
+                ArrayList<String> univDeptList = receiveUnivDeptList();
+
+                Platform.runLater(() -> {
+                    // 학과 리스트 tab
+                    setUnivDeptList(univDeptList);  // deptList Listview 추가
                 });
             } catch (Exception e) {
                 e.printStackTrace();

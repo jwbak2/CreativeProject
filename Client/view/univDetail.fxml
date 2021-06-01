@@ -221,6 +221,9 @@
                               </AnchorPane>
                            </content>
                       </Tab>
+                        <Tab text="지도">
+
+                        </Tab>
                     </tabs>
       
                   </TabPane>
