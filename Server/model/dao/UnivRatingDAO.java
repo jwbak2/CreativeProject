@@ -16,11 +16,11 @@ public class UnivRatingDAO {
 
 		Connection conn = DBCP.getConnection();
 
-		String SQL = "INSERT INTO crtvp.\"univ_rating\"(\"user_email\", \"univ_id\", \"content\", \"score\", \"creation_date\") VALUES(?,?,?,?,?)";
+		String SQL = "INSERT INTO crtvp.\"user_email\", \"univ_id\", \"content\", \"score\", \"creation_date\" VALUES(?,?,?,?,?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 
-			pstmt.setString(1,rating.getUserEmail());
+			pstmt.setString(1, rating.getUserEmail());
 			pstmt.setString(2, rating.getUnivId());
 			pstmt.setString(3, rating.getContent());
 			pstmt.setLong(4, rating.getScore());
