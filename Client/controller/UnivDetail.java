@@ -226,7 +226,7 @@ public class UnivDetail implements Initializable {
                 // 응답 처리
                 UnivDTO univDTO = receiveUnivDTO();
                 univDtoList = receiveUnivDetailDTO();
-                String[] univDeptList = receiveUnivDeptList();
+                ArrayList<String> univDeptList = receiveUnivDeptList();
 
 
                 long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
@@ -316,12 +316,22 @@ public class UnivDetail implements Initializable {
         return tmp;
     }
 
-    public String[] receiveUnivDeptList() {
+    public ArrayList<String> receiveUnivDeptList() {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
 
         // 학과 리스트
-        return (String[]) receivedBody;
+        ArrayList<String> tmp = new ArrayList<>();   //
+
+        // 타입 처리
+        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+        for (Object obj : ar) {
+            if (obj instanceof String) {
+                tmp.add((String) obj);
+            }
+        }
+
+        return tmp;
     }
 
     public void setUnivInf(UnivDTO univDTO) {    // UnivDTO GUI에 뿌려주기
@@ -370,7 +380,7 @@ public class UnivDetail implements Initializable {
         numOfPatentRegistration.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNumOfPatentRegistration()));
     }
 
-    public void setUnivDeptList(String[] deptList) {  //
+    public void setUnivDeptList(ArrayList<String> deptList) {  //
         ObservableList list = FXCollections.observableArrayList(deptList);
         tableDeptList.setItems(list);
     }
@@ -404,16 +414,18 @@ public class UnivDetail implements Initializable {
     @FXML
     void clickUnivDetailYearCp(MouseEvent event) {
         String indicatorName = comboIndicator.getValue();
+        
+        // 이전 barChart 내용 초기화
+        barChart.getData().clear();
 
         // barChart 요소 init
         XYChart.Series[] series = new XYChart.Series[3];
 
-        // FIXME XYseries 초기화
-
         for(int i = 0; i < 3; i++){
             series[i] = new XYChart.Series<String, Number>();
         }
-
+        
+        // 요소 이름 초기화
         series[0].setName("2018");
         series[1].setName("2019");
         series[2].setName("2020");
