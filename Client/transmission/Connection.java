@@ -3,6 +3,8 @@ package Client.transmission;
 import java.io.*;
 import java.lang.instrument.Instrumentation;
 import java.net.Socket;
+
+import Client.ClientMain;
 import Server.transmission.Protocol;
 
 public class Connection {
@@ -15,6 +17,9 @@ public class Connection {
             socket = new Socket(ip, port);  //통신 소켓 생성
             oos = new ObjectOutputStream(socket.getOutputStream());
             ois = new ObjectInputStream(socket.getInputStream());   //get stream
+
+            System.out.println("IP : " + ClientMain.SERVER_IP + ", Port : " + ClientMain.PORT);
+            System.out.println("서버 접속 성공");
         } catch (Exception e) {
             e.printStackTrace();
         }

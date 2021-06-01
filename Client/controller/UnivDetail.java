@@ -25,6 +25,7 @@ import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.awt.Desktop;
 import java.io.*;
@@ -156,15 +157,6 @@ public class UnivDetail implements Initializable {
     private AnchorPane mainAp;
 
     @FXML
-    private Tab tabUnivIntro;
-
-    @FXML
-    private Tab tabUnivDetail;
-
-    @FXML
-    private Tab tabYearCp;
-
-    @FXML
     private Tab tabUnivDeptList;
 
     @FXML
@@ -182,6 +174,7 @@ public class UnivDetail implements Initializable {
     @FXML
     private BarChart<String, Number> barChart;
 
+    private boolean checkTabUnivDeptList;
 
     private String homepageURL;
 
@@ -189,15 +182,16 @@ public class UnivDetail implements Initializable {
 
     private ArrayList<UnivDetailDTO> univDtoList;   // 2018 ~ 2020 UnivDetailDTO 담는 어레이리스트
 
-//    private final boolean[] checkTab;   // tab 이동
-
     public StackPane getSpUnivDetail() {
         return spUnivDetail;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        TextFields.bindAutoCompletion(inputUniv, Home.getArr()); // 텍스트필드 자동완성
+//        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
+
+        // tab 처음 상태 초기화
+        checkTabUnivDeptList = false;
 
         // 대학교 입력할떄 엔터누르는 이벤트 추가
         inputUniv.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -213,12 +207,18 @@ public class UnivDetail implements Initializable {
         tableDeptList.getSelectionModel().selectedItemProperty().addListener(
                 (ObservableValue<?> observable, Object oldValue, Object newValue) -> selectedDeptName = newValue.toString()
         );
+
+        // 학과 리스트 탭 클릭 시 학과 리스트 요청 이벤트 추가
+        tabUnivDeptList.setOnSelectionChanged((event) -> {
+            checkTabUnivDeptList = true;
+
+            requestDeptListOfUniv();
+        });
     }
 
     void requestUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
-                long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
                 // 학교 상세정보 요청
                 sendUnivInf();
 
@@ -226,11 +226,6 @@ public class UnivDetail implements Initializable {
                 UnivDTO univDTO = receiveUnivDTO();
                 univDtoList = receiveUnivDetailDTO();
                 ArrayList<String> univDeptList = receiveUnivDeptList();
-
-
-                long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-
-                System.out.println("송수신 시간 : " + (afterTime - beforeTime));
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
@@ -247,6 +242,26 @@ public class UnivDetail implements Initializable {
                     long b = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
 
 
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
+    }
+
+    void requestDeptListOfUniv() {
+        Runnable runnable = () -> {     // 다른 스레드로 처리
+            try {
+                Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV));
+
+                ArrayList<String> univDeptList = receiveUnivDeptList();
+
+                Platform.runLater(() -> {
+                    // 학과 리스트 tab
+                    setUnivDeptList(univDeptList);  // deptList Listview 추가
                 });
             } catch (Exception e) {
                 e.printStackTrace();
@@ -320,7 +335,17 @@ public class UnivDetail implements Initializable {
         Object receivedBody = receivePT.getBody();
 
         // 학과 리스트
-        return (ArrayList<String>) receivedBody;
+        ArrayList<String> tmp = new ArrayList<>();   //
+
+        // 타입 처리
+        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+        for (Object obj : ar) {
+            if (obj instanceof String) {
+                tmp.add((String) obj);
+            }
+        }
+
+        return tmp;
     }
 
     public void setUnivInf(UnivDTO univDTO) {    // UnivDTO GUI에 뿌려주기
@@ -403,6 +428,9 @@ public class UnivDetail implements Initializable {
     @FXML
     void clickUnivDetailYearCp(MouseEvent event) {
         String indicatorName = comboIndicator.getValue();
+        
+        // 이전 barChart 내용 초기화
+        barChart.getData().clear();
 
         // barChart 요소 init
         XYChart.Series[] series = new XYChart.Series[3];
@@ -410,22 +438,50 @@ public class UnivDetail implements Initializable {
         for(int i = 0; i < 3; i++){
             series[i] = new XYChart.Series<String, Number>();
         }
-
+        
+        // 요소 이름 초기화
         series[0].setName("2018");
         series[1].setName("2019");
         series[2].setName("2020");
 
         switch (indicatorName) {
-            case "지표1":
+            case "재학생 수":
                 for (int i = 0; i < 3; i++) {
                     series[i].setData(FXCollections.observableArrayList(
-                            new XYChart.Data<String, Number>("진학률", univDtoList.get(i).getEnteringRate())
+                            new XYChart.Data<String, Number>("재학생 수", univDtoList.get(i).getStudentNumber())
                     ));
                 }
-
                 break;
-            case "지표2":
-
+            case "입학경쟁률":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("입학경쟁률", univDtoList.get(i).getAdmissionCompetitionRate())
+                    ));
+                }
+                break;
+            case "취업률":
+                break;
+            case "진학률":
+                break;
+            case "1인당 교육비":
+                break;
+            case "장학금 수혜 현황":
+                break;
+            case "학생의 창업 및 창업 지원 현황":
+                break;
+            case "등록금 현황":
+                break;
+            case "기숙사 수용률":
+                break;
+            case "외국대학 파견인원":
+                break;
+            case "도서자료 총계":
+                break;
+            case "교지 면적":
+                break;
+            case "연구비 수혜 실적":
+                break;
+            case "특허 출원 및 등록 실적":
                 break;
         }
 

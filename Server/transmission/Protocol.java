@@ -31,6 +31,7 @@ public class Protocol implements Serializable {
 	public static final int PT_REQ_LOGIN = 0x0C;                    // 학과 평가 페이지에서 평가 내용 전송(등록 요청)
 	public static final int PT_REQ_DEPT_DETAIL = 0x0D;				// 학과 상세정보 요청
 	public static final int PT_REQ_DEPT_CP = 0x0E;                  // 학과 상세정보 비교 요청(CP = compare)
+	public static final int PT_REQ_DEPT_LIST_OF_UNIV = 0x0F;		// 학교의 학과 리스트 요청
 
 	//TYPE 0x02 (RESPONSE) CODE
 	public static final int PT_RES_UNIV_INF = 0x01;                 // 학교 상세정보 조회 응답
@@ -44,7 +45,8 @@ public class Protocol implements Serializable {
 	public static final int PT_RES_DEPT_RATING_LIST = 0x09;         // 학과 평가 페이지에서 기존에 있던 학교 평가 내역 응답
 	public static final int PT_RES_DEPT_DETAIL = 0x0A;				// 학과 상세정보 응답
 	public static final int PT_RES_DEPT_CP = 0x0B;                  // 학과 상세정보 비교 응답(CP = compare)
-
+	public static final int PT_RES_DEPT_LIST_OF_UNIV = 0x0F;		// 학교의 학과 리스트 응답
+	
 	//TYPE 0x03 (SUCCESS) CODE
 	public static final int PT_SUCC_UNIV_RATING = 0x01;             // 학교 평가 페이지에서 평가 내용 등록 성공
 	public static final int PT_SUCC_DEPT_RATING = 0x02;             // 학과 평가 페이지에서 평가 내용 등록 성공

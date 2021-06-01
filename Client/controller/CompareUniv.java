@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
 import java.text.NumberFormat;
@@ -210,8 +211,8 @@ public class CompareUniv implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        TextFields.bindAutoCompletion(inputFirstUniv, Home.getUnivList()); // 텍스트필드 자동완성
-//        TextFields.bindAutoCompletion(inputSecondUniv, Home.getUnivList()); // 텍스트필드 자동완성
+        TextFields.bindAutoCompletion(inputFirstUniv, Home.getUnivList()); // 텍스트필드 자동완성
+        TextFields.bindAutoCompletion(inputSecondUniv, Home.getUnivList()); // 텍스트필드 자동완성
     }
 
     @FXML
