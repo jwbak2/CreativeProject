@@ -49,9 +49,9 @@ public class Connection {
 
             System.out.println("receive - 패킷 수신 완료");
             // FIXME NULL 예외처리 필요
-            if (receivePT.getBody() == null){
-                throw new Exception("body of receivePT is null");
-            }
+//            if (receivePT.getBody() == null){
+//                throw new Exception("body of receivePT is null");
+//            }
 
         } catch (ClassNotFoundException | IOException e) {
             System.out.println("receive() - 패킷 수신 오류");

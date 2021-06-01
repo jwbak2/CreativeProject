@@ -1,6 +1,8 @@
 package Server.model.dto;
 
-public class IndicatorSelectionStatisticsDTO {
+import java.io.Serializable;
+
+public class IndicatorSelectionStatisticsDTO implements Serializable {
     private String indicatorName;
     private Long selectionNumber;
 
