@@ -1,8 +1,9 @@
 package Server.model.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class UnivRatingDTO {
+public class UnivRatingDTO implements Serializable {
     private String userEmail;
     private String univId;
     private String content;

@@ -1,18 +1,20 @@
 package Server.transmission;
 
+import Client.vo.DeptInfoReqVO;
 import Server.controller.DepartmentDetail;
 import Server.controller.Rating;
 import Server.controller.UnivDetail;
 import Client.vo.LoginReqVO;
 import Server.model.dao.UserDAO;
-import Server.model.dto.UserDTO;
+import Server.model.dto.*;
 import Server.model.dao.DepartmentDAO;
-import Server.model.dto.DepartmentRatingDTO;
-import Server.model.dto.UnivRatingDTO;
 
 import java.util.ArrayList;
 
 public class Controller {
+
+	public static final int CUR_YEAR = 2020;
+	public static final int START_YEAR = 2018;
 
 	// 대학 리스트 조회 요청 처리
 	private UserDTO curUser;
@@ -29,9 +31,17 @@ public class Controller {
 			UnivDetail univDetail = new UnivDetail();
 			DepartmentDetail deptDetail = new DepartmentDetail();
 
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUniv(univName));
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getAllUnivDetail(univName));
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, deptDetail.getDepartmentList(univDetail.getUnivCode(univName)));
+			// 대학 코드 검색
+			String univCode = univDetail.getUnivId(univName);
+
+			if (univCode != null) {
+				Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUniv(univCode));
+				Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getAllUnivDetail(univCode));
+				Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, deptDetail.getDepartmentList(univCode));
+
+			} else {
+				throw new Exception();
+			}
 
 		} catch (Exception e) {
 			System.out.println("Controller - 대학 상세정보 조회 오류");
@@ -43,11 +53,14 @@ public class Controller {
 	}
 
 	// 학과 상세정보 조회 요청 처리
-	public void inquiryDepartmentInfo(String deptName) {
+	public void inquiryDepartmentInfo(DeptInfoReqVO deptInfo) {
 		try	{
 			DepartmentDetail deptDetail = new DepartmentDetail();
+			UnivDetail univDetail = new UnivDetail();
 
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_DEPT_DETAIL, deptDetail.getDepartmentDetail(deptName));
+			String deptID = deptDetail.getDepartmentID(univDetail.getUnivId(deptInfo.getUnivName()), deptInfo.getDeptName());
+
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_DEPT_DETAIL, deptDetail.getAllDepartmentDetail(deptID));
 
 		} catch (Exception e) {
 			System.out.println("Controller - 학과 상세정보 조회 오류");
@@ -60,12 +73,36 @@ public class Controller {
 	// 대학 비교 요청 처리
 	public void compareTwoUniv(ArrayList<String> list) {
 
-		final int YEAR = 2020;
+		ArrayList<UnivDetailDTO> result = new ArrayList<UnivDetailDTO>();
 
 		try {
 			UnivDetail univDetail = new UnivDetail();
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUnivDetail(list.get(0), YEAR));
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univDetail.getUnivDetail(list.get(1), YEAR));
+
+			result.add(univDetail.getUnivDetail(univDetail.getUnivId(list.get(0)), CUR_YEAR));
+			result.add(univDetail.getUnivDetail(univDetail.getUnivId(list.get(1)), CUR_YEAR));
+
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_CP, result);
+
+		} catch (Exception e) {
+			System.out.println("Controller - 대학 비교 오류");
+			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_UNIV_CP));
+			e.printStackTrace();
+
+		}
+	}
+
+	public void compareTwoDept(ArrayList<String> list) {
+
+		ArrayList<DepartmentDetailDTO> result = new ArrayList<DepartmentDetailDTO>();
+
+		try {
+			UnivDetail univDetail = new UnivDetail();
+			DepartmentDetail deptDetail = new DepartmentDetail();
+
+			result.add(deptDetail.getDepartmentDetail(univDetail.getUnivId(list.get(0)), CUR_YEAR));
+			result.add(deptDetail.getDepartmentDetail(univDetail.getUnivId(list.get(1)), CUR_YEAR));
+
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_CP, result);
 
 		} catch (Exception e) {
 			System.out.println("Controller - 대학 비교 오류");
@@ -77,7 +114,6 @@ public class Controller {
 
 	// 대학 평가 등록 요청 처리
 	public void registerUnivRating(UnivRatingDTO content) {
-		// TODO: 로직 필요
 		Rating rating = new Rating();
 
 		if (rating.registerUnivRating(content)) {
@@ -89,7 +125,6 @@ public class Controller {
 
 	}
 
-	// 학과 평가 등록 요청 처리
 	public void registerDepartmentRating(DepartmentRatingDTO content) {
 		// TODO: 로직 필요
 		// TODO: 로직 필요

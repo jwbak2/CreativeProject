@@ -1,6 +1,8 @@
 package Server.model.dto;
 
-public class UserDTO {
+import java.io.Serializable;
+
+public class UserDTO implements Serializable {
     private String userEmail;
     private String userPassword;
     private String userName;

@@ -225,7 +225,7 @@ public class UnivDetail implements Initializable {
                 // 응답 처리
                 UnivDTO univDTO = receiveUnivDTO();
                 univDtoList = receiveUnivDetailDTO();
-                String[] univDeptList = receiveUnivDeptList();
+                ArrayList<String> univDeptList = receiveUnivDeptList();
 
 
                 long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
@@ -315,12 +315,12 @@ public class UnivDetail implements Initializable {
         return tmp;
     }
 
-    public String[] receiveUnivDeptList() {
+    public ArrayList<String> receiveUnivDeptList() {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
 
         // 학과 리스트
-        return (String[]) receivedBody;
+        return (ArrayList<String>) receivedBody;
     }
 
     public void setUnivInf(UnivDTO univDTO) {    // UnivDTO GUI에 뿌려주기
@@ -369,7 +369,7 @@ public class UnivDetail implements Initializable {
         numOfPatentRegistration.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNumOfPatentRegistration()));
     }
 
-    public void setUnivDeptList(String[] deptList) {  //
+    public void setUnivDeptList(ArrayList<String> deptList) {  //
         ObservableList list = FXCollections.observableArrayList(deptList);
         tableDeptList.setItems(list);
     }
