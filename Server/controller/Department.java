@@ -12,19 +12,19 @@ import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DepartmentDetail {
+public class Department {
 
 	DepartmentDAO deptDAO;
 	DepartmentDetailDAO deptDetailDAO;
 
-	public DepartmentDetail() {
+	public Department() {
 	}
 
 	public DepartmentDetailDTO getDepartmentDetail(String deptId, int year) throws Exception {
 		// 학과 상세정보 조회 - 학과 ID, 연도
 		deptDetailDAO = deptDetailDAO == null ? new DepartmentDetailDAO() : deptDetailDAO;
 
-		return deptDetailDAO.select(deptId, Controller.CUR_YEAR);
+		return deptDetailDAO.select(deptId, year);
 	}
 
 	public ArrayList<DepartmentDetailDTO> getAllDepartmentDetail(String deptId) throws Exception {

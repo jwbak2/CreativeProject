@@ -14,7 +14,7 @@ public class DBCP {   // 데이터베이스 커넥션 풀
 
 
     // 접속 정보 설정
-    final static private String SERVER_IP = "54.160.178.185";
+    final static private String SERVER_IP = "54.87.52.156";
     final static private String USER = "crtvp";
     final static private String PWD = "ganggoo";
     final static private String URL = "jdbc:oracle:thin:@" + SERVER_IP + ":1521:xe";
