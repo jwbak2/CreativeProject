@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class DepartmentDAO {
 
-	public HashMap<String, String> getDepartmentList(String univCode) throws Exception {
+	public HashMap<String, String> getDepartmentList(String univCode) {
 		// 학과 리스트 반환
 
 		HashMap<String, String> departmentList = null;     // 학과 목록 선언 '학과 이름' 의 1차원 배열

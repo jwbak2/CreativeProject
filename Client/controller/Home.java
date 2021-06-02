@@ -128,14 +128,22 @@ public class Home implements Initializable {
         Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_LIST));        // 패킷 전송
 
         Protocol receivePT = Connection.receive();  // receive data
-        Object receivedBody = receivePT.getBody();
 
-        // 타입 처리
-        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
-        for (Object obj : ar) {
-            if (obj instanceof String) {
-                univList.add((String) obj);
+        try {
+
+            Object receivedBody = receivePT.getBody();
+
+            // 타입 처리
+            ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+            for (Object obj : ar) {
+                if (obj instanceof String) {
+                    univList.add((String) obj);
+                }
             }
+        }catch(Exception e){
+
+            System.out.println("학교 리스트 수신 실패");
+
         }
     }
 }

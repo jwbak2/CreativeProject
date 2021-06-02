@@ -21,7 +21,8 @@ public class Connection {
             System.out.println("IP : " + ClientMain.SERVER_IP + ", Port : " + ClientMain.PORT);
             System.out.println("서버 접속 성공");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("서버 접속 실패");
+            //e.printStackTrace();
         }
     }
 
@@ -40,8 +41,9 @@ public class Connection {
             oos.flush();
             System.out.println("send - 패킷 송신 완료");
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("패킷 송신 중 예외 발생");
+            //e.printStackTrace();
         }
 
     }
@@ -58,9 +60,9 @@ public class Connection {
 //                throw new Exception("body of receivePT is null");
 //            }
 
-        } catch (ClassNotFoundException | IOException e) {
+        } catch (ClassNotFoundException | IOException | NullPointerException e ) {
             System.out.println("receive() - 패킷 수신 오류");
-            e.printStackTrace();
+            //e.printStackTrace();
 
         } catch (Exception e) {
             e.printStackTrace();
