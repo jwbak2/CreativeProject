@@ -188,10 +188,12 @@ public class UnivDetail implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
+        TextFields.bindAutoCompletion(inputUniv, Home.getUnivList()); // 텍스트필드 자동완성
 
-        // tab 처음 상태 초기화
-        checkTabUnivDeptList = false;
+        // tab 처음 상태 초기
+
+        // 조회 버튼 클릭 전 학과 리스트 탭 disable
+        tabUnivDeptList.setDisable(true);
 
         // 대학교 입력할떄 엔터누르는 이벤트 추가
         inputUniv.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -208,6 +210,7 @@ public class UnivDetail implements Initializable {
                 (ObservableValue<?> observable, Object oldValue, Object newValue) -> selectedDeptName = newValue.toString()
         );
 
+
         // 학과 리스트 탭 클릭 시 학과 리스트 요청 이벤트 추가
         tabUnivDeptList.setOnSelectionChanged((event) -> {
             if(!checkTabUnivDeptList){
@@ -221,13 +224,18 @@ public class UnivDetail implements Initializable {
     void requestUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
+                // 조회 버튼 클릭 후 학과 리스트 체크 불리언 초기화
+                checkTabUnivDeptList = false;
+
+                // 조회 버튼 클릭 후 탭 활성화
+                tabUnivDeptList.setDisable(false);
+
                 // 학교 상세정보 요청
                 sendUnivInf();
 
                 // 응답 처리
                 UnivDTO univDTO = receiveUnivDTO();
                 univDtoList = receiveUnivDetailDTO();
-                ArrayList<String> univDeptList = receiveUnivDeptList();
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
@@ -237,12 +245,7 @@ public class UnivDetail implements Initializable {
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018 상수로 수정 필요
                     setUnivDetailInf(univDtoList.get(0));   // 멤버변수의 ArrayList에서 가져옴
 
-                    // 학과 리스트 tab
-                    setUnivDeptList(univDeptList);  // deptList Listview 추가
-
                     // TODO 즐겨찾기 리스트도 필요
-                    long b = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
-
 
                 });
             } catch (Exception e) {
@@ -257,7 +260,9 @@ public class UnivDetail implements Initializable {
     void requestDeptListOfUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
-                Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV));
+                String univName = textUnivName.getText();
+
+                Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV, univName));
 
                 ArrayList<String> univDeptList = receiveUnivDeptList();
 
