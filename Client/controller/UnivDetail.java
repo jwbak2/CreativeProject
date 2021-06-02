@@ -212,20 +212,20 @@ public class UnivDetail implements Initializable {
 
 
         // 학과 리스트 탭 클릭 시 학과 리스트 요청 이벤트 추가
-        tabUnivDeptList.setOnSelectionChanged((event) -> {
-            if(!checkTabUnivDeptList){
-                checkTabUnivDeptList = true;
-
-                requestDeptListOfUniv();
-            }
-        });
+//        tabUnivDeptList.setOnSelectionChanged((event) -> {
+//            if(!checkTabUnivDeptList){
+//                checkTabUnivDeptList = true;
+//
+//                requestDeptListOfUniv();
+//            }
+//        });
     }
 
     void requestUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
-                // 조회 버튼 클릭 후 학과 리스트 체크 불리언 초기화
-                checkTabUnivDeptList = false;
+//                // 조회 버튼 클릭 후 학과 리스트 체크 불리언 초기화
+//                checkTabUnivDeptList = false;
 
                 // 조회 버튼 클릭 후 탭 활성화
                 tabUnivDeptList.setDisable(false);
@@ -237,6 +237,9 @@ public class UnivDetail implements Initializable {
                 UnivDTO univDTO = receiveUnivDTO();
                 univDtoList = receiveUnivDetailDTO();
 
+                // 학교의 학과 리스트 요청 - 다른 스레드 생성해서 요청
+                requestDeptListOfUniv();
+
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
                     setUnivInf(univDTO);    // 람다식으로 변경
@@ -245,7 +248,7 @@ public class UnivDetail implements Initializable {
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018 상수로 수정 필요
                     setUnivDetailInf(univDtoList.get(0));   // 멤버변수의 ArrayList에서 가져옴
 
-                    // TODO 즐겨찾기 리스트도 필요
+                    // TODO 즐겨찾기 정보도 필요
 
                 });
             } catch (Exception e) {
@@ -260,7 +263,7 @@ public class UnivDetail implements Initializable {
     void requestDeptListOfUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
-                String univName = textUnivName.getText();
+                String univName = inputUniv.getText().replace(" ", "");
 
                 Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV, univName));
 
@@ -494,28 +497,99 @@ public class UnivDetail implements Initializable {
                     ));
                 }
                 break;
-            case "학생의 창업 및 창업 지원 현황":
+            case "창업자 수":
                 for (int i = 0; i < 3; i++) {
                     series[i].setData(FXCollections.observableArrayList(
-                            new XYChart.Data<String, Number>("창업자 수", univDtoList.get(i).getNumberFounders()),
-                            new XYChart.Data<String, Number>("창업기업 매출액", univDtoList.get(i).getStartCompanySales()),
-                            new XYChart.Data<String, Number>("창업기업 자본금", univDtoList.get(i).getStartCompanyCapital()),
-                            new XYChart.Data<String, Number>("교비 창업 지원액", univDtoList.get(i).getSchoolStartCompanyFund()),
-                            new XYChart.Data<String, Number>("정부 창업 지원액", univDtoList.get(i).getGovernmentStartCompanyFund()),
-                            new XYChart.Data<String, Number>("창업 전담 교원", univDtoList.get(i).getProfessorForStartCompany()),
-                            new XYChart.Data<String, Number>("창업 전담 직원", univDtoList.get(i).getStaffForStartCompany())
+                            new XYChart.Data<String, Number>("창업자 수", univDtoList.get(i).getNumberFounders())
                     ));
                 }
                 break;
-            case "등록금 현황":
+            case "창업기업 매출액":
                 for (int i = 0; i < 3; i++) {
                     series[i].setData(FXCollections.observableArrayList(
-                            new XYChart.Data<String, Number>("입학금", univDtoList.get(i).getAdmissionFee()),
-                            new XYChart.Data<String, Number>("평균 등록금", univDtoList.get(i).getAverageTuition()),
-                            new XYChart.Data<String, Number>("인문사회 등록금", univDtoList.get(i).getHumanitiesSocialTuition()),
-                            new XYChart.Data<String, Number>("자연과학 등록금", univDtoList.get(i).getNaturalScienceTuition()),
-                            new XYChart.Data<String, Number>("예체능 등록금", univDtoList.get(i).getArtMusPhysTuition()),
-                            new XYChart.Data<String, Number>("공학 등록금", univDtoList.get(i).getEngineeringTuition()),
+                            new XYChart.Data<String, Number>("창업기업 매출액", univDtoList.get(i).getStartCompanySales())
+                    ));
+                }
+                break;
+            case "창업기업 자본금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("창업기업 자본금", univDtoList.get(i).getStartCompanyCapital())
+                            ));
+                }
+                break;
+            case "정부 창업 지원액":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("교비 창업 지원액", univDtoList.get(i).getSchoolStartCompanyFund())
+                            ));
+                }
+                break;
+            case "교비 창업 지원액":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("정부 창업 지원액", univDtoList.get(i).getGovernmentStartCompanyFund())
+                            ));
+                }
+                break;
+            case "창업 전담 교원":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("창업 전담 교원", univDtoList.get(i).getProfessorForStartCompany())
+                            ));
+                }
+                break;
+            case "창업 전담 직원":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("창업 전담 직원", univDtoList.get(i).getStaffForStartCompany())
+                            ));
+                }
+                break;
+            case "입학금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("입학금", univDtoList.get(i).getAdmissionFee())
+                    ));
+                }
+                break;
+            case "평균 등록금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("평균 등록금", univDtoList.get(i).getAverageTuition())
+                            ));
+                }
+                break;
+            case "인문사회 등록금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("인문사회 등록금", univDtoList.get(i).getHumanitiesSocialTuition())
+                    ));
+                }
+                break;
+            case "자연과학 등록금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("자연과학 등록금", univDtoList.get(i).getNaturalScienceTuition())
+                    ));
+                }
+                break;
+            case "예체능 등록금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("예체능 등록금", univDtoList.get(i).getArtMusPhysTuition()) ));
+                }
+                break;
+            case "공학 등록금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("공학 등록금", univDtoList.get(i).getEngineeringTuition())
+                    ));
+                }
+                break;
+            case "의학 등록금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
                             new XYChart.Data<String, Number>("의학 등록금", univDtoList.get(i).getMedicalTuition())
                     ));
                 }
