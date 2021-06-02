@@ -15,7 +15,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.input.MouseEvent;
@@ -124,6 +127,12 @@ public class DepartmentDetail implements Initializable{
     @FXML
     private Tab tabDeptRating;
 
+    @FXML
+    private BarChart<?, ?> barChart;
+
+    @FXML
+    private ComboBox<String> comboIndicator;
+
     private boolean checkTabDeptRating;
 
     private String univName;         // 해당 학과의 학교 이름
@@ -141,25 +150,28 @@ public class DepartmentDetail implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 학과 상세정보 및 학과 평가 리스트 요청
-        requestDeptInf();
+        if(deptName != null){   // 아무것도 클릭안하고 조회누를때 예외처리
+            requestDeptInf();
+
+        }
 
         // SelectionChanged는 tab open, close 둘다 이벤트 발생해서 boolean 변수 사용해서 처음 한번만 처리
-        checkTabDeptRating = false;
+//        checkTabDeptRating = false;
 
         // 탭 클릭 시 학과 평가 리스트 요청 이벤트 등록
-        tabDeptRating.setOnSelectionChanged(event -> {
-            if (!checkTabDeptRating){
-                checkTabDeptRating = true;
-
-                requestDeptRatingList();
-            }
-        });
+//        tabDeptRating.setOnSelectionChanged(event -> {
+//            if (!checkTabDeptRating){
+//                checkTabDeptRating = true;
+//
+//                requestDeptRatingList();
+//            }
+//        });
     }
 
     public void requestDeptInf(){
         // 학교 상세정보 페이지에서 학과 상세정보 조회 버튼 클릭하면
         // 타이머 클래스 사용해서 1초뒤 프로토콜 전송
-        // FIXME 아무것도 클릭안하고 조회누를때 예외처리
+
         Timer timer = new Timer();
         // TimerTask는 추상클래스라 람다식 안됨?
         TimerTask timerTask = new TimerTask() {
@@ -285,4 +297,216 @@ public class DepartmentDetail implements Initializable{
     public void setDeptRatingList(ArrayList<DepartmentRatingDTO> deptRatingList){
         // TODO 학과 평가 리스트 set 필요 tableView
     }
+
+    // 연도별 비교 조회 이벤트
+    @FXML
+    void clickDeptDetailYearCp(MouseEvent event) {
+        String indicatorName = comboIndicator.getValue();
+
+        // 이전 barChart 내용 초기화
+        barChart.getData().clear();
+
+        // barChart 요소 init
+        XYChart.Series[] series = new XYChart.Series[3];
+
+        for(int i = 0; i < 3; i++){
+            series[i] = new XYChart.Series<String, Number>();
+        }
+
+        // 요소 이름 초기화
+        series[0].setName("2018");
+        series[1].setName("2019");
+        series[2].setName("2020");
+
+        switch (indicatorName) {
+            case "입학금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("재학생 수", deptDtoList.get(i).getAdmissionFee())
+                    ));
+                }
+                break;
+            case "등록금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("등록금", deptDtoList.get(i).getTuition())
+                    ));
+                }
+                break;
+            case "국내 전문대학 진학":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("국내 전문대학 진학", deptDtoList.get(i).getEnteringDomCmntyColl())
+                    ));
+                }
+                break;
+            case "국외 전문대학 진학":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("국외 전문대학 진학", deptDtoList.get(i).getEnteringOverseasCmntyColl())
+                    ));
+                }
+                break;
+            case "국내 대학 진학":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("국내 대학 진학", deptDtoList.get(i).getEnteringDomUniv())
+                    ));
+                }
+                break;
+            case "국외 대학 진학":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("국외 대학 진학", deptDtoList.get(i).getEnteringOverseasUniv())
+                    ));
+                }
+                break;
+            case "국내 대학원 진학":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("국내 대학원 진학", deptDtoList.get(i).getEnteringDomGrSchool())
+                    ));
+                }
+                break;
+            case "국외 대학원 진학:":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("국외 대학원 진학", deptDtoList.get(i).getEnteringOverseasGrSchool())
+                    ));
+                }
+                break;
+            case "국내 진학자 계":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("국내 진학자 계", deptDtoList.get(i).getDomScholarNumber())
+                    ));
+                }
+                break;
+            case "국외 진학자 계":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("국외 진학자 계", deptDtoList.get(i).getOverseasScholarNumber())
+                    ));
+                }
+                break;
+            case "진학률":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("진학률", deptDtoList.get(i).getEnteringRate())
+                    ));
+                }
+                break;
+            case "남자 취업대상자":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("남자 취업대상자", deptDtoList.get(i).getMaleEmploymentTarget())
+                    ));
+                }
+                break;
+            case "여자 취업대상자":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("여자 취업대상자", deptDtoList.get(i).getFemaleEmploymentTarget())
+                    ));
+                }
+                break;
+            case "남자 국내 취업자":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("남자 국내 취업자", deptDtoList.get(i).getMaleDomEmployee())
+                    ));
+                }
+                break;
+            case "여자 국내 취업자":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("여자 국내 취업자", deptDtoList.get(i).getFemaleDomEmployee())
+                    ));
+                }
+                break;
+            case "남자 해외 취업자":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("남자 해외 취업자", deptDtoList.get(i).getMaleOverseasEmployee())
+                    ));
+                }
+                break;
+            case "여자 해외 취업자":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("여자 해외 취업자", deptDtoList.get(i).getFemaleOverseasEmployee())
+                    ));
+                }
+                break;
+            case "취업률":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("취업률", deptDtoList.get(i).getEmploymentRate())
+                    ));
+                }
+                break;
+            case "교외 장학금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("교외 장학금", deptDtoList.get(i).getOutSchoolScholarship())
+                    ));
+                }
+                break;
+            case "교내 장학금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("교내 장학금", deptDtoList.get(i).getInSchoolScholarship())
+                    ));
+                }
+                break;
+            case "1인당 장학금":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("1인당 장학금", deptDtoList.get(i).getScholarshipPerPerson())
+                    ));
+                }
+                break;
+            case "전임교원 수":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("전임교원 수", deptDtoList.get(i).getNumOfFulltimeProfessor())
+                    ));
+                }
+                break;
+            case "전임교원 1인당 논문 실적":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("전임교원 1인당 논문 실적", deptDtoList.get(i).getThesisResultPerProfessor())
+                    ));
+                }
+                break;
+            case "전임교원 1인당 연구비":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("전임교원 1인당 연구비", deptDtoList.get(i).getRearchCostPerProfessor())
+                    ));
+                }
+                break;
+            case "남자 졸업자":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("남자 졸업자", deptDtoList.get(i).getMaleGr())
+                    ));
+                }
+                break;
+            case "여자 졸업자":
+                for (int i = 0; i < 3; i++) {
+                    series[i].setData(FXCollections.observableArrayList(
+                            new XYChart.Data<String, Number>("여자 졸업자", deptDtoList.get(i).getFemaleGr())
+                    ));
+                }
+                break;
+        }
+
+        // barChart에 series 추가
+        for(int i = 0; i < 3; i++){
+            barChart.getData().add(series[i]);
+        }
+    }
+
 }

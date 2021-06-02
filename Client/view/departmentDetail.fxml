@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -11,6 +15,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <AnchorPane fx:id="apDeptDetail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.DepartmentDetail">
    <children>
       <Text fx:id="textDeptName" layoutX="390.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="학과이름">
@@ -128,7 +134,50 @@
           </Tab>
           <Tab text="연도별 비교">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BarChart fx:id="barChart" layoutX="39.0" layoutY="88.0" prefHeight="436.0" prefWidth="531.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                        <Button layoutX="823.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#clickDeptDetailYearCp" prefHeight="29.0" prefWidth="63.0" text="조회" />
+                        <ComboBox fx:id="comboIndicator" layoutX="583.0" layoutY="258.0" prefHeight="29.0" prefWidth="235.0" >
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="입학금" />
+                                    <String fx:value="등록금" />
+                                    <String fx:value="국내 전문대학 진학" />
+                                    <String fx:value="국외 전문대학 진학" />
+                                    <String fx:value="국내 대학 진학" />
+                                    <String fx:value="국외 대학 진학:" />
+                                    <String fx:value="국내 대학원 진학" />
+                                    <String fx:value="국외 대학원 진학" />
+                                    <String fx:value="국내 진학자 계" />
+                                    <String fx:value="국외 진학자 계" />
+                                    <String fx:value="진학률" />
+                                    <String fx:value="남자 취업대상자" />
+                                    <String fx:value="여자 취업대상자" />
+                                    <String fx:value="남자 국내 취업자" />
+                                    <String fx:value="여자 국내 취업자" />
+                                    <String fx:value="남자 해외 취업자" />
+                                    <String fx:value="여자 해외 취업자" />
+                                    <String fx:value="취업률" />
+                                    <String fx:value="교외 장학금" />
+                                    <String fx:value="교내 장학금" />
+                                    <String fx:value="1인당 장학금" />
+                                    <String fx:value="전임교원 수" />
+                                    <String fx:value="전임교원 1인당 논문 실적" />
+                                    <String fx:value="전임교원 1인당 연구비" />
+                                    <String fx:value="남자 졸업자" />
+                                    <String fx:value="남자 졸업자" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab fx:id="tabDeptRating" text="학과 평가">
