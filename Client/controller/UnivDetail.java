@@ -210,9 +210,11 @@ public class UnivDetail implements Initializable {
 
         // 학과 리스트 탭 클릭 시 학과 리스트 요청 이벤트 추가
         tabUnivDeptList.setOnSelectionChanged((event) -> {
-            checkTabUnivDeptList = true;
+            if(!checkTabUnivDeptList){
+                checkTabUnivDeptList = true;
 
-            requestDeptListOfUniv();
+                requestDeptListOfUniv();
+            }
         });
     }
 
