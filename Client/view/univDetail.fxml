@@ -25,7 +25,7 @@
    <children>
       <AnchorPane fx:id="apUnivMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0">
          <children>
-          <AnchorPane fx:id="mainAp" layoutY="100.0" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="900.0" style="-fx-border-width: 0px;" stylesheets="@css/univDetail.css">
+          <AnchorPane fx:id="mainAp" layoutY="100.0" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="900.0" style="-fx-border-width: 0px;" stylesheets="@css/univ.css">
                <children>
                   <ImageView fx:id="imageUnivLogo" fitHeight="199.0" fitWidth="235.0" layoutX="68.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
                   <AnchorPane layoutX="346.0" layoutY="24.0" prefHeight="199.0" prefWidth="505.0" style="-fx-border-color: #2d3436; -fx-border-radius: 10px;">
@@ -241,7 +241,7 @@
                   </TabPane>
                </children>
             </AnchorPane>
-            <AnchorPane prefHeight="100.0" prefWidth="900.0" style="-fx-border-width: 0px 0px 1px 0px; -fx-border-color: #7f8c8d;" stylesheets="@css/univDetail.css">
+            <AnchorPane prefHeight="100.0" prefWidth="900.0" style="-fx-border-width: 0px 0px 1px 0px; -fx-border-color: #7f8c8d;" stylesheets="@css/univ.css">
                <children>
                   <Button fx:id="btnRequestUnivInf" layoutX="744.0" layoutY="22.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="114.0" text="조회" />
                   <TextField fx:id="inputUniv" layoutX="61.0" layoutY="22.0" prefHeight="56.0" prefWidth="656.0" />

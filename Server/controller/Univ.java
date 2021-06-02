@@ -9,13 +9,13 @@ import Server.transmission.Controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UnivDetail {
+public class Univ {
 
 	UnivDAO univDAO;
 	UnivDetailDAO univDetailDAO;
 
 
-	public UnivDetail() {
+	public Univ() {
 		// pass
 	}
 
@@ -71,6 +71,13 @@ public class UnivDetail {
 
 		// 조회된 대학 ID 가 없을 때, null 반환
 		return univId;
+	}
+
+	public ArrayList<String> getViewListOfUniv() {
+		// 대학 정보 반환
+		univDAO = univDAO == null ? new UnivDAO() : univDAO;
+
+		return univDAO.getViewList();
 	}
 
 }
