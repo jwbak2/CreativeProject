@@ -23,15 +23,20 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import org.controlsfx.control.textfield.TextFields;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.awt.Desktop;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -160,6 +165,12 @@ public class UnivDetail implements Initializable {
     private Tab tabUnivDeptList;
 
     @FXML
+    private Tab tabUnivMap;
+
+    @FXML
+    private WebView webView;
+
+    @FXML
     private ListView<?> tableDeptList;
 
     @FXML
@@ -180,6 +191,7 @@ public class UnivDetail implements Initializable {
 
     private String selectedDeptName;
 
+    private UnivDTO univDTO; //가장 최근 조회한 UnivDTO
     private ArrayList<UnivDetailDTO> univDtoList;   // 2018 ~ 2020 UnivDetailDTO 담는 어레이리스트
 
     public StackPane getSpUnivDetail() {
@@ -219,7 +231,57 @@ public class UnivDetail implements Initializable {
                 requestDeptListOfUniv();
             }
         });
+
+
+        // 지도 API
+        tabUnivMap.setOnSelectionChanged((event) -> {
+            checkTabUnivDeptList = true;
+
+            initAndLoadMapAPI();
+
+        });
+
+
+
     }
+
+    //지도 API
+    private void initAndLoadMapAPI() {
+
+        WebEngine webEngine = webView.getEngine();
+
+        //html 로드
+        final String MapAPIHtmlFileDir = "Client/resource/MapAPI.html";
+
+        try {
+            File htmlFile = new File(MapAPIHtmlFileDir);
+
+            //파싱, 주소 수정, 저장
+            Document htmlDoc = Jsoup.parse(htmlFile, "UTF-8");
+
+            Element addressTag = htmlDoc.getElementById("address");
+
+            if(univDTO != null) {
+                addressTag.text(univDTO.getUnivAddress());
+            } else {
+                addressTag.text("경상북도 구미시 대학로 61 (양호동, 금오공과대학교)");
+            }
+
+            PrintWriter writer = new PrintWriter(htmlFile, "UTF-8");
+            writer.write(htmlDoc.html());
+            writer.flush();
+            writer.close();
+
+            webEngine.load(htmlFile.toURI().toString());
+
+        } catch (IOException IOE) {
+
+            System.out.println("지도 API IO 예외 발생");
+
+        }
+
+    }
+
 
     void requestUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
@@ -234,7 +296,7 @@ public class UnivDetail implements Initializable {
                 sendUnivInf();
 
                 // 응답 처리
-                UnivDTO univDTO = receiveUnivDTO();
+                univDTO = receiveUnivDTO();
                 univDtoList = receiveUnivDetailDTO();
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
