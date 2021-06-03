@@ -2,6 +2,7 @@ package Server.transmission;
 
 import Client.vo.DeptInfoReqVO;
 import Client.vo.LoginReqVO;
+import Client.vo.RatingVO;
 import Server.model.dto.DepartmentRatingDTO;
 import Server.model.dto.UnivRatingDTO;
 
@@ -45,24 +46,24 @@ public class Classifier {
 						controller.inquiryDepartmentList( (String) body);
 						break;
 
-					// 학교 비교 요청
+					// 대학 비교 요청
 					case Protocol.PT_REQ_UNIV_CP:
-						controller.compareTwoUniv( (ArrayList<DeptInfoReqVO>) body);
+						controller.compareTwoUniv((ArrayList<String>) body);
 						break;
 
 					// 학과 비교 요청
 					case Protocol.PT_REQ_DEPT_CP:
-						controller.compareTwoDept((ArrayList<String>) body);
+						controller.compareTwoDept( (ArrayList<DeptInfoReqVO>) body);
 						break;
 
 					// 대학 평점 등록
 					case Protocol.PT_REQ_UNIV_RATING:
-						controller.registerUnivRating( (UnivRatingDTO) body);
+						controller.registerUnivRating( (RatingVO) body);
 						break;
 
 					// 학과 평점 등록
 					case Protocol.PT_REQ_DEPT_RATING:
-						controller.registerDepartmentRating( (DepartmentRatingDTO) body);
+						controller.registerDepartmentRating( (RatingVO) body);
 						break;
 
 					// 대학 평가 리스트 요청

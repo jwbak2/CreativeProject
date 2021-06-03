@@ -54,7 +54,7 @@ public class Protocol implements Serializable {
 
 	//TYPE 0x04 (ERROR) CODE
 	public static final int PT_FAIL_UNIV_INF = 0x01;				// 학교 상세정보 조회 실패
-	public static final int PT_FAIL_DEPT_INF = 0x02;				// 학과 상세정보 조회 실패
+	public static final int PT_FAIL_DEPT_DETAIL = 0x02;				// 학과 상세정보 조회 실패
 	public static final int PT_FAIL_UNIV_LIST = 0x03;				// 학교 리스트 요청 실패
 	public static final int PT_FAIL_UNIV_CP = 0x04;					// 학교 상세정보 비교 요청(CP = compare) 실패
 	public static final int PT_FAIL_UNIV_RATING = 0x05;             // 학교 평가 페이지에서 평가 내용 등록 실패
