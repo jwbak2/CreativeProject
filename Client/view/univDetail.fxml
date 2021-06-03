@@ -11,8 +11,6 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,18 +18,16 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import org.controlsfx.control.Rating?>
 
-<StackPane fx:id="spUnivDetail" stylesheets="@css/reset.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.UnivDetail">
+<StackPane fx:id="spUnivDetail" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.UnivDetail">
    <children>
       <AnchorPane fx:id="apUnivMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0">
          <children>
           <AnchorPane fx:id="mainAp" layoutY="100.0" minHeight="0.0" minWidth="0.0" prefHeight="700.0" prefWidth="900.0" style="-fx-border-width: 0px;">
                <children>
+                  <ImageView fx:id="imageUnivLogo" fitHeight="199.0" fitWidth="235.0" layoutX="68.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true" />
                   <AnchorPane layoutX="346.0" layoutY="24.0" prefHeight="199.0" prefWidth="505.0" style="-fx-border-color: #2d3436; -fx-border-radius: 10px;">
                      <children>
                         <Text fx:id="textUnivName" layoutX="20.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="학교이름" wrappingWidth="283.6513750255108">
@@ -203,20 +199,8 @@
                                                  <String fx:value="진학률" />
                                                  <String fx:value="1인당 교육비" />
                                                  <String fx:value="장학금 수혜 현황" />
-                                                 <String fx:value="창업자 수" />
-                                                 <String fx:value="창업기업 매출액" />
-                                                 <String fx:value="창업기업 자본금" />
-                                                 <String fx:value="정부 창업 지원액" />
-                                                 <String fx:value="교비 창업 지원액" />
-                                                 <String fx:value="창업 전담 교원" />
-                                                 <String fx:value="창업 전담 직원" />
-                                                 <String fx:value="입학금" />
-                                                 <String fx:value="평균 등록금" />
-                                                 <String fx:value="인문사회 등록금" />
-                                                 <String fx:value="자연과학 등록금" />
-                                                 <String fx:value="예체능 등록금" />
-                                                 <String fx:value="공학 등록금" />
-                                                 <String fx:value="의학 등록금" />
+                                                 <String fx:value="학생의 창업 및 창업 지원 현황" />
+                                                 <String fx:value="등록금 현황" />
                                                  <String fx:value="기숙사 수용률" />
                                                  <String fx:value="외국대학 파견인원" />
                                                  <String fx:value="도서자료 총계" />
@@ -252,32 +236,9 @@
                         <Tab text="지도">
 
                         </Tab>
-                        <Tab text="학교 평가">
-                            <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <TextField fx:id="inputRatingContent" layoutX="14.0" layoutY="26.0" prefHeight="56.0" prefWidth="580.0" />
-                                    <Rating fx:id="ratingUniv" layoutX="607.0" layoutY="38.0" prefHeight="0.0" prefWidth="176.0" rating="5.0" />
-                                    <Button layoutX="793.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#clickRegisterUnivRating" prefHeight="50.0" prefWidth="80.0" text="등록" />
-                                    <Line endX="758.0" layoutX="115.0" layoutY="94.0" startX="-100.0" />
-                                    <TableView fx:id="tableUnivRating" layoutX="14.0" layoutY="112.0" prefHeight="266.0" prefWidth="861.0">
-                                      <columns>
-                                        <TableColumn prefWidth="88.0" text="작성일자" />
-                                        <TableColumn prefWidth="573.0" text="내용" />
-                                          <TableColumn prefWidth="199.0" text="평점" />
-                                      </columns>
-                                    </TableView>
-                                 </children></AnchorPane>
-                            </content>
-                        </Tab>
                     </tabs>
       
                   </TabPane>
-                  <VBox alignment="CENTER" layoutX="62.0" layoutY="24.0" prefHeight="200.0" prefWidth="184.0">
-                     <children>
-                        <ImageView fx:id="imageUnivLogo" fitHeight="199.0" fitWidth="235.0" pickOnBounds="true" preserveRatio="true" />
-                     </children>
-                  </VBox>
                </children>
             </AnchorPane>
             <AnchorPane prefHeight="100.0" prefWidth="900.0" style="-fx-border-width: 0px 0px 1px 0px; -fx-border-color: #7f8c8d;">
