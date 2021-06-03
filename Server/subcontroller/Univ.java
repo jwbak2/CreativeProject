@@ -1,4 +1,4 @@
-package Server.controller;
+package Server.subcontroller;
 
 import Server.model.dao.UnivDAO;
 import Server.model.dao.UnivDetailDAO;

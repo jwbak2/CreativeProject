@@ -1,11 +1,7 @@
 package Server.transmission;
 
-import Client.vo.DeptInfoReqVO;
-import Client.vo.MyPageInfoVO;
-import Server.controller.Department;
-import Server.controller.Rating;
-import Server.controller.Univ;
-import Client.vo.LoginReqVO;
+import Client.vo.*;
+import Server.subcontroller.*;
 import Server.model.dao.UserBookmarkDAO;
 import Server.model.dao.UserDAO;
 import Server.model.dto.*;
@@ -17,16 +13,16 @@ public class Controller {
 	public static final int CUR_YEAR = 2020;
 	public static final int START_YEAR = 2018;
 
-	// 대학 리스트 조회 요청 처리
 	private UserDTO curUser;
 
-	// 대학 리스트 조회
+	// 대학 리스트 조회 요청 처리
 	public void inquiryUnivList() {
 		Univ univ = new Univ();
+
 		Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_LIST, univ.getUnivList());
 	}
 
-	// 학과 리스트 조회
+	// 학과 리스트 조회 요청 처리
 	public void inquiryDepartmentList(String univName) {
 		try {
 			Univ univ = new Univ();
@@ -44,7 +40,6 @@ public class Controller {
 	public void inquiryUnivInfo(String univName) {
 		try {
 			Univ univ = new Univ();
-			Department deptDetail = new Department();
 
 			// 대학 ID 검색
 			String univId = univ.getUnivId(univName);
@@ -52,7 +47,6 @@ public class Controller {
 			if (univId != null) {
 				Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univ.getUniv(univId));
 				Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, univ.getAllUnivDetail(univId));
-//				Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_INF, deptDetail.getDepartmentList(univId));
 
 			} else {
 				throw new Exception();
@@ -79,10 +73,11 @@ public class Controller {
 
 		} catch (Exception e) {
 			System.out.println("Controller - 학과 상세정보 조회 오류");
-			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_DEPT_INF));
+			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_DEPT_DETAIL));
 			e.printStackTrace();
 
 		}
+
 	}
 
 	// 대학 평가 리스트 조회 요청 처리
@@ -134,8 +129,29 @@ public class Controller {
 
 	}
 
-	// 대학 비교 요청 처리
-	public void compareTwoUniv(ArrayList<DeptInfoReqVO> deptInfo) {
+	// 두 대학 비교 요청 처리
+	public void compareTwoUniv(ArrayList<String> list) {
+
+		ArrayList<UnivDetailDTO> result = new ArrayList<UnivDetailDTO>();
+
+		try {
+			Univ univ = new Univ();
+
+			result.add(univ.getUnivDetail(univ.getUnivId(list.get(0)), CUR_YEAR));
+			result.add(univ.getUnivDetail(univ.getUnivId(list.get(1)), CUR_YEAR));
+
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_CP, result);
+
+		} catch (Exception e) {
+			System.out.println("Controller - 대학 비교 오류");
+			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_UNIV_CP));
+			e.printStackTrace();
+
+		}
+	}
+
+	// 학과 비교 요청 처리
+	public void compareTwoDept(ArrayList<DeptInfoReqVO> deptInfo) {
 
 		ArrayList<DepartmentDetailDTO> result = new ArrayList<DepartmentDetailDTO>();
 		DeptInfoReqVO dept1 = deptInfo.get(0);
@@ -157,40 +173,20 @@ public class Controller {
 			Sender.send(Protocol.PT_RES, Protocol.PT_RES_DEPT_CP, result);
 
 		} catch (Exception e) {
-			System.out.println("Controller - 대학 비교 오류");
+			System.out.println("Controller - 학과 비교 오류");
 			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_DEPT_CP));
 			e.printStackTrace();
 
 		}
 	}
 
-	// 두 학과 비교 요청 처리
-	public void compareTwoDept(ArrayList<String> list) {
-
-		ArrayList<DepartmentDetailDTO> result = new ArrayList<DepartmentDetailDTO>();
-
-		try {
-			Univ univ = new Univ();
-			Department deptDetail = new Department();
-
-			result.add(deptDetail.getDepartmentDetail(univ.getUnivId(list.get(0)), CUR_YEAR));
-			result.add(deptDetail.getDepartmentDetail(univ.getUnivId(list.get(1)), CUR_YEAR));
-
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_UNIV_CP, result);
-
-		} catch (Exception e) {
-			System.out.println("Controller - 대학 비교 오류");
-			Sender.send(new Protocol(Protocol.PT_FAIL, Protocol.PT_FAIL_UNIV_CP));
-			e.printStackTrace();
-
-		}
-	}
-
 	// 대학 평가 등록 요청 처리
-	public void registerUnivRating(UnivRatingDTO content) {
+	public void registerUnivRating(RatingVO content) {
 		Rating rating = new Rating();
 
-		if (rating.registerUnivRating(content)) {
+		UnivRatingDTO dto = convertToUnivRatingDTO(content);
+
+		if (rating.registerUnivRating(dto)) {
 			Sender.send(new Protocol(Protocol.PT_SUCC, Protocol.PT_SUCC_UNIV_RATING));
 		}
 		else {
@@ -200,10 +196,12 @@ public class Controller {
 	}
 
 	// 학과 평가 등록 요청 처리
-	public void registerDepartmentRating(DepartmentRatingDTO content) {
+	public void registerDepartmentRating(RatingVO content) {
 		Rating rating = new Rating();
 
-		if (rating.registerDeptRating(content)) {
+		DepartmentRatingDTO dto = convertToDeptRatingDTO(content);
+
+		if (rating.registerDeptRating(dto)) {
 			Sender.send(new Protocol(Protocol.PT_SUCC, Protocol.PT_SUCC_DEPT_RATING));
 		}
 		else {
@@ -243,6 +241,20 @@ public class Controller {
 													rating.getDeptRatingOfUser(email));
 
 		Sender.send(Protocol.PT_RES, Protocol.PT_RES_USER_DETAIL, mypageInfo);
+	}
+
+	// RatingVO 를 UnivRatingDTO 로 변환
+	public static UnivRatingDTO convertToUnivRatingDTO(RatingVO target) {
+		String univId = new Univ().getUnivId(target.getUnivName());
+
+		return new UnivRatingDTO(target.getUserEmail(), univId, target.getContent(), new Long(target.getScore()), target.getCreationDate());
+	}
+
+	// RatingVO 를 DepartmentRatingDTO 로 변환
+	public static DepartmentRatingDTO convertToDeptRatingDTO(RatingVO target) {
+		String deptId = new Department().getDepartmentID(new Univ().getUnivId(target.getUnivName()), target.getDeptName());
+
+		return new DepartmentRatingDTO(target.getUserEmail(), deptId, target.getContent(), new Long(target.getScore()), target.getCreationDate());
 	}
 
 }

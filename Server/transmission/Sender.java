@@ -20,6 +20,19 @@ public class Sender {
 		this.oos = oos;
 	}
 
+	public static void send(int type, int code) {
+		try {
+			oos.writeObject(new Protocol(type, code));
+
+			//서버로 전송
+			oos.flush();
+
+		} catch (IOException e) {
+			System.out.println("Sender.send(type, code) 입출력오류");
+			e.printStackTrace();
+
+		}
+	}
 
 	public static void send(int type, int code, Object body) {
 		try {
@@ -29,7 +42,7 @@ public class Sender {
 			oos.flush();
 
 		} catch (IOException e) {
-			System.out.println("Sender.send(Protocol) 입출력오류");
+			System.out.println("Sender.send(type, code, body) 입출력오류");
 			e.printStackTrace();
 
 		}

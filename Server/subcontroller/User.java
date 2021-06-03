@@ -1,8 +1,4 @@
-package Server.controller;
-
-import Server.model.dto.UserBookmarkDTO;
-
-import java.util.ArrayList;
+package Server.subcontroller;
 
 public class User {
 
