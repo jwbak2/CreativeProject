@@ -2,6 +2,7 @@ package Client.controller;
 
 import Client.transmission.Connection;
 import Client.vo.DeptInfoReqVO;
+import Client.vo.RatingInfo;
 import Client.vo.RatingVO;
 import Server.model.dto.DepartmentDetailDTO;
 import Server.model.dto.DepartmentRatingDTO;
@@ -21,19 +22,20 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import org.controlsfx.control.Rating;
 
+import javax.print.DocFlavor;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DepartmentDetail implements Initializable{
 
@@ -173,6 +175,20 @@ public class DepartmentDetail implements Initializable{
 //
 //            requestDeptInf();
 //        }
+
+        // Text 감지 테스트
+        Pattern logTimePattern = Pattern.compile("대학교$");
+
+        inputRatingContent.textProperty().addListener((observable, oldValue, newValue) -> {
+            System.out.println("textfield changed from " + oldValue + " to " + newValue);
+            Matcher logTimeMatcher = logTimePattern.matcher(newValue);
+
+            if(logTimeMatcher.find()){
+                //가장 첫번째 감지하는 부분이 Group이 아니기에 1번째로 지정합니다.
+                System.out.println("ㅁㄴㅇㅁㄴㅇ"); // 50
+            }
+
+        });
 
         // tablecolumn cell value 설정
         colRatingDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));

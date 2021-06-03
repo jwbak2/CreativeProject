@@ -1,4 +1,4 @@
-package Client.controller;
+package Client.vo;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.layout.HBox;
