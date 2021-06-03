@@ -28,6 +28,8 @@ public class Sender {
 			//서버로 전송
 			oos.flush();
 
+			System.out.println("패킷 송신 완료");
+
 		} catch (IOException e) {
 			System.out.println("Sender.send(Protocol) 입출력오류");
 			e.printStackTrace();
@@ -41,6 +43,8 @@ public class Sender {
 
 			//서버로 전송
 			oos.flush();
+
+			System.out.println("패킷 송신 완료");
 
 		} catch (IOException e) {
 			System.out.println("Sender.send(Protocol) 입출력오류");

@@ -2,6 +2,7 @@ package Client.controller;
 
 import Client.transmission.Connection;
 import Client.vo.LoginReqVO;
+import Server.model.dto.UserDTO;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -31,6 +32,7 @@ public class Login implements Initializable {
     @FXML
     private PasswordField textFieldPW;
 
+    static UserDTO user;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -68,7 +70,11 @@ public class Login implements Initializable {
         if (receivePT.getProtocolType() == Protocol.PT_SUCC
                 && receivePT.getProtocolCode() == Protocol.PT_SUCC_LOGIN) {
 
+            user = (UserDTO) receivePT.getBody();
             // 로그인 성공 : 홈 화면
+
+            System.out.println("로그인 성공");
+
             Platform.runLater(this::showHome);
 
         } else {

@@ -31,7 +31,7 @@ public class ClientMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         Font.loadFont(getClass().getResourceAsStream("./resource/font/NotoSansKR-Bold.otf"), 10);    // 외부 폰트 사용
 
-        Parent root = FXMLLoader.load(getClass().getResource("./view/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("./view/login.fxml"));
         primaryStage.setTitle("로그인");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);   // 화면 크기 고정
