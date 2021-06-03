@@ -239,7 +239,7 @@ public class Controller {
 		String email = curUser.getUserEmail();
 		MyPageInfoVO mypageInfo = new MyPageInfoVO(userBookmarkDAO.select(email), rating.getUnivRatingOfUser(email),
 													rating.getDeptRatingOfUser(email));
-
+		System.out.println("MyPageInfo 전송");
 		Sender.send(Protocol.PT_RES, Protocol.PT_RES_USER_DETAIL, mypageInfo);
 	}
 

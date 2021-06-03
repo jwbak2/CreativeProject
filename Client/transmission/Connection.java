@@ -62,7 +62,7 @@ public class Connection {
 
         } catch (ClassNotFoundException | IOException | NullPointerException e ) {
             System.out.println("receive() - 패킷 수신 오류");
-            //e.printStackTrace();
+            e.printStackTrace();
 
         } catch (Exception e) {
             e.printStackTrace();
