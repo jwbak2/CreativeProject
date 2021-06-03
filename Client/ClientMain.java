@@ -22,7 +22,7 @@ public class ClientMain extends Application {
     public void init() {
 
         // TODO 서버 접속 실패시 예외처리 필요
-        new Connection(SERVER_IP, PORT);
+//        new Connection(SERVER_IP, PORT);
 
     }
 
@@ -31,7 +31,7 @@ public class ClientMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         Font.loadFont(getClass().getResourceAsStream("./resource/font/NotoSansKR-Bold.otf"), 10);    // 외부 폰트 사용
 
-        Parent root = FXMLLoader.load(getClass().getResource("./view/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("./view/departmentDetail.fxml"));
         primaryStage.setTitle("로그인");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);   // 화면 크기 고정

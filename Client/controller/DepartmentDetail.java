@@ -7,16 +7,21 @@ import Server.model.dto.DepartmentDetailDTO;
 import Server.model.dto.DepartmentRatingDTO;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
@@ -24,6 +29,7 @@ import javafx.stage.Stage;
 import org.controlsfx.control.Rating;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
@@ -127,17 +133,25 @@ public class DepartmentDetail implements Initializable{
     @FXML
     private ComboBox<String> comboIndicator;
 
-
     @FXML
-    private TableView<?> tableDeptRating;
+    private TableView<RatingInfo> tableDeptRating;
 
     @FXML
     private TextField inputRatingContent;
 
     @FXML
-    private Rating deptRating;
+    private org.controlsfx.control.Rating deptRating;
 
-    private boolean checkTabDeptRating;
+    @FXML
+    private TableColumn<RatingInfo, String> colRatingDate;
+
+    @FXML
+    private TableColumn<RatingInfo, String> colRatingContent;
+
+    @FXML
+    private TableColumn<RatingInfo, org.controlsfx.control.Rating> colRatingScore;
+
+    private ObservableList<RatingInfo> observableList;
 
     private String univName;         // 해당 학과의 학교 이름
 
@@ -154,25 +168,40 @@ public class DepartmentDetail implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 학과 상세정보 및 학과 평가 리스트 요청
-        if(deptName != null){   // 아무것도 클릭안하고 조회누를때 예외처리
-            textDeptName.setText(deptName);
-
-            requestDeptInf();
-        }
-
-        // SelectionChanged는 tab open, close 둘다 이벤트 발생해서 boolean 변수 사용해서 처음 한번만 처리
-//        checkTabDeptRating = false;
-
-        // 탭 클릭 시 학과 평가 리스트 요청 이벤트 등록
-//        tabDeptRating.setOnSelectionChanged(event -> {
-//            if (!checkTabDeptRating){
-//                checkTabDeptRating = true;
+//        if(deptName != null){   // 아무것도 클릭안하고 조회누를때 예외처리
+//            textDeptName.setText(deptName);
 //
-//                requestDeptRatingList();
-//            }
-//        });
+//            requestDeptInf();
+//        }
+
+        // tablecolumn cell value 설정
+        colRatingDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        colRatingContent.setCellValueFactory(new PropertyValueFactory<>("ratingContent"));
+        colRatingScore.setCellValueFactory(new PropertyValueFactory<>("score"));
+
+        // tablecolumn cell 렌더링 설정
+        colRatingContent.setCellFactory(tc -> {
+            TableCell<RatingInfo, String> cell = new TableCell<>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            text.wrappingWidthProperty().bind(colRatingContent.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell ;
+        });
     }
 
+    // double 값받아서 RatingInfo 클래스로 반환
+    private org.controlsfx.control.Rating makeRating(double rate) {
+        org.controlsfx.control.Rating rating = new org.controlsfx.control.Rating();
+        rating.setOrientation(Orientation.HORIZONTAL);
+        rating.setUpdateOnHover(false);
+        rating.setPartialRating(false);
+        rating.setRating(rate);
+        rating.setDisable(true);
+        rating.setMaxHeight(30);
+        return rating;
+    }
 
     // 학과 상세정보 요청
     private void requestDeptInf(){
@@ -180,7 +209,7 @@ public class DepartmentDetail implements Initializable{
         // 타이머 클래스 사용해서 1초뒤 프로토콜 전송
 
         Timer timer = new Timer();
-        // TimerTask는 추상클래스라 람다식 안됨?
+        // TimerTask는 추상클래스라 람다식 안됨
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -193,6 +222,9 @@ public class DepartmentDetail implements Initializable{
 
                     // 학과 상세정보 리스트 수신
                     deptDtoList = receiveDeptDetailDTOList();
+
+                    // 학과 평가 리스트
+//                    requestDeptRatingList();
 
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018
                     Platform.runLater(() -> {
@@ -300,6 +332,19 @@ public class DepartmentDetail implements Initializable{
     // 학과 평가 리스트 ui setting
     private void setDeptRatingList(ArrayList<DepartmentRatingDTO> deptRatingList){
         // TODO 학과 평가 리스트 set 필요 tableView
+        observableList = FXCollections.observableArrayList();
+
+        for(int i = 0; i < deptRatingList.size(); i++){
+            // Date to String
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String creationDate = transFormat.format(deptRatingList.get(i).getCreationDate());
+
+            observableList.add(new RatingInfo(new SimpleStringProperty(creationDate),
+                    new SimpleStringProperty(deptRatingList.get(i).getContent()),
+                    makeRating(deptRatingList.get(i).getScore())));
+        }
+
+        tableDeptRating.setItems(observableList);
     }
 
 
