@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.Rating?>
 
-<AnchorPane fx:id="apDeptDetail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.DepartmentDetail">
+<AnchorPane fx:id="apDeptDetail" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" style="-fx-background-color: #ecf0f1;" stylesheets="@css/reset.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.DepartmentDetail">
    <children>
       <Text fx:id="textDeptName" layoutX="390.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="학과이름">
          <font>
@@ -128,12 +139,68 @@
           </Tab>
           <Tab text="연도별 비교">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <BarChart fx:id="barChart" layoutX="39.0" layoutY="88.0" prefHeight="436.0" prefWidth="531.0">
+                          <xAxis>
+                            <CategoryAxis side="BOTTOM" />
+                          </xAxis>
+                          <yAxis>
+                            <NumberAxis side="LEFT" />
+                          </yAxis>
+                        </BarChart>
+                        <Button layoutX="823.0" layoutY="258.0" mnemonicParsing="false" onMouseClicked="#clickDeptDetailYearCp" prefHeight="29.0" prefWidth="63.0" text="조회" />
+                        <ComboBox fx:id="comboIndicator" layoutX="583.0" layoutY="258.0" prefHeight="29.0" prefWidth="235.0">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="입학금" />
+                                    <String fx:value="등록금" />
+                                    <String fx:value="국내 전문대학 진학" />
+                                    <String fx:value="국외 전문대학 진학" />
+                                    <String fx:value="국내 대학 진학" />
+                                    <String fx:value="국외 대학 진학" />
+                                    <String fx:value="국내 대학원 진학" />
+                                    <String fx:value="국외 대학원 진학" />
+                                    <String fx:value="국내 진학자 계" />
+                                    <String fx:value="국외 진학자 계" />
+                                    <String fx:value="진학률" />
+                                    <String fx:value="남자 취업대상자" />
+                                    <String fx:value="여자 취업대상자" />
+                                    <String fx:value="남자 국내 취업자" />
+                                    <String fx:value="여자 국내 취업자" />
+                                    <String fx:value="남자 해외 취업자" />
+                                    <String fx:value="여자 해외 취업자" />
+                                    <String fx:value="취업률" />
+                                    <String fx:value="교외 장학금" />
+                                    <String fx:value="교내 장학금" />
+                                    <String fx:value="1인당 장학금" />
+                                    <String fx:value="전임교원 수" />
+                                    <String fx:value="전임교원 1인당 논문 실적" />
+                                    <String fx:value="전임교원 1인당 연구비" />
+                                    <String fx:value="남자 졸업자" />
+                                    <String fx:value="여자 졸업자" />
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+                     </children></AnchorPane>
             </content>
           </Tab>
           <Tab fx:id="tabDeptRating" text="학과 평가">
               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  <AnchorPane fx:id="apDeptRating" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Line endX="749.0" layoutX="115.0" layoutY="96.0" startX="-100.0" />
+                        <TableView fx:id="tableDeptRating" layoutX="14.0" layoutY="145.0" prefHeight="465.0" prefWidth="860.0">
+                          <columns>
+                            <TableColumn prefWidth="92.0" text="작성일자" />
+                            <TableColumn prefWidth="599.0" text="내용" />
+                              <TableColumn prefWidth="168.0" text="평점" />
+                          </columns>
+                        </TableView>
+                        <TextField fx:id="inputRatingContent" layoutX="14.0" layoutY="27.0" prefHeight="55.0" prefWidth="565.0" />
+                        <Rating fx:id="deptRating" layoutX="593.0" layoutY="38.0" prefHeight="0.0" prefWidth="176.0" rating="5.0" />
+                        <Button layoutX="792.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#clickRegisterDeptRating" prefHeight="48.0" prefWidth="73.0" text="등록" />
+                     </children></AnchorPane>
               </content>
           </Tab>
         </tabs>
