@@ -221,6 +221,7 @@ public class UnivDetail implements Initializable {
 //        });
     }
 
+    // 학교 정보 요청
     void requestUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
@@ -260,28 +261,7 @@ public class UnivDetail implements Initializable {
         th.start();
     }
 
-    void requestDeptListOfUniv() {
-        Runnable runnable = () -> {     // 다른 스레드로 처리
-            try {
-                String univName = inputUniv.getText().replace(" ", "");
-
-                Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV, univName));
-
-                ArrayList<String> univDeptList = receiveUnivDeptList();
-
-                Platform.runLater(() -> {
-                    // 학과 리스트 tab
-                    setUnivDeptList(univDeptList);  // deptList Listview 추가
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
-
-        Thread th = new Thread(runnable);
-        th.start();
-    }
-
+    // 학교 프로토콜 전송
     void sendUnivInf() throws Exception {
         // input에 입력한 학교 이름 추출 + 공백 제거
         String univName = inputUniv.getText().replace(" ", "");
@@ -296,7 +276,8 @@ public class UnivDetail implements Initializable {
         Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_INF, univName));        // 패킷 전송
     }
 
-    public UnivDTO receiveUnivDTO() throws Exception {
+    // 학교 DTO 수신
+    private UnivDTO receiveUnivDTO() throws Exception {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
 
@@ -322,7 +303,8 @@ public class UnivDetail implements Initializable {
         return (UnivDTO) receivedBody;       // 학교 정보 receive
     }
 
-    public ArrayList<UnivDetailDTO> receiveUnivDetailDTO() {
+    // 학과 상세정보 DTO list 수신
+    private ArrayList<UnivDetailDTO> receiveUnivDetailDTO() {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
 
@@ -340,25 +322,8 @@ public class UnivDetail implements Initializable {
         return tmp;
     }
 
-    public ArrayList<String> receiveUnivDeptList() {
-        Protocol receivePT = Connection.receive();
-        Object receivedBody = receivePT.getBody();
-
-        // 학과 리스트
-        ArrayList<String> tmp = new ArrayList<>();   //
-
-        // 타입 처리
-        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
-        for (Object obj : ar) {
-            if (obj instanceof String) {
-                tmp.add((String) obj);
-            }
-        }
-
-        return tmp;
-    }
-
-    public void setUnivInf(UnivDTO univDTO) {    // UnivDTO GUI에 뿌려주기
+    // 학교 기본정보 ui setting
+    private void setUnivInf(UnivDTO univDTO) {    // UnivDTO GUI에 뿌려주기
         Image univLogo = new Image(new ByteArrayInputStream(univDTO.getUnivLogoImageFile()));// ByteArrayInputStream 알아보기
         imageUnivLogo.setImage(univLogo);
         textUnivName.setText(univDTO.getUnivName());
@@ -371,7 +336,8 @@ public class UnivDetail implements Initializable {
         textUnivIntroduction.setText(univDTO.getUnivIntroduction());
     }
 
-    public void setUnivDetailInf(UnivDetailDTO univDetailDTO) {  // UnivDetailDTO GUI에 뿌려주기
+    // 학교 상세정보 ui setting
+    private void setUnivDetailInf(UnivDetailDTO univDetailDTO) {  // UnivDetailDTO GUI에 뿌려주기
         studentNumber.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getStudentNumber()));
         admissionCompetitionRate.setText(univDetailDTO.getAdmissionCompetitionRate() + "%");
         employmentRate.setText(univDetailDTO.getEmploymentRate() + "%");
@@ -404,13 +370,60 @@ public class UnivDetail implements Initializable {
         numOfPatentRegistration.setText(NumberFormat.getNumberInstance(Locale.US).format(univDetailDTO.getNumOfPatentRegistration()));
     }
 
-    public void setUnivDeptList(ArrayList<String> deptList) {  //
+
+
+    // 학교의 학과 리스트 요청
+    private void requestDeptListOfUniv() {
+        Runnable runnable = () -> {     // 다른 스레드로 처리
+            try {
+                String univName = inputUniv.getText().replace(" ", "");
+
+                Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV, univName));
+
+                ArrayList<String> univDeptList = receiveUnivDeptList();
+
+                Platform.runLater(() -> {
+                    // 학과 리스트 tab
+                    setUnivDeptList(univDeptList);  // deptList Listview 추가
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
+    }
+
+    // 학교의 학과리스트 list 수신
+    private ArrayList<String> receiveUnivDeptList() {
+        Protocol receivePT = Connection.receive();
+        Object receivedBody = receivePT.getBody();
+
+        // 학과 리스트
+        ArrayList<String> tmp = new ArrayList<>();   //
+
+        // 타입 처리
+        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+        for (Object obj : ar) {
+            if (obj instanceof String) {
+                tmp.add((String) obj);
+            }
+        }
+
+        return tmp;
+    }
+
+    // 학교의 학과리스트 ui setting
+    private void setUnivDeptList(ArrayList<String> deptList) {  //
         ObservableList list = FXCollections.observableArrayList(deptList);
         tableDeptList.setItems(list);
     }
 
+
+    // 홈페이지 버튼 클릭 시
     @FXML
-    void moveHyperLink(MouseEvent event) {  // 홈페이지 URL 하이퍼 링크 event handler
+    private void moveHyperLink(MouseEvent event) {  // 홈페이지 URL 하이퍼 링크 event handler
         try {
             Desktop.getDesktop().browse(new URI(homepageURL));  // 버튼 누를시 브라우져 생성
         } catch (IOException | URISyntaxException e) {
@@ -418,8 +431,9 @@ public class UnivDetail implements Initializable {
         }
     }
 
+    // 학과 상세정보 조회 버튼 클릭 시
     @FXML
-    void clickBtnDeptDetail(MouseEvent event) {
+    private void clickBtnDeptDetail(MouseEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("../view/departmentDetail.fxml"));
             Parent root = loader.load();    // Parent load, 여기서 controller init도 됨
@@ -435,8 +449,9 @@ public class UnivDetail implements Initializable {
         }
     }
 
+    // 연도별 비교 버튼 클릭 시
     @FXML
-    void clickUnivDetailYearCp(MouseEvent event) {
+    private void clickUnivDetailYearCp(MouseEvent event) {
         String indicatorName = comboIndicator.getValue();
         
         // 이전 barChart 내용 초기화
@@ -643,5 +658,11 @@ public class UnivDetail implements Initializable {
         for(int i = 0; i < 3; i++){
             barChart.getData().add(series[i]);
         }
+    }
+
+    // 학교 평가 등록 버튼 클릭 시
+    @FXML
+    void clickRegisterUnivRating(MouseEvent event) {
+
     }
 }

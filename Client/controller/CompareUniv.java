@@ -215,6 +215,7 @@ public class CompareUniv implements Initializable {
         TextFields.bindAutoCompletion(inputSecondUniv, Home.getUnivList()); // 텍스트필드 자동완성
     }
 
+    // 비교 버튼 클릭 시
     @FXML
     void compareUnivDetail(MouseEvent event) {
 
@@ -241,7 +242,8 @@ public class CompareUniv implements Initializable {
         th.start();
     }
 
-    public ArrayList<UnivDetailDTO> receiveUnivCp() throws Exception {
+    // 비교할 학교 DTO 수신
+    private ArrayList<UnivDetailDTO> receiveUnivCp() throws Exception {
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
 
@@ -265,7 +267,8 @@ public class CompareUniv implements Initializable {
         return result;  // UnivDTO 타입인 Object 반환
     }
 
-    public void setUnivDetailInf(ArrayList<UnivDetailDTO> receivedUnivDetailList) {  // UnivDetailDTO GUI에 뿌려주기
+    // 학교 비교 ui setting
+    private void setUnivDetailInf(ArrayList<UnivDetailDTO> receivedUnivDetailList) {  // UnivDetailDTO GUI에 뿌려주기
         UnivDetailDTO firstUnivDetail = receivedUnivDetailList.get(FIRST_UNIV_DETAIL);
         UnivDetailDTO secondUnivDetail = receivedUnivDetailList.get(SECOND_UNIV_DETAIL);
 
@@ -378,7 +381,8 @@ public class CompareUniv implements Initializable {
         compareUnivDetailElement(numOfPatentRegistrationOne, numOfPatentRegistrationTwo, firstUnivDetail.getNumOfPatentRegistration(), secondUnivDetail.getNumOfPatentRegistration());
     }
 
-    public void compareUnivDetailElement(Label n1, Label n2, Long el1, Long el2) {
+    // 상세정보 요소 비교 후 텍스트 색상 변경
+    private void compareUnivDetailElement(Label n1, Label n2, Long el1, Long el2) {
         if (el1 < el2) {
             n2.setTextFill(Color.RED);
         } else if(el1 > el2){
