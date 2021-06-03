@@ -1,14 +1,10 @@
-package Server.controller;
+package Server.subcontroller;
 
-import Client.vo.DeptInfoReqVO;
 import Server.model.dao.DepartmentDAO;
 import Server.model.dao.DepartmentDetailDAO;
-import Server.model.dto.DepartmentDTO;
 import Server.model.dto.DepartmentDetailDTO;
-import Server.model.dto.UnivDetailDTO;
 import Server.transmission.Controller;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
