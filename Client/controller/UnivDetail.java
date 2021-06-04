@@ -1,16 +1,22 @@
 package Client.controller;
 
+import Client.vo.RatingInfo;
+import Client.vo.RatingVO;
+import Server.model.dto.DepartmentRatingDTO;
 import Server.model.dto.UnivDetailDTO;
 import Server.model.dto.UnivDTO;
 import Client.transmission.Connection;
+import Server.model.dto.UnivRatingDTO;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
@@ -27,6 +33,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import org.controlsfx.control.Rating;
 import org.controlsfx.control.textfield.TextFields;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,6 +45,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -185,6 +193,31 @@ public class UnivDetail implements Initializable {
     @FXML
     private BarChart<String, Number> barChart;
 
+
+    @FXML
+    private Tab tabUnivRating;
+
+    @FXML
+    private TextField inputUnivRatingContent;
+
+    @FXML
+    private Button btnRegisterUnivRating;
+
+    @FXML
+    private TableView<RatingInfo> tableUnivRating;
+
+    @FXML
+    private TableColumn<?, ?> colDate;
+
+    @FXML
+    private TableColumn<?, ?> colContent;
+
+    @FXML
+    private TableColumn<?, ?> colScore;
+
+    @FXML
+    private Rating univRating;
+
     private boolean checkTabUnivMap;
 
     private String homepageURL;
@@ -192,11 +225,11 @@ public class UnivDetail implements Initializable {
     private String selectedDeptName;
 
     private UnivDTO univDTO; //가장 최근 조회한 UnivDTO
+
     private ArrayList<UnivDetailDTO> univDtoList;   // 2018 ~ 2020 UnivDetailDTO 담는 어레이리스트
 
-    public StackPane getSpUnivDetail() {
-        return spUnivDetail;
-    }
+    private ObservableList<RatingInfo> observableUnivRatingList;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -485,6 +518,74 @@ public class UnivDetail implements Initializable {
     }
 
 
+    // 학교 평가 리스트 요청
+    private void requestUnivRatingList(){
+        Runnable runnable = () -> {
+            String univName = inputUniv.getText().replace(" ", "");
+            // 학교 평가 리스트 요청
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST, univName));
+
+            // 학교 평가 리스트 수신
+            ArrayList<UnivRatingDTO> univRatingList = receiveUnivRatingList();
+
+            Platform.runLater(() -> {
+                // set 학과 평가 리스트
+                setUnivRatingList(univRatingList);
+            });
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
+    }
+
+    // 학교 평가 리스트 수신
+    private ArrayList<UnivRatingDTO> receiveUnivRatingList(){
+        Protocol receivePT = Connection.receive();
+        Object receivedBody = receivePT.getBody();
+
+        ArrayList<UnivRatingDTO> tmp = new ArrayList<>();   //
+
+        // 타입 처리
+        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+        for (Object obj : ar) {
+            if (obj instanceof UnivRatingDTO) {
+                tmp.add((UnivRatingDTO) obj);
+            }
+        }
+
+        return tmp;
+    }
+
+    // 학교 평가 리스트 ui setting
+    private void setUnivRatingList(ArrayList<UnivRatingDTO> univRatingList){
+        observableUnivRatingList = FXCollections.observableArrayList();
+
+        for (int i = 0; i < univRatingList.size(); i++) {
+            // Date to String
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String creationDate = transFormat.format(univRatingList.get(i).getCreationDate());
+
+            observableUnivRatingList.add(new RatingInfo(new SimpleStringProperty(creationDate),
+                    new SimpleStringProperty(univRatingList.get(i).getContent()),
+                    makeRating(univRatingList.get(i).getScore())));
+        }
+
+        tableUnivRating.setItems(observableUnivRatingList);
+    }
+
+    // double 값받아서 Rating 클래스로 반환
+    private org.controlsfx.control.Rating makeRating(double rate) {
+        org.controlsfx.control.Rating rating = new org.controlsfx.control.Rating();
+        rating.setOrientation(Orientation.HORIZONTAL);
+        rating.setUpdateOnHover(false);
+        rating.setPartialRating(false);
+        rating.setRating(rate);
+        rating.setDisable(true);
+        rating.setMaxHeight(30);
+        return rating;
+    }
+
+
     // 홈페이지 버튼 클릭 시
     @FXML
     private void moveHyperLink(MouseEvent event) {  // 홈페이지 URL 하이퍼 링크 event handler
@@ -727,6 +828,73 @@ public class UnivDetail implements Initializable {
     // 학교 평가 등록 버튼 클릭 시
     @FXML
     void clickRegisterUnivRating(MouseEvent event) {
+        Runnable runnable = () -> {
+            String univName = inputUniv.getText().replace(" ", "");
+            // FIXME 세션기능 필요
+            String userEmail = null;
+            String content = inputUnivRatingContent.getText();
+            int score = (int) univRating.getRating();
+            java.sql.Date creationDate = new java.sql.Date(System.currentTimeMillis());
 
+            RatingVO ratingVO = new RatingVO(univName, userEmail, content, score, creationDate);
+
+            // 학과 평가 등록 요청
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING, ratingVO));
+
+            // 학과 평가 등록 결과 수신
+            Protocol receivePT = Connection.receive();
+
+            if (receivePT.getProtocolType() == Protocol.PT_SUCC
+                    && receivePT.getProtocolCode() == Protocol.PT_SUCC_DEPT_RATING) {
+                Platform.runLater(() -> {
+                    showLoginSuccPopUp();
+
+                    // Date to String
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+                    // table view 리스트에 추가
+                    observableUnivRatingList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)), new SimpleStringProperty(content), makeRating(score)));
+                    tableUnivRating.setItems(observableUnivRatingList);
+                });
+
+            } else {
+                Platform.runLater(this::showLoginFailPopUp);
+            }
+
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
     }
+
+    private void showLoginFailPopUp() {
+        try {
+            Stage stage = (Stage) inputUnivRatingContent.getScene().getWindow(); //
+            Popup pu = new Popup();
+            Parent root = FXMLLoader.load(getClass().getResource("../view/ratingSucc.fxml"));
+
+            pu.getContent().add(root);
+            pu.setAutoHide(true); // 포커스 이동시 창 숨김
+            pu.show(stage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showLoginSuccPopUp() {
+        try {
+            Stage stage = (Stage) inputUnivRatingContent.getScene().getWindow(); //
+            Popup pu = new Popup();
+            Parent root = FXMLLoader.load(getClass().getResource("../view/ratingFail.fxml"));
+
+            pu.getContent().add(root);
+            pu.setAutoHide(true); // 포커스 이동시 창 숨김
+            pu.show(stage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

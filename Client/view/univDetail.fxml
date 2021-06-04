@@ -1,15 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.web.*?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.web.WebView?>
+<?import org.controlsfx.control.Rating?>
 
-<StackPane fx:id="spUnivDetail" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.UnivDetail">
+<StackPane fx:id="spUnivDetail" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.UnivDetail">
    <children>
       <AnchorPane fx:id="apUnivMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0">
          <children>
@@ -34,7 +51,7 @@
                         <Text fx:id="textUnivRepresentativeNumber" layoutX="101.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="389.65137523412704" />
                      </children>
                   </AnchorPane>
-                  <TabPane layoutY="255.0" prefHeight="447.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane layoutY="235.0" prefHeight="467.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
                     <tabs>
                       <Tab fx:id="tabUnivIntro" text="학교 소개">
                         <content>
@@ -236,6 +253,26 @@
                         <Tab fx:id="tabUnivMap" text="지도">
                            <content>
                               <WebView fx:id="webView" prefHeight="200.0" prefWidth="200.0" />
+                           </content></Tab>
+                        <Tab fx:id="tabUnivRating" text="학교 평가">
+                            <content>
+                            </content>
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="inputUnivRatingContent" layoutX="14.0" layoutY="23.0" prefHeight="56.0" prefWidth="608.0" />
+                                    <Rating fx:id="univRating" layoutX="627.0" layoutY="35.0" rating="5.0" />
+                                    <Button fx:id="btnRegisterUnivRating" layoutX="815.0" layoutY="29.0" mnemonicParsing="false" onMouseClicked="#clickRegisterUnivRating" prefHeight="45.0" prefWidth="68.0" text="등록" />
+                                    <Line endX="767.0" layoutX="115.0" layoutY="90.0" startX="-100.0" />
+                                    <TableView fx:id="tableUnivRating" layoutX="14.0" layoutY="103.0" prefHeight="314.0" prefWidth="872.0">
+                                      <columns>
+                                        <TableColumn fx:id="colDate" prefWidth="94.0" text="작성일자" />
+                                        <TableColumn fx:id="colContent" prefWidth="659.0" text="내용" />
+                                          <TableColumn fx:id="colScore" prefWidth="118.0" text="평점" />
+                                      </columns>
+                                    </TableView>
+                                 </children>
+                              </AnchorPane>
                            </content></Tab>
                     </tabs>
       
