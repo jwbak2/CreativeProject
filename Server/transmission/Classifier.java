@@ -72,9 +72,9 @@ public class Classifier {
 						break;
 
 					// 학과 평가 리스트 요청
-//					case Protocol.PT_REQ_DEPT_RATING_LIST:
-//						controller.inquiryDepartmentRatingList( (DeptInfoReqVO) body);
-						//break;
+					case Protocol.PT_REQ_DEPT_RATING_LIST:
+						controller.inquiryDepartmentRatingList( (DeptInfoReqVO) body);
+						break;
 
 					// 맞춤형 평점 조회
 					case Protocol.PT_REQ_CUSTOM_RANKING:
