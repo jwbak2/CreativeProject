@@ -26,13 +26,9 @@ public class DepartmentDAO {
 
 			rs = pstmt.executeQuery();
 
-//			rs.last();                      // 행 개수 세기 위해 결과셋의 마지막 행으로 이동
-//			int rowCount = rs.getRow();
-//			rs.beforeFirst();               // 처음 행으로 이동
-
+			// 학과 리스트를 저장할 HashMap
 			departmentList = new HashMap<>();
 
-//			int i = 0;
 			while (rs.next()) {
 				departmentList.put(rs.getString("department_name"), rs.getString("department_id"));
 			}

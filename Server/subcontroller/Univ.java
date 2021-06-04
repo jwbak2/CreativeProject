@@ -22,14 +22,10 @@ public class Univ {
 
 	public ArrayList<String> getUnivList() {
 		// 대학 리스트
-		HashMap<String, String> univList = Server.model.Cache.getUnivList();
-		ArrayList<String> list = new ArrayList<>();
+		HashMap<String, String> univMap = Server.model.Cache.getUnivList();
 
-		for (String key : univList.keySet()) {
-			list.add(key);
-		}
-
-		return list;
+		// 클라이언트가 사용할 수 있도록 ArrayList로 변환
+		return new ArrayList<String>(univMap.keySet());
 	}
 
 	public UnivDTO getUniv(String univCode) throws Exception {

@@ -1,6 +1,7 @@
 package Server.transmission;
 
 import Client.vo.*;
+import Server.model.dao.IndicatorSelectionStatisticsDAO;
 import Server.subcontroller.*;
 import Server.model.dao.UserBookmarkDAO;
 import Server.model.dao.UserDAO;
@@ -64,12 +65,11 @@ public class Controller {
 	// 학과 상세정보 조회 요청 처리
 	public void inquiryDepartmentInfo(DeptInfoReqVO deptInfo) {
 		try	{
-			Department deptDetail = new Department();
-			Univ univ = new Univ();
+			Department dept = new Department();
 
-			String deptID = deptDetail.getDepartmentID(univ.getUnivId(deptInfo.getUnivName()), deptInfo.getDeptName());
+			String deptID = dept.getDepartmentID(deptInfo.getUnivName(), deptInfo.getDeptName());
 
-			Sender.send(Protocol.PT_RES, Protocol.PT_RES_DEPT_DETAIL, deptDetail.getAllDepartmentDetail(deptID));
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_DEPT_DETAIL, dept.getAllDepartmentDetail(deptID));
 
 		} catch (Exception e) {
 			System.out.println("Controller - 학과 상세정보 조회 오류");
@@ -101,11 +101,10 @@ public class Controller {
 	public void inquiryDepartmentRatingList(DeptInfoReqVO deptInfo) {
 
 		Department deptDetail = new Department();
-		Univ univ = new Univ();
 		Rating rating = new Rating();
 
 		// 학과 ID 검색
-		String deptID = deptDetail.getDepartmentID(univ.getUnivId(deptInfo.getUnivName()), deptInfo.getDeptName());
+		String deptID = deptDetail.getDepartmentID(deptInfo.getUnivName(), deptInfo.getDeptName());
 
 		if (deptID != null) {
 			// 학과 ID 존재 -> 학과 평가 리스트 조회 -> 전송
@@ -115,18 +114,45 @@ public class Controller {
 
 	}
 
+	// 맞춤형 평점 조회 요청 처리
+	public void inquiryCustomRanking(CustomizedRankReqVO info) {
+		// 사용자가 선택한 학과들을
+		// 사용자가 선택한 지표들로 비교해서 순위를 제공
+		Department dept = new Department();
+		Univ univ = new Univ();
+
+		ArrayList<DeptInfoReqVO> deptList = info.getDeptList();	// 학과 리스트
+		ArrayList<String> indicators = info.getIndicators();	// 지표 리스트
+
+		ArrayList<String> deptIdList = new ArrayList<>();		// 학과 ID 리스트
+		deptList.forEach((e) -> {
+			deptIdList.add(dept.getDepartmentID(e.getUnivName(), e.getDeptName()));
+		});
+
+		// NOTE: 데이터 분리 및 준비 (대학 이름, 학과 이름으로 학과 ID 만들기)
+
+		// NOTE: 준비된 데이터를 가공해서 저장
+
+		// NOTE: 완성된 리스트를 전송
+//		Sender.send(Protocol.PT_RES, Protocol.PT_RES_CUSTOM_RANKING, );
+
+	}
+
 	// 사용자 통계 조회 요청 처리
 	public void inquiryUserStats() {
 		// 학교 실시간 조회 순위 1 ~ 10	위
 		// 가장 많이 사용한 지표 1 ~ 10 위
 		// NOTE: + a (또 어떤 통계?)
 
-		//
+		// 사용자 통계 정보가 담기는 ArrayList
 		ArrayList< ArrayList<String> > statsList = new ArrayList<>();
 
-//		statsList.add(new Univ.getViewListOfUniv());
-//		statsList.add(new IndicatorSelectionStatisticsDAO().getViewListOfIndicator());
+		// 사용자 통계 정보 가져오기
+		statsList.add(new Univ().getViewListOfUniv());
+		statsList.add(new IndicatorSelectionStatisticsDAO().getIndicatorOfView());
 
+		// 사용자 통계 정보 반환
+		Sender.send(Protocol.PT_RES, Protocol.PT_RES_USER_STATS, statsList);
 	}
 
 	// 두 대학 비교 요청 처리
@@ -162,8 +188,8 @@ public class Controller {
 			Univ univ = new Univ();
 
 			// 학과 ID 찾기
-			String deptID1 = deptDetail.getDepartmentID(univ.getUnivId(dept1.getUnivName()), dept1.getDeptName());
-			String deptID2 = deptDetail.getDepartmentID(univ.getUnivId(dept2.getUnivName()), dept2.getDeptName());
+			String deptID1 = deptDetail.getDepartmentID(dept1.getUnivName(), dept1.getDeptName());
+			String deptID2 = deptDetail.getDepartmentID(dept2.getUnivName(), dept2.getDeptName());
 
 			// ArrayList 에 저장
 			result.add(deptDetail.getDepartmentDetail(deptID1, CUR_YEAR));
@@ -252,7 +278,7 @@ public class Controller {
 
 	// RatingVO 를 DepartmentRatingDTO 로 변환
 	public static DepartmentRatingDTO convertToDeptRatingDTO(RatingVO target) {
-		String deptId = new Department().getDepartmentID(new Univ().getUnivId(target.getUnivName()), target.getDeptName());
+		String deptId = new Department().getDepartmentID(target.getUnivName(), target.getDeptName());
 
 		return new DepartmentRatingDTO(target.getUserEmail(), deptId, target.getContent(), new Long(target.getScore()), target.getCreationDate());
 	}
