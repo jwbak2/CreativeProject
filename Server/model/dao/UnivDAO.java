@@ -41,6 +41,8 @@ public class UnivDAO {
             dto = new UnivDTO(univId, univName, univType, univEstablishmentCls, univArea, univAddress
                     , univRepresentativeNumber, univHomepageUrl, univLogoImageFile, univIntroduction, view);
 
+            // 대학 조회 시, 대학 조회수 1 증가
+            increaseUserView(univID);
 
         } catch (SQLException sqle) {
             System.out.println("Exception : SELECT");
@@ -70,10 +72,7 @@ public class UnivDAO {
             ResultSet rs = stmt.executeQuery(SQL);
         ) {
 
-            rs.last();                      // 행 개수 세기 위해 결과셋의 마지막 행으로 이동
-            int rowCount = rs.getRow();
-            rs.beforeFirst();               // 처음 행으로 이동
-
+            // 대학 리스트를 저장할 HashMap
             univList = new HashMap<>();
 
             while (rs.next()) {
@@ -93,9 +92,64 @@ public class UnivDAO {
         return univList;
     }
 
-    public ArrayList<String> getViewList() {
-        // TODO: 로직 필요
+    public ArrayList<String> getViewList() {    // 조회수 순의 학교 리스트를 반환
 
-        return null;
+        final int LIST_SIZE = 10;
+
+        // 학과
+        ArrayList<String> list = null;
+
+        String SQL = "SELECT \"univ_name\" FROM crtvp.\"univ\" ORDER BY \"USER_VIEW\" DESC";
+
+        Connection conn = DBCP.getConnection();
+
+        try(Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(SQL);
+        ) {
+
+            // 대학 리스트를 저장할 HashMap
+            list = new ArrayList<>();
+
+            for (int i = 0; i < LIST_SIZE; i++) {
+                list.add(rs.getString("univ_name"));
+            }
+
+        } catch (SQLException sqle) {
+            System.out.println("Exception : SELECT");
+            sqle.printStackTrace();
+
+        } finally {
+            if (conn != null)
+                DBCP.returnConnection(conn);
+
+        }
+
+        return list;
     }
+
+    public void increaseUserView(String univID) {
+
+        Connection conn = DBCP.getConnection();
+
+        String preQuery = "UPDATE crtvp.\"univ\" SET \"USER_VIEW\" = \"USER_VIEW\" + 1 WHERE \"univ_id\" = ?";
+
+
+        try(PreparedStatement pstmt = conn.prepareStatement(preQuery)) {
+
+            pstmt.setString(1, univID);
+
+            pstmt.executeQuery();
+
+        } catch (SQLException sqle) {
+            System.out.println("Exception : SELECT");
+            sqle.printStackTrace();
+
+        } finally {
+            if (conn != null)
+                DBCP.returnConnection(conn);
+
+        }
+
+    }
+
 }

@@ -1,14 +1,10 @@
-package Server.controller;
+package Server.subcontroller;
 
-import Client.vo.DeptInfoReqVO;
 import Server.model.dao.DepartmentDAO;
 import Server.model.dao.DepartmentDetailDAO;
-import Server.model.dto.DepartmentDTO;
 import Server.model.dto.DepartmentDetailDTO;
-import Server.model.dto.UnivDetailDTO;
 import Server.transmission.Controller;
 
-import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -59,19 +55,21 @@ public class Department {
 		}
 
 		// 클라이언트가 사용할 수 있게 ArrayList 로 전송
-		ArrayList<String> deptList = new ArrayList<>();
-		for (String key : deptMap.keySet()) {
-			deptList.add(key);
-		}
-
-		return deptList;
+		return new ArrayList<String>(deptMap.keySet());
 	}
 
-	public String getDepartmentID(String univId, String deptName) {
-		// 대학 ID와 학과 이름으로 학과 ID 조회
+	public String getDepartmentID(String univName, String deptName) {
+		// 대학 이름과 학과 이름으로 학과 ID 조회
 		deptDAO = deptDAO == null ? new DepartmentDAO() : deptDAO;
 
-		return deptDAO.getDeptID(univId, deptName);
+		String univId = new Univ().getUnivId(univName);
+
+		if (univId != null) {
+			return deptDAO.getDeptID(univId, deptName);
+		} else {
+			return null;
+		}
+
 	}
 
 }

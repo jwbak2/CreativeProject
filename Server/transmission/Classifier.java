@@ -2,6 +2,7 @@ package Server.transmission;
 
 import Client.vo.DeptInfoReqVO;
 import Client.vo.LoginReqVO;
+import Client.vo.RatingVO;
 import Server.model.dto.DepartmentRatingDTO;
 import Server.model.dto.UnivRatingDTO;
 
@@ -45,24 +46,24 @@ public class Classifier {
 						controller.inquiryDepartmentList( (String) body);
 						break;
 
-					// 학교 비교 요청
+					// 대학 비교 요청
 					case Protocol.PT_REQ_UNIV_CP:
-						controller.compareTwoUniv( (ArrayList<DeptInfoReqVO>) body);
+						controller.compareTwoUniv((ArrayList<String>) body);
 						break;
 
 					// 학과 비교 요청
 					case Protocol.PT_REQ_DEPT_CP:
-						controller.compareTwoDept((ArrayList<String>) body);
+						controller.compareTwoDept( (ArrayList<DeptInfoReqVO>) body);
 						break;
 
 					// 대학 평점 등록
 					case Protocol.PT_REQ_UNIV_RATING:
-						controller.registerUnivRating( (UnivRatingDTO) body);
+						controller.registerUnivRating( (RatingVO) body);
 						break;
 
 					// 학과 평점 등록
 					case Protocol.PT_REQ_DEPT_RATING:
-						controller.registerDepartmentRating( (DepartmentRatingDTO) body);
+						controller.registerDepartmentRating( (RatingVO) body);
 						break;
 
 					// 대학 평가 리스트 요청
@@ -75,10 +76,12 @@ public class Classifier {
 						controller.inquiryDepartmentRatingList( (DeptInfoReqVO) body);
 						break;
 
-					// 맞춤형 평점...?
+					// 맞춤형 평점 조회
+					case Protocol.PT_REQ_CUSTOM_RANKING:
+//						controller.inquiryCustomRanking();
+						break;
 
-
-					// 사용자 통계..?
+					// 사용자 통계 조회
 					case Protocol.PT_REQ_USER_STATS:
 						controller.inquiryUserStats();
 						break;
@@ -88,13 +91,10 @@ public class Classifier {
 						controller.reqLogin((LoginReqVO)body);
 						break;
 
-					// 사용자 마이페이지 정보 요청
+					// 사용자 마이페이지 정보 요청 (즐겨찾기, 사용자가 작성한 대학/학과 평가)
 					case Protocol.PT_REQ_USER_DETAIL:
 						controller.reqUserDetail();
 						break;
-
-					// 즐겨찾기 요청...?
-
 
 					default:
 						System.out.println("---알 수 없는 패킷---");
@@ -103,32 +103,19 @@ public class Classifier {
 				break;
 
 			case Protocol.PT_RES:	// 응답
-				switch (code) {
-
-				}
-				// pass
 				break;
 
 			case Protocol.PT_SUCC:	// 성공
-				switch (code) {
-
-				}
-				// pass
 				break;
 
 			case Protocol.PT_FAIL:	// 실패
-				switch (code) {
-
-				}
-				// pass
 				break;
 
 			default:
-				// pass
+				System.out.println("---알 수 없는 패킷---");
 				break;
 		}
 
-		return;
 	}
 
 }
