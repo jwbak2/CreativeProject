@@ -192,9 +192,9 @@
                         <Line endX="749.0" layoutX="115.0" layoutY="96.0" startX="-100.0" />
                         <TableView fx:id="tableDeptRating" layoutX="14.0" layoutY="145.0" prefHeight="465.0" prefWidth="860.0">
                           <columns>
-                            <TableColumn prefWidth="92.0" text="작성일자" />
-                            <TableColumn prefWidth="599.0" text="내용" />
-                              <TableColumn prefWidth="168.0" text="평점" />
+                            <TableColumn fx:id="colRatingDate" prefWidth="92.0" text="작성일자" />
+                            <TableColumn fx:id="colRatingContent" prefWidth="580.0" text="내용" />
+                              <TableColumn fx:id="colRatingScore" prefWidth="187.0" style="-fx-alignment: CENTER;" text="평점" />
                           </columns>
                         </TableView>
                         <TextField fx:id="inputRatingContent" layoutX="14.0" layoutY="27.0" prefHeight="55.0" prefWidth="565.0" />

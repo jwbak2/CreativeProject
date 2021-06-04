@@ -64,7 +64,8 @@ public class UnivDAO {
         // Key = 학교 이름,  Value = 학교 ID
         HashMap<String, String> univList = null;     // 학교 목록 선언 '학교id, 학교이름'의 HashMap
 
-        String SQL = "SELECT * FROM crtvp.\"univ\"";
+        String SQL = "SELECT * FROM CRTVP.UNIV";
+//        String SQL = "SELECT * FROM crtvp.\"univ\"";
 
         Connection conn = DBCP.getConnection();
 

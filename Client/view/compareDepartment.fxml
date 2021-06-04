@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Text?>
-
+<?import javafx.scene.shape.Line?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.CompareDepartment">
    <children>
-      <GridPane fx:id="cpPaneOne" layoutX="29.0" layoutY="155.0" prefHeight="582.0" prefWidth="421.0">
+      <GridPane fx:id="cpPaneOne" layoutX="30.0" layoutY="176.0" prefHeight="582.0" prefWidth="421.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -38,16 +37,16 @@
          <children>
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="입학금" GridPane.columnIndex="1" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="등록금" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="studentNumberTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" />
-            <Label fx:id="employmentRateTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label fx:id="enteringRateTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Label fx:id="educationCostPerPersonTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Label fx:id="totalScholarshipBenefitTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <Label fx:id="foundersNumberTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-            <Label fx:id="startCompanySaleTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
-            <Label fx:id="startCompanyCapitalTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Label fx:id="admissionFeeTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" />
+            <Label fx:id="maleGrTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="femaleGrTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label fx:id="enteringDomCmntyCollTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label fx:id="enteringOverseasCmntyCollTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Label fx:id="enteringDomUnivTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Label fx:id="enteringOverseasUnivTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <Label fx:id="enteringDomGrSchoolTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="국외 대학원 진학" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <Label fx:id="schoolStartCompanyFundTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+            <Label fx:id="enteringOverseasGrSchoolTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="국내 대학원 진학" GridPane.columnIndex="1" GridPane.rowIndex="8" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="국외 대학 진학" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="국내 대학 진학" GridPane.columnIndex="1" GridPane.rowIndex="6" />
@@ -55,40 +54,33 @@
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="국내 전문대학 진학" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="여자 졸업자" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="남자 졸업자" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="educationCostPerPersonOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="4" />
-            <Label fx:id="enteringRateOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="3" />
-            <Label fx:id="employmentRateOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="2" />
-            <Label fx:id="admissionCompetitionRateOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="1" />
+            <Label fx:id="enteringDomCmntyCollOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="4" />
+            <Label fx:id="femaleGrOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="3" />
+            <Label fx:id="maleGrOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="2" />
+            <Label fx:id="tuitionOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="1" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="1" GridPane.rowIndex="14" />
-            <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
-            <Label fx:id="admissionFeeTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="13" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="진학률" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-            <Label fx:id="staffForStartCompanyTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+            <Label fx:id="enteringRateTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="12" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="국외 진학자 계" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-            <Label fx:id="profesorForStartCompanyTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+            <Label fx:id="overseasScholarNumberTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="11" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="국내 진학자 계" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-            <Label fx:id="govermentStartCompanyFundTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
-            <Label fx:id="staffForStartCompanyOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="12" />
-            <Label fx:id="profesorForStartCompanyOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="11" />
-            <Label fx:id="govermentStartCompanyFundOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="10" />
+            <Label fx:id="domScholarNumberTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+            <Label fx:id="enteringRateOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="12" />
+            <Label fx:id="overseasScholarNumberOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="11" />
+            <Label fx:id="domScholarNumberOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="10" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="9" />
-            <Label fx:id="schoolStartCompanyFundOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="9" />
-            <Label fx:id="startCompanySaleOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="7" />
-            <Label fx:id="foundersNumberOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="6" />
-            <Label fx:id="totalScholarshipBenefitOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="5" />
-            <Label fx:id="admissionFeeOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="13" />
+            <Label fx:id="enteringOverseasGrSchoolOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="9" />
+            <Label fx:id="enteringOverseasUnivOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="7" />
+            <Label fx:id="enteringDomUnivOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="6" />
+            <Label fx:id="enteringOverseasCmntyCollOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="5" />
             <Label fx:id="averageTuitionOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="14" />
-            <Label fx:id="studentNumberOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" />
-            <Label fx:id="admissionCompetitionRateTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label fx:id="startCompanyCapitalOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="8" />
+            <Label fx:id="admissionFeeOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" />
+            <Label fx:id="tuitionTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="enteringDomGrSchoolOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="8" />
          </children>
       </GridPane>
-      <Button layoutX="800.0" layoutY="51.0" mnemonicParsing="false" text="Button" />
-      <ComboBox layoutX="156.0" layoutY="66.0" prefWidth="150.0" />
-      <ComboBox layoutX="555.0" layoutY="66.0" prefWidth="150.0" />
-      <Text layoutX="215.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="학교 1 학과 리스트" />
-      <Text layoutX="555.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="학교 2 학과 리스트" />
-      <GridPane fx:id="cpPaneOne1" layoutX="450.0" layoutY="155.0" prefHeight="582.0" prefWidth="421.0">
+      <Button fx:id="btnDeptCp" layoutX="401.0" layoutY="43.0" mnemonicParsing="false" onMouseClicked="#clickDeptCp" prefHeight="61.0" prefWidth="99.0" text="비교" />
+      <GridPane fx:id="cpPaneOne1" layoutX="450.0" layoutY="176.0" prefHeight="582.0" prefWidth="421.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="181.0" minWidth="10.0" prefWidth="164.0" />
@@ -113,47 +105,48 @@
          <children>
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="남자 취업대상자" GridPane.columnIndex="1" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="여자 취업대상자" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label fx:id="studentNumberTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" />
-            <Label fx:id="employmentRateTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Label fx:id="enteringRateTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <Label fx:id="educationCostPerPersonTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-            <Label fx:id="totalScholarshipBenefitTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-            <Label fx:id="foundersNumberTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
-            <Label fx:id="startCompanyCapitalTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+            <Label fx:id="maleEmploymentTargetTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" />
+            <Label fx:id="maleDomEmployeeTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="femaleDomEmployeeTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <Label fx:id="maleOverseasEmployeeTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <Label fx:id="femaleOverseasEmployeeTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+            <Label fx:id="employmentRateTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+            <Label fx:id="outSchoolScholarshipTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="교내 장학금" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <Label fx:id="schoolStartCompanyFundTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+            <Label fx:id="inSchoolScholarshipTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="교외 장학금" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="취업률" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="여자 해외 취업자" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="남자 해외 취업자" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="여자 국내 취업자" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="남자 국내 취업자" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label fx:id="educationCostPerPersonOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="4" />
-            <Label fx:id="enteringRateOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="3" />
-            <Label fx:id="employmentRateOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="2" />
-            <Label fx:id="admissionCompetitionRateOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="1" />
-            <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+            <Label fx:id="maleOverseasEmployeeOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="4" />
+            <Label fx:id="femaleDomEmployeeOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="3" />
+            <Label fx:id="maleDomEmployeeOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="2" />
+            <Label fx:id="femaleEmploymentTargetOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="1" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="전임교원 1인당 연구비" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-            <Label fx:id="admissionFeeTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="12" />
+            <Label fx:id="rearchCostPerProfessorTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="12" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="전임교원 1인당 논문 실적" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-            <Label fx:id="staffForStartCompanyTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="11" />
+            <Label fx:id="thesisResultPerProfessorTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="11" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="전임교원수" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-            <Label fx:id="profesorForStartCompanyTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
+            <Label fx:id="numOfFulltimeProfessorTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="10" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" text="1인당 장학금" GridPane.columnIndex="1" GridPane.rowIndex="9" />
-            <Label fx:id="govermentStartCompanyFundTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-            <Label fx:id="staffForStartCompanyOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="11" />
-            <Label fx:id="profesorForStartCompanyOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="10" />
-            <Label fx:id="govermentStartCompanyFundOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="9" />
+            <Label fx:id="scholarshipPerPersonTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
+            <Label fx:id="thesisResultPerProfessorOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="11" />
+            <Label fx:id="numOfFulltimeProfessorOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="10" />
+            <Label fx:id="scholarshipPerPersonOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="9" />
             <Label alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="8" />
-            <Label fx:id="schoolStartCompanyFundOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="8" />
-            <Label fx:id="foundersNumberOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="6" />
-            <Label fx:id="totalScholarshipBenefitOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="5" />
-            <Label fx:id="admissionFeeOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="12" />
-            <Label fx:id="averageTuitionOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="13" />
-            <Label fx:id="studentNumberOne1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" />
-            <Label fx:id="admissionCompetitionRateTwo1" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-            <Label fx:id="startCompanyCapitalOne11" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="7" />
+            <Label fx:id="inSchoolScholarshipOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="8" />
+            <Label fx:id="employmentRateOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="6" />
+            <Label fx:id="femaleOverseasEmployeeOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="5" />
+            <Label fx:id="rearchCostPerProfessorOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="12" />
+            <Label fx:id="maleEmploymentTargetOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" />
+            <Label fx:id="femaleEmploymentTargetTwo" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <Label fx:id="outSchoolScholarshipOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="7" />
          </children>
       </GridPane>
+      <TextField fx:id="inputDeptNameOne" layoutX="91.0" layoutY="46.0" prefHeight="55.0" prefWidth="273.0" />
+      <TextField fx:id="inputDeptNameTwo" layoutX="534.0" layoutY="46.0" prefHeight="55.0" prefWidth="273.0" />
+      <Line endX="747.0" layoutX="130.0" layoutY="138.0" startX="-100.0" />
    </children>
 </AnchorPane>

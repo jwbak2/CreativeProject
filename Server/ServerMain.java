@@ -7,7 +7,7 @@ import Server.transmission.SocketManager;
 public class ServerMain {
 
 
-	static final int PORT = 5500;
+	public static final int PORT =  5500;
 
 
 	public static void main(String[] args) {

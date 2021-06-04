@@ -2,34 +2,42 @@ package Client.controller;
 
 import Client.transmission.Connection;
 import Client.vo.DeptInfoReqVO;
+import Client.vo.RatingInfo;
 import Client.vo.RatingVO;
 import Server.model.dto.DepartmentDetailDTO;
 import Server.model.dto.DepartmentRatingDTO;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
-import org.controlsfx.control.Rating;
 
+import javax.print.DocFlavor;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class DepartmentDetail implements Initializable{
+public class DepartmentDetail implements Initializable {
 
     @FXML
     private Text textDeptName;
@@ -127,17 +135,25 @@ public class DepartmentDetail implements Initializable{
     @FXML
     private ComboBox<String> comboIndicator;
 
-
     @FXML
-    private TableView<?> tableDeptRating;
+    private TableView<RatingInfo> tableDeptRating;
 
     @FXML
     private TextField inputRatingContent;
 
     @FXML
-    private Rating deptRating;
+    private org.controlsfx.control.Rating deptRating;
 
-    private boolean checkTabDeptRating;
+    @FXML
+    private TableColumn<RatingInfo, String> colRatingDate;
+
+    @FXML
+    private TableColumn<RatingInfo, String> colRatingContent;
+
+    @FXML
+    private TableColumn<RatingInfo, org.controlsfx.control.Rating> colRatingScore;
+
+    private ObservableList<RatingInfo> observableList;
 
     private String univName;         // 해당 학과의 학교 이름
 
@@ -145,42 +161,58 @@ public class DepartmentDetail implements Initializable{
 
     private ArrayList<DepartmentDetailDTO> deptDtoList;   // 2018 ~ 2020 DeptDetailDTO 담는 어레이리스트
 
-    public void setUnivName(String univName) { this.univName = univName; }
+    public void setUnivName(String univName) {
+        this.univName = univName;
+    }
 
-    public void setDeptName(String deptName){
+    public void setDeptName(String deptName) {
         this.deptName = deptName;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 학과 상세정보 및 학과 평가 리스트 요청
-        if(deptName != null){   // 아무것도 클릭안하고 조회누를때 예외처리
-            textDeptName.setText(deptName);
-
-            requestDeptInf();
-        }
-
-        // SelectionChanged는 tab open, close 둘다 이벤트 발생해서 boolean 변수 사용해서 처음 한번만 처리
-//        checkTabDeptRating = false;
-
-        // 탭 클릭 시 학과 평가 리스트 요청 이벤트 등록
-//        tabDeptRating.setOnSelectionChanged(event -> {
-//            if (!checkTabDeptRating){
-//                checkTabDeptRating = true;
+//        if(deptName != null){   // 아무것도 클릭안하고 조회누를때 예외처리
+//            textDeptName.setText(deptName);
 //
-//                requestDeptRatingList();
-//            }
-//        });
+//            requestDeptInf();
+//        }
+
+        // tablecolumn cell value 설정
+        colRatingDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        colRatingContent.setCellValueFactory(new PropertyValueFactory<>("ratingContent"));
+        colRatingScore.setCellValueFactory(new PropertyValueFactory<>("score"));
+
+        // tablecolumn cell 렌더링 설정
+        colRatingContent.setCellFactory(tc -> {
+            TableCell<RatingInfo, String> cell = new TableCell<>();
+            Text text = new Text();
+            cell.setGraphic(text);
+            cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+            text.wrappingWidthProperty().bind(colRatingContent.widthProperty());
+            text.textProperty().bind(cell.itemProperty());
+            return cell;
+        });
     }
 
+    // double 값받아서 RatingInfo 클래스로 반환
+    private org.controlsfx.control.Rating makeRating(double rate) {
+        org.controlsfx.control.Rating rating = new org.controlsfx.control.Rating();
+        rating.setOrientation(Orientation.HORIZONTAL);
+        rating.setUpdateOnHover(false);
+        rating.setPartialRating(false);
+        rating.setRating(rate);
+        rating.setDisable(true);
+        rating.setMaxHeight(30);
+        return rating;
+    }
 
     // 학과 상세정보 요청
-    private void requestDeptInf(){
+    private void requestDeptInf() {
         // 학교 상세정보 페이지에서 학과 상세정보 조회 버튼 클릭하면
         // 타이머 클래스 사용해서 1초뒤 프로토콜 전송
-
         Timer timer = new Timer();
-        // TimerTask는 추상클래스라 람다식 안됨?
+        // TimerTask는 추상클래스라 람다식 안됨
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -193,6 +225,9 @@ public class DepartmentDetail implements Initializable{
 
                     // 학과 상세정보 리스트 수신
                     deptDtoList = receiveDeptDetailDTOList();
+
+                    // 학과 평가 리스트
+//                    requestDeptRatingList();
 
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018
                     Platform.runLater(() -> {
@@ -218,8 +253,8 @@ public class DepartmentDetail implements Initializable{
 
         // 타입 처리
         ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
-        for(Object obj : ar){
-            if(obj instanceof DepartmentDetailDTO){
+        for (Object obj : ar) {
+            if (obj instanceof DepartmentDetailDTO) {
                 tmp.add((DepartmentDetailDTO) obj);
             }
         }
@@ -228,7 +263,7 @@ public class DepartmentDetail implements Initializable{
     }
 
     // 학과 상세정보 ui setting
-    private void setUnivDeptDetail(DepartmentDetailDTO departmentDetailDTO){
+    private void setUnivDeptDetail(DepartmentDetailDTO departmentDetailDTO) {
         admissionFee.setText(String.valueOf(departmentDetailDTO.getAdmissionFee()));
         tuition.setText(String.valueOf(departmentDetailDTO.getTuition()));
         outSchoolScholarship.setText(String.valueOf(departmentDetailDTO.getOutSchoolScholarship()));
@@ -260,7 +295,7 @@ public class DepartmentDetail implements Initializable{
 
 
     // 학과 평가 리스트 요청
-    private void requestDeptRatingList(){
+    private void requestDeptRatingList() {
         Runnable runnable = () -> {
             // 학과 평가 리스트 요청
             Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST));
@@ -283,13 +318,12 @@ public class DepartmentDetail implements Initializable{
         Protocol receivePT = Connection.receive();
         Object receivedBody = receivePT.getBody();
 
-        // 학교 상세정보 3개년치 받아오기 univDtoList
         ArrayList<DepartmentRatingDTO> tmp = new ArrayList<>();   //
 
         // 타입 처리
         ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
-        for(Object obj : ar){
-            if(obj instanceof DepartmentRatingDTO){
+        for (Object obj : ar) {
+            if (obj instanceof DepartmentRatingDTO) {
                 tmp.add((DepartmentRatingDTO) obj);
             }
         }
@@ -298,16 +332,27 @@ public class DepartmentDetail implements Initializable{
     }
 
     // 학과 평가 리스트 ui setting
-    private void setDeptRatingList(ArrayList<DepartmentRatingDTO> deptRatingList){
-        // TODO 학과 평가 리스트 set 필요 tableView
+    private void setDeptRatingList(ArrayList<DepartmentRatingDTO> deptRatingList) {
+        observableList = FXCollections.observableArrayList();
+
+        for (int i = 0; i < deptRatingList.size(); i++) {
+            // Date to String
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String creationDate = transFormat.format(deptRatingList.get(i).getCreationDate());
+
+            observableList.add(new RatingInfo(new SimpleStringProperty(creationDate),
+                    new SimpleStringProperty(deptRatingList.get(i).getContent()),
+                    makeRating(deptRatingList.get(i).getScore())));
+        }
+
+        tableDeptRating.setItems(observableList);
     }
 
 
     // 뒤로가기 버튼 클릭
     @FXML
     private void clickDeptDetailExit(MouseEvent event) {
-        System.out.println(deptName);
-        StackPane root = (StackPane)btnDeptDetailExit.getScene().lookup("#spUnivDetail");
+        StackPane root = (StackPane) btnDeptDetailExit.getScene().lookup("#spUnivDetail");
         root.getChildren().remove(apDeptDetail);
     }
 
@@ -322,7 +367,7 @@ public class DepartmentDetail implements Initializable{
         // barChart 요소 init
         XYChart.Series[] series = new XYChart.Series[3];
 
-        for(int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             series[i] = new XYChart.Series<String, Number>();
         }
 
@@ -517,7 +562,7 @@ public class DepartmentDetail implements Initializable{
         }
 
         // barChart에 series 추가
-        for(int i = 0; i < 3; i++){
+        for (int i = 0; i < 3; i++) {
             barChart.getData().add(series[i]);
         }
     }
@@ -526,11 +571,16 @@ public class DepartmentDetail implements Initializable{
     // 학과 평가 등록
     @FXML
     private void clickRegisterDeptRating(MouseEvent event) {
+        if(!(Login.user.getAffiliatedDepartment().equals(deptName) && Login.user.getAffiliatedSchool().equals(univName))){
+            // TODO 예외처리 필요
+            System.out.println("학과 평가 등록 권한이 없습니다.");
+            return;
+        }
+
         Runnable runnable = () -> {
             String univName = this.univName;
             String deptName = this.deptName;
-            // FIXME 세션기능 필요
-            String userEmail = null;
+            String userEmail = Login.user.getUserEmail();
             String content = inputRatingContent.getText();
             int score = (int) deptRating.getRating();
             java.sql.Date creationDate = new java.sql.Date(System.currentTimeMillis());
@@ -544,11 +594,18 @@ public class DepartmentDetail implements Initializable{
             Protocol receivePT = Connection.receive();
 
             if (receivePT.getProtocolType() == Protocol.PT_SUCC
-                    && receivePT.getProtocolCode() == Protocol.PT_SUCC_DEPT_RATING)
-            {
-                Platform.runLater(this::showLoginSuccPopUp);
-                
-                // TODO tableView에 추가
+                    && receivePT.getProtocolCode() == Protocol.PT_SUCC_DEPT_RATING) {
+                Platform.runLater(() -> {
+                    showLoginSuccPopUp();
+
+                    // Date to String
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+                    // table view 리스트에 추가
+                    observableList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)), new SimpleStringProperty(content), makeRating(score)));
+                    tableDeptRating.setItems(observableList);
+                });
+
             } else {
                 Platform.runLater(this::showLoginFailPopUp);
             }
@@ -559,7 +616,7 @@ public class DepartmentDetail implements Initializable{
         th.start();
     }
 
-    private void showLoginSuccPopUp(){
+    private void showLoginSuccPopUp() {
         try {
             Stage stage = (Stage) inputRatingContent.getScene().getWindow(); //
             Popup pu = new Popup();
@@ -569,12 +626,12 @@ public class DepartmentDetail implements Initializable{
             pu.setAutoHide(true); // 포커스 이동시 창 숨김
             pu.show(stage);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void showLoginFailPopUp(){
+    private void showLoginFailPopUp() {
         try {
             Stage stage = (Stage) inputRatingContent.getScene().getWindow(); //
             Popup pu = new Popup();
@@ -583,8 +640,8 @@ public class DepartmentDetail implements Initializable{
             pu.getContent().add(root);
             pu.setAutoHide(true); // 포커스 이동시 창 숨김
             pu.show(stage);
-            
-        } catch(Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
