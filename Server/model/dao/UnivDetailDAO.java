@@ -12,7 +12,7 @@ public class UnivDetailDAO {
 
         Connection conn = DBCP.getConnection();
 
-        String preQuery = "SELECT * FROM crtvp.\"univ_detail\" WHERE \"univ_id\" = ? AND \"year\" = ?";
+        String preQuery = "SELECT * FROM crtvp.univ_detail WHERE univ_id = ? AND year = ?";
 
         ResultSet rs = null;
         UnivDetailDTO dto = null;

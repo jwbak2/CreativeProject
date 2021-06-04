@@ -16,7 +16,7 @@ public class IndicatorSelectionStatisticsDAO {
 		// 학과
 		ArrayList<String> list = null;
 
-		String SQL = "SELECT \"indicator_name\" FROM crtvp.\"Indicator_selection_statistics\" ORDER BY \"selection_number\" DESC";
+		String SQL = "SELECT indicator_name FROM crtvp.Indicator_selection_statistics ORDER BY selection_number DESC";
 
 		Connection conn = DBCP.getConnection();
 

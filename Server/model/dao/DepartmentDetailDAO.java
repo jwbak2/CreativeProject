@@ -17,7 +17,7 @@ public class DepartmentDetailDAO {
 
 		Connection conn = DBCP.getConnection();
 
-		String preQuery = "SELECT * FROM crtvp.\"department_detail\" WHERE \"department_id\" = ? and \"year\" = ?";
+		String preQuery = "SELECT * FROM crtvp.department_detail WHERE department_id = ? and year = ?";
 
 		ResultSet rs = null;
 		DepartmentDetailDTO dto = null;
