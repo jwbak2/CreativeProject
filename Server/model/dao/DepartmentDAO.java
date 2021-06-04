@@ -15,7 +15,7 @@ public class DepartmentDAO {
 
 		HashMap<String, String> departmentList = null;     // 학과 목록 선언 '학과 이름' 의 1차원 배열
 
-		//String SQL = "SELECT \"department_name\", \"department_id\" FROM crtvp.\"department\" WHERE \"univ_id\" = ?";
+		//String SQL = "SELECT department_name, department_id FROM crtvp.department WHERE univ_id = ?";
 		String SQL = "SELECT department_name, department_id FROM crtvp.department WHERE univ_id = ?";
 
 
@@ -52,7 +52,7 @@ public class DepartmentDAO {
 
 		Connection conn = DBCP.getConnection();
 
-		String preQuery = "SELECT \"department_id\" FROM crtvp.\"department\" WHERE \"univ_id\" = ? AND \"department_name\" = ?";
+		String preQuery = "SELECT department_id FROM crtvp.department WHERE univ_id = ? AND department_name = ?";
 
 		ResultSet rs = null;
 		String deptId = null;

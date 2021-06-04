@@ -100,7 +100,7 @@ public class UnivDAO {
         // 학과
         ArrayList<String> list = null;
 
-        String SQL = "SELECT \"univ_name\" FROM crtvp.\"univ\" ORDER BY \"USER_VIEW\" DESC";
+        String SQL = "SELECT univ_name FROM crtvp.univ ORDER BY USER_VIEW DESC";
 
         Connection conn = DBCP.getConnection();
 
@@ -132,7 +132,7 @@ public class UnivDAO {
 
         Connection conn = DBCP.getConnection();
 
-        String preQuery = "UPDATE crtvp.\"univ\" SET \"USER_VIEW\" = \"USER_VIEW\" + 1 WHERE \"univ_id\" = ?";
+        String preQuery = "UPDATE crtvp.univ SET USER_VIEW = USER_VIEW + 1 WHERE univ_id = ?";
 
 
         try(PreparedStatement pstmt = conn.prepareStatement(preQuery)) {
