@@ -15,7 +15,7 @@ public class UserDAO {
 
         Connection conn = DBCP.getConnection();
 
-        String preQuery = "SELECT * FROM crtvp.\"user\" WHERE \"user_email\" = ? AND \"user_password\" = ?";
+        String preQuery = "SELECT * FROM crtvp.user WHERE user_email = ? AND user_password = ?";
 
         ResultSet rs = null;
         UserDTO dto = null;

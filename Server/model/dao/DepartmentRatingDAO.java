@@ -16,7 +16,8 @@ public class DepartmentRatingDAO {
 
 		Connection conn = DBCP.getConnection();
 
-		String SQL = "INSERT INTO crtvp.\"user_email\", \"department_id\", \"content\", \"score\", \"creation_date\" VALUES(?,?,?,?)";
+		//String SQL = "INSERT INTO crtvp.\"user_email\", \"department_id\", \"content\", \"score\", \"creation_date\" VALUES(?,?,?,?)";
+		String SQL = "INSERT INTO crtvp.department_rating (user_email, department_id, content, score, creation_date) VALUES(?,?,?,?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
 

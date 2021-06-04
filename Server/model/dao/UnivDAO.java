@@ -14,7 +14,7 @@ public class UnivDAO {
 
         Connection conn = DBCP.getConnection();
 
-        String preQuery = "SELECT * FROM crtvp.\"univ\" WHERE \"univ_id\" = ?";
+        String preQuery = "SELECT * FROM crtvp.univ WHERE univ_id = ?";
 
         ResultSet rs = null;
         UnivDTO dto = null;
@@ -65,7 +65,7 @@ public class UnivDAO {
         HashMap<String, String> univList = null;     // 학교 목록 선언 '학교id, 학교이름'의 HashMap
 
         String SQL = "SELECT * FROM CRTVP.UNIV";
-//        String SQL = "SELECT * FROM crtvp.\"univ\"";
+
 
         Connection conn = DBCP.getConnection();
 

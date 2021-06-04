@@ -16,7 +16,7 @@ public class UserBookmarkDAO {
 
 		ArrayList<String> list = null;     // 학과 목록 선언 '학과 이름' 의 1차원 배열
 
-		String SQL = "SELECT \"univ_id\" FROM crtvp.\"user_bookmark\" WHERE \"user_email\" = ?";
+		String SQL = "SELECT univ_id FROM crtvp.user_bookmark WHERE user_email = ?";
 
 		Connection conn = DBCP.getConnection();
 		ResultSet rs = null;
