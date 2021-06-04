@@ -178,20 +178,6 @@ public class DepartmentDetail implements Initializable {
 //            requestDeptInf();
 //        }
 
-        // Text 감지 테스트
-        Pattern logTimePattern = Pattern.compile("대학교$");
-
-        inputRatingContent.textProperty().addListener((observable, oldValue, newValue) -> {
-            System.out.println("textfield changed from " + oldValue + " to " + newValue);
-            Matcher logTimeMatcher = logTimePattern.matcher(newValue);
-
-            if (logTimeMatcher.find()) {
-                //가장 첫번째 감지하는 부분이 Group이 아니기에 1번째로 지정합니다.
-                System.out.println("ㅁㄴㅇㅁㄴㅇ"); // 50
-            }
-
-        });
-
         // tablecolumn cell value 설정
         colRatingDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
         colRatingContent.setCellValueFactory(new PropertyValueFactory<>("ratingContent"));

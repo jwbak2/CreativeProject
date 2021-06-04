@@ -338,6 +338,9 @@ public class UnivDetail implements Initializable {
                 // 학교의 학과 리스트 요청 - 다른 스레드 생성해서 요청
                 requestDeptListOfUniv();
 
+                // 학교 평가 리스트 요청
+                requestUnivRatingList();
+
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
                     setUnivInf(univDTO);    // 람다식으로 변경
@@ -470,7 +473,7 @@ public class UnivDetail implements Initializable {
 
 
     // 학교의 학과 리스트 요청
-    private void requestDeptListOfUniv() {
+    public void requestDeptListOfUniv() {
         Runnable runnable = () -> {     // 다른 스레드로 처리
             try {
                 String univName = inputUniv.getText().replace(" ", "");
