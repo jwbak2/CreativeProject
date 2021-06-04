@@ -16,7 +16,7 @@ public class DepartmentRatingDAO {
 
 		Connection conn = DBCP.getConnection();
 
-		//String SQL = "INSERT INTO crtvp.\"user_email\", \"department_id\", \"content\", \"score\", \"creation_date\" VALUES(?,?,?,?)";
+		//String SQL = "INSERT INTO crtvp.user_email, department_id, content, score, creation_date VALUES(?,?,?,?)";
 		String SQL = "INSERT INTO crtvp.department_rating (user_email, department_id, content, score, creation_date) VALUES(?,?,?,?)";
 
 		try (PreparedStatement pstmt = conn.prepareStatement(SQL)) {
@@ -50,7 +50,7 @@ public class DepartmentRatingDAO {
 
 		ArrayList<DepartmentRatingDTO> list = null;     // 학과 목록 선언 '학과 이름' 의 1차원 배열
 
-		String SQL = "SELECT * FROM crtvp.\"department_rating\" WHERE \"department_id\" = ?";
+		String SQL = "SELECT * FROM crtvp.department_rating WHERE department_id = ?";
 
 		Connection conn = DBCP.getConnection();
 		ResultSet rs = null;
@@ -92,7 +92,7 @@ public class DepartmentRatingDAO {
 
 		Connection conn = DBCP.getConnection();
 
-		String preQuery = "SELECT * FROM crtvp.\"department_rating\" WHERE \"user_email\" = ?";
+		String preQuery = "SELECT * FROM crtvp.department_rating WHERE user_email = ?";
 
 		ResultSet rs = null;
 		DepartmentRatingDTO dto = null;
