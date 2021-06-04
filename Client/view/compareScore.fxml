@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -10,49 +12,68 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Line?>
 
-<StackPane fx:id="spTest" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.CompareScore">
+
+<AnchorPane fx:id="firstAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.CompareScore">
    <children>
-      <AnchorPane fx:id="firstAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0">
+      <GridPane layoutX="42.0" layoutY="220.0" prefHeight="51.0" prefWidth="694.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="10.0" prefWidth="61.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="159.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.0" minWidth="10.0" prefWidth="56.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="170.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="48.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="182.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <GridPane layoutX="42.0" layoutY="220.0" prefHeight="51.0" prefWidth="694.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="105.0" minWidth="10.0" prefWidth="61.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="159.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.0" minWidth="10.0" prefWidth="56.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="170.0" minWidth="10.0" prefWidth="170.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="48.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="182.0" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label alignment="CENTER" prefHeight="34.0" prefWidth="220.0" text="1 순위" />
-                  <ComboBox prefHeight="29.0" prefWidth="220.0" promptText="지표" GridPane.columnIndex="1" />
-                  <Label alignment="CENTER" prefHeight="37.0" prefWidth="253.0" text="2 순위" GridPane.columnIndex="2" />
-                  <ComboBox prefHeight="29.0" prefWidth="213.0" promptText="지표" GridPane.columnIndex="3" />
-                  <Label alignment="CENTER" prefHeight="37.0" prefWidth="254.0" text="3 순위" GridPane.columnIndex="4" />
-                  <ComboBox prefHeight="29.0" prefWidth="188.0" promptText="지표" GridPane.columnIndex="5" />
-               </children>
-            </GridPane>
-            <AnchorPane layoutX="58.0" layoutY="24.0" prefHeight="154.0" prefWidth="811.0">
-               <children>
-                  <TableView layoutX="390.0" prefHeight="153.0" prefWidth="425.0">
-                    <columns>
-                      <TableColumn prefWidth="213.0" text="학교" />
-                      <TableColumn minWidth="0.0" prefWidth="211.0" text="학과" />
-                    </columns>
-                  </TableView>
-                  <Button layoutX="291.0" layoutY="37.0" mnemonicParsing="false" prefHeight="79.0" prefWidth="83.0" text="추가" />
-                  <TextField layoutX="-37.0" layoutY="58.0" prefHeight="37.0" prefWidth="320.0" text="학과 입력" />
-               </children>
-            </AnchorPane>
-            <Line endX="799.0" layoutX="101.0" layoutY="197.0" startX="-100.0" />
-            <Button layoutX="767.0" layoutY="216.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="102.0" text="조회" />
+            <Label alignment="CENTER" prefHeight="34.0" prefWidth="220.0" text="1 순위" />
+            <ComboBox fx:id="comboFirstIndicator" prefHeight="29.0" prefWidth="220.0" promptText="지표" GridPane.columnIndex="1">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="입학금" />
+                        <String fx:value="등록금" />
+                        <String fx:value="국내 전문대학 진학" />
+                        <String fx:value="국외 전문대학 진학" />
+                        <String fx:value="국내 대학 진학" />
+                        <String fx:value="국외 대학 진학" />
+                        <String fx:value="국내 대학원 진학" />
+                        <String fx:value="국외 대학원 진학" />
+                        <String fx:value="국내 진학자 계" />
+                        <String fx:value="국외 진학자 계" />
+
+                          </FXCollections>
+                </items>
+            </ComboBox>
+            <Label alignment="CENTER" prefHeight="37.0" prefWidth="253.0" text="2 순위" GridPane.columnIndex="2" />
+            <ComboBox fx:id="comboSecondIndicator" prefHeight="29.0" prefWidth="213.0" promptText="지표" GridPane.columnIndex="3" />
+            <Label alignment="CENTER" prefHeight="37.0" prefWidth="254.0" text="3 순위" GridPane.columnIndex="4" />
+            <ComboBox fx:id="comboThirdIndicator" prefHeight="29.0" prefWidth="188.0" promptText="지표" GridPane.columnIndex="5" />
+         </children>
+      </GridPane>
+      <AnchorPane layoutX="19.0" layoutY="21.0" prefHeight="154.0" prefWidth="863.0">
+         <children>
+            <TableView fx:id="tableDept" layoutX="432.0" layoutY="1.0" prefHeight="153.0" prefWidth="425.0">
+              <columns>
+                <TableColumn fx:id="colSelectedUniv" prefWidth="213.0" text="학교" />
+                <TableColumn fx:id="colSelectedDept" minWidth="0.0" prefWidth="211.0" text="학과" />
+              </columns>
+            </TableView>
+            <Button fx:id="btnAddDept" layoutX="341.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#clickAddDept" prefHeight="79.0" prefWidth="83.0" text="추가" />
+            <TextField fx:id="inputDeptName" layoutX="14.0" layoutY="59.0" prefHeight="37.0" prefWidth="320.0" text="학과 입력" />
          </children>
       </AnchorPane>
+      <Line endX="799.0" layoutX="101.0" layoutY="197.0" startX="-100.0" />
+      <Button fx:id="btnSelectScore" layoutX="767.0" layoutY="216.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="102.0" text="조회" />
+      <TableView layoutX="42.0" layoutY="309.0" prefHeight="437.0" prefWidth="826.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="학교" />
+          <TableColumn prefWidth="75.0" text="학과" />
+            <TableColumn prefWidth="141.0" text="평점" />
+        </columns>
+      </TableView>
    </children>
-</StackPane>
+</AnchorPane>

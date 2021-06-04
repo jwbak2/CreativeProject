@@ -211,7 +211,6 @@ public class DepartmentDetail implements Initializable {
     private void requestDeptInf() {
         // 학교 상세정보 페이지에서 학과 상세정보 조회 버튼 클릭하면
         // 타이머 클래스 사용해서 1초뒤 프로토콜 전송
-
         Timer timer = new Timer();
         // TimerTask는 추상클래스라 람다식 안됨
         TimerTask timerTask = new TimerTask() {
@@ -353,7 +352,6 @@ public class DepartmentDetail implements Initializable {
     // 뒤로가기 버튼 클릭
     @FXML
     private void clickDeptDetailExit(MouseEvent event) {
-        System.out.println(deptName);
         StackPane root = (StackPane) btnDeptDetailExit.getScene().lookup("#spUnivDetail");
         root.getChildren().remove(apDeptDetail);
     }
@@ -573,12 +571,16 @@ public class DepartmentDetail implements Initializable {
     // 학과 평가 등록
     @FXML
     private void clickRegisterDeptRating(MouseEvent event) {
+        if(!(Login.user.getAffiliatedDepartment().equals(deptName) && Login.user.getAffiliatedSchool().equals(univName))){
+            // TODO 예외처리 필요
+            System.out.println("학과 평가 등록 권한이 없습니다.");
+            return;
+        }
 
         Runnable runnable = () -> {
             String univName = this.univName;
             String deptName = this.deptName;
-            // FIXME 세션기능 필요
-            String userEmail = null;
+            String userEmail = Login.user.getUserEmail();
             String content = inputRatingContent.getText();
             int score = (int) deptRating.getRating();
             java.sql.Date creationDate = new java.sql.Date(System.currentTimeMillis());

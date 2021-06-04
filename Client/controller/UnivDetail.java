@@ -831,6 +831,12 @@ public class UnivDetail implements Initializable {
     // 학교 평가 등록 버튼 클릭 시
     @FXML
     void clickRegisterUnivRating(MouseEvent event) {
+        if(!(Login.user.getAffiliatedSchool().equals(textUnivName.getText()))){
+            // TODO 예외처리 필요
+            System.out.println("학과 평가 등록 권한이 없습니다.");
+            return;
+        }
+
         Runnable runnable = () -> {
             String univName = inputUniv.getText().replace(" ", "");
             // FIXME 세션기능 필요
