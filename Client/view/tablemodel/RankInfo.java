@@ -1,9 +1,9 @@
-package Client.vo;
+package Client.view.tablemodel;
 
 import javafx.beans.property.SimpleStringProperty;
 
 public class RankInfo {
-    private SimpleStringProperty rank;;
+    private SimpleStringProperty rank;
     private SimpleStringProperty content;
 
     public RankInfo(SimpleStringProperty rank, SimpleStringProperty content) {

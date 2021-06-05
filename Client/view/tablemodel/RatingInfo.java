@@ -1,4 +1,4 @@
-package Client.vo;
+package Client.view.tablemodel;
 
 import javafx.beans.property.SimpleStringProperty;
 import org.controlsfx.control.Rating;

@@ -2,7 +2,7 @@ package Client.controller;
 
 import Client.transmission.Connection;
 import Client.vo.DeptInfoReqVO;
-import Client.vo.RatingInfo;
+import Client.view.tablemodel.RatingInfo;
 import Client.vo.RatingVO;
 import Server.model.dto.DepartmentDetailDTO;
 import Server.model.dto.DepartmentRatingDTO;
@@ -27,13 +27,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-import javax.print.DocFlavor;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DepartmentDetail implements Initializable {
 
@@ -221,7 +218,7 @@ public class DepartmentDetail implements Initializable {
                     deptDtoList = receiveDeptDetailDTOList();
 
                     // 학과 평가 리스트
-//                    requestDeptRatingList();
+                    requestDeptRatingList();
 
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018
                     Platform.runLater(() -> {
@@ -294,8 +291,9 @@ public class DepartmentDetail implements Initializable {
     // 학과 평가 리스트 요청
     private void requestDeptRatingList() {
         Runnable runnable = () -> {
+            DeptInfoReqVO deptInfoReqVO = new DeptInfoReqVO(univName, deptName);
             // 학과 평가 리스트 요청
-            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST));
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST, deptInfoReqVO));
 
             // 학과 평가 리스트 수신
             ArrayList<DepartmentRatingDTO> departmentRatingList = receiveDeptRatingDTOList();
@@ -334,7 +332,7 @@ public class DepartmentDetail implements Initializable {
 
         for (int i = 0; i < deptRatingList.size(); i++) {
             // Date to String
-            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
             String creationDate = transFormat.format(deptRatingList.get(i).getCreationDate());
 
             observableList.add(new RatingInfo(new SimpleStringProperty(creationDate),
@@ -600,7 +598,7 @@ public class DepartmentDetail implements Initializable {
 
                     // table view 리스트에 추가
                     observableList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)), new SimpleStringProperty(content), makeRating(score)));
-                    tableDeptRating.setItems(observableList);
+                    tableDeptRating.refresh();
                 });
 
             } else {
