@@ -552,18 +552,23 @@ public class UnivDetail implements Initializable {
     // 학교 평가 리스트 수신
     private ArrayList<UnivRatingDTO> receiveUnivRatingList(){
         Protocol receivePT = Connection.receive();
-        Object receivedBody = receivePT.getBody();
+        ArrayList<UnivRatingDTO> tmp = null;
+        try {
+            Object receivedBody = receivePT.getBody();
 
-        ArrayList<UnivRatingDTO> tmp = new ArrayList<>();   //
+            tmp = new ArrayList<>();   //
 
-        // 타입 처리
-        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
-        for (Object obj : ar) {
-            if (obj instanceof UnivRatingDTO) {
-                tmp.add((UnivRatingDTO) obj);
+            // 타입 처리
+            ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+            for (Object obj : ar) {
+                if (obj instanceof UnivRatingDTO) {
+                    tmp.add((UnivRatingDTO) obj);
+                }
             }
-        }
+        } catch(NullPointerException NPE){
+            System.out.println("학과 평가 리스트 수신 중 예외 발생;");
 
+        }
         return tmp;
     }
 
