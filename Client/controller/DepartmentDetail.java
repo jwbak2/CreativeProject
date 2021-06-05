@@ -29,11 +29,9 @@ import javafx.stage.Stage;
 
 import javax.print.DocFlavor;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -172,11 +170,7 @@ public class DepartmentDetail implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // 학과 상세정보 및 학과 평가 리스트 요청
-//        if(deptName != null){   // 아무것도 클릭안하고 조회누를때 예외처리
-//            textDeptName.setText(deptName);
-//
-//            requestDeptInf();
-//        }
+        requestDeptInf();
 
         // tablecolumn cell value 설정
         colRatingDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
@@ -231,6 +225,9 @@ public class DepartmentDetail implements Initializable {
 
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018
                     Platform.runLater(() -> {
+                        // 학과이름 set
+                        textDeptName.setText(deptName);
+
                         // set 학과 상세정보
                         setUnivDeptDetail(deptDtoList.get(0));
                     });
@@ -264,21 +261,21 @@ public class DepartmentDetail implements Initializable {
 
     // 학과 상세정보 ui setting
     private void setUnivDeptDetail(DepartmentDetailDTO departmentDetailDTO) {
-        admissionFee.setText(String.valueOf(departmentDetailDTO.getAdmissionFee()));
-        tuition.setText(String.valueOf(departmentDetailDTO.getTuition()));
-        outSchoolScholarship.setText(String.valueOf(departmentDetailDTO.getOutSchoolScholarship()));
-        inSchoolScholarship.setText(String.valueOf(departmentDetailDTO.getInSchoolScholarship()));
-        scholarshipPerPerson.setText(String.valueOf(departmentDetailDTO.getScholarshipPerPerson()));
+        admissionFee.setText(NumberFormat.getNumberInstance(Locale.US).format(departmentDetailDTO.getAdmissionFee()));
+        tuition.setText(NumberFormat.getNumberInstance(Locale.US).format(departmentDetailDTO.getTuition()));
+        outSchoolScholarship.setText(NumberFormat.getNumberInstance(Locale.US).format(departmentDetailDTO.getOutSchoolScholarship()));
+        inSchoolScholarship.setText(NumberFormat.getNumberInstance(Locale.US).format(departmentDetailDTO.getInSchoolScholarship()));
+        scholarshipPerPerson.setText(NumberFormat.getNumberInstance(Locale.US).format(departmentDetailDTO.getScholarshipPerPerson()));
         numOfFulltimeProfessor.setText(String.valueOf(departmentDetailDTO.getNumOfFulltimeProfessor()));
         thesisResultPerProfessor.setText(String.valueOf(departmentDetailDTO.getThesisResultPerProfessor()));
-        rearchCostPerProfessor.setText(String.valueOf(departmentDetailDTO.getRearchCostPerProfessor()));
+        rearchCostPerProfessor.setText(NumberFormat.getNumberInstance(Locale.US).format(departmentDetailDTO.getRearchCostPerProfessor()));
         maleGr.setText(String.valueOf(departmentDetailDTO.getMaleGr()));
         femaleGr.setText(String.valueOf(departmentDetailDTO.getFemaleGr()));
         maleEmploymentTarget.setText(String.valueOf(departmentDetailDTO.getMaleEmploymentTarget()));
         femaleEmploymentTarget.setText(String.valueOf(departmentDetailDTO.getFemaleEmploymentTarget()));
-        employmentRate.setText(String.valueOf(departmentDetailDTO.getEmploymentRate()));
+        employmentRate.setText(departmentDetailDTO.getEmploymentRate() + "%");
 
-        enteringRate.setText(String.valueOf(departmentDetailDTO.getEnteringRate()));
+        enteringRate.setText(departmentDetailDTO.getEnteringRate() + "%");
         enteringDomCmntyColl.setText(String.valueOf(departmentDetailDTO.getEnteringDomCmntyColl()));
         enteringOverseasCmntyColl.setText(String.valueOf(departmentDetailDTO.getEnteringOverseasCmntyColl()));
         enteringDomUniv.setText(String.valueOf(departmentDetailDTO.getEnteringDomUniv()));
@@ -380,7 +377,7 @@ public class DepartmentDetail implements Initializable {
             case "입학금":
                 for (int i = 0; i < 3; i++) {
                     series[i].setData(FXCollections.observableArrayList(
-                            new XYChart.Data<String, Number>("재학생 수", deptDtoList.get(i).getAdmissionFee())
+                            new XYChart.Data<String, Number>("입학금", deptDtoList.get(i).getAdmissionFee())
                     ));
                 }
                 break;
@@ -571,16 +568,17 @@ public class DepartmentDetail implements Initializable {
     // 학과 평가 등록
     @FXML
     private void clickRegisterDeptRating(MouseEvent event) {
-        if(!(Login.user.getAffiliatedDepartment().equals(deptName) && Login.user.getAffiliatedSchool().equals(univName))){
-            // TODO 예외처리 필요
-            System.out.println("학과 평가 등록 권한이 없습니다.");
-            return;
-        }
+//        if(!(Login.user.getAffiliatedDepartment().equals(deptName) && Login.user.getAffiliatedSchool().equals(univName))){
+//            // TODO 예외처리 필요
+//            System.out.println("학과 평가 등록 권한이 없습니다.");
+//            return;
+//        }
 
         Runnable runnable = () -> {
             String univName = this.univName;
             String deptName = this.deptName;
-            String userEmail = Login.user.getUserEmail();
+//            String userEmail = Login.user.getUserEmail();
+            String userEmail = "park";
             String content = inputRatingContent.getText();
             int score = (int) deptRating.getRating();
             java.sql.Date creationDate = new java.sql.Date(System.currentTimeMillis());

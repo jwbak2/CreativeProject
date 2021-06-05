@@ -111,8 +111,14 @@ public class UnivDAO {
             // 대학 리스트를 저장할 HashMap
             list = new ArrayList<>();
 
-            for (int i = 0; i < LIST_SIZE; i++) {
-                list.add(rs.getString("univ_name"));
+            if (rs.next()) {
+                System.out.println("온 것 있음");
+                for (int i = 0; i < LIST_SIZE; i++) {
+                    list.add(rs.getString("univ_name"));
+                }
+
+            } else {
+                System.out.println("null");
             }
 
         } catch (SQLException sqle) {

@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #ecf0f1;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.PopUp">
+<AnchorPane prefHeight="300.0" prefWidth="400.0" style="-fx-background-color: #ecf0f1;" stylesheets="@css/reset.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.PopUp">
    <children>
       <Text fx:id="textPopupContent" layoutX="42.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="아이디 또는 비밀번호가 잘못되었습니다." wrappingWidth="336.64501953125">
          <font>

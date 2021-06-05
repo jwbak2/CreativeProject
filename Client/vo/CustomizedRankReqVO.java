@@ -1,8 +1,9 @@
 package Client.vo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CustomizedRankReqVO {
+public class CustomizedRankReqVO implements Serializable {
 
 	private ArrayList<DeptInfoReqVO> deptList;
 	private ArrayList<String> indicators;
@@ -11,6 +12,7 @@ public class CustomizedRankReqVO {
 		this.deptList = deptList;
 		this.indicators = indicators;
 	}
+
 
 	public ArrayList<DeptInfoReqVO> getDeptList() {
 		return deptList;

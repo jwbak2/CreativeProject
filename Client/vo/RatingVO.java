@@ -1,8 +1,9 @@
 package Client.vo;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class RatingVO {
+public class RatingVO implements Serializable {
     private String univName;
     private String deptName;
     private String userEmail;

@@ -64,8 +64,8 @@ public class DepartmentDetailDAO {
 					enteringDomCmntyColl, enteringOverseasCmntyColl, enteringDomUniv, enteringOverseasUniv,
 					enteringDomGrSchool, enteringOverseasGrSchool, domScholarNumber, overseasScholarNumber,
 					maleEmploymentTarget, femaleEmploymentTarget, maleDomEmployee, femaleDomEmployee, maleOverseasEmployee,
-					femaleOverseasEmployee, enteringRate, employmentRate, outSchoolScholarship, inSchoolScholarship, scholarshipPerPerson,
-					numOfFulltimeProfessor, thesisResultPerProfessor, rearchCostPerProfessor);
+					femaleOverseasEmployee, enteringRate, outSchoolScholarship, inSchoolScholarship, scholarshipPerPerson,
+					numOfFulltimeProfessor, thesisResultPerProfessor, rearchCostPerProfessor, employmentRate);
 
 
 		} catch (SQLException sqle) {

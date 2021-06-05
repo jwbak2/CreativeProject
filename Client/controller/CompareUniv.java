@@ -383,7 +383,10 @@ public class CompareUniv implements Initializable {
 
     // 상세정보 요소 비교 후 텍스트 색상 변경
     private void compareUnivDetailElement(Label n1, Label n2, Long el1, Long el2) {
-        if (el1 < el2) {
+        if(el1.equals(el2)){
+            n1.setTextFill(Color.BLUE);
+            n2.setTextFill(Color.BLUE);
+        } else if (el1 < el2) {
             n2.setTextFill(Color.RED);
         } else if(el1 > el2){
             n1.setTextFill(Color.RED);
