@@ -55,6 +55,7 @@ public class UnivRatingDAO {
 
 		Connection conn = DBCP.getConnection();
 		ResultSet rs = null;
+		System.out.println("대학 평가 리스트 조회1");
 
 		try(PreparedStatement pstmt = conn.prepareStatement(SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
 
@@ -63,8 +64,10 @@ public class UnivRatingDAO {
 			rs = pstmt.executeQuery();
 
 			list = new ArrayList<>();
+			System.out.println("대학 평가 리스트 조회2");
 
 			while (rs.next()) {
+				System.out.println("대학 평가 리스트 조회3");
 				list.add(new UnivRatingDTO(rs.getString("user_email"), univId, rs.getString("content"),
 						rs.getLong("score"), rs.getDate("creation_date")));
 			}

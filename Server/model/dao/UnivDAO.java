@@ -95,7 +95,7 @@ public class UnivDAO {
 
     public ArrayList<String> getViewList() {    // 조회수 순의 학교 리스트를 반환
 
-        final int LIST_SIZE = 10;
+        final int LIST_SIZE = 20;
 
         // 학과
         ArrayList<String> list = null;
@@ -111,14 +111,13 @@ public class UnivDAO {
             // 대학 리스트를 저장할 HashMap
             list = new ArrayList<>();
 
-            if (rs.next()) {
-                System.out.println("온 것 있음");
-                for (int i = 0; i < LIST_SIZE; i++) {
-                    list.add(rs.getString("univ_name"));
-                }
+            int count = 0;
+            while (rs.next()) {
+                count++;
+                list.add(rs.getString("univ_name"));
 
-            } else {
-                System.out.println("null");
+                if (count == LIST_SIZE)
+                    break;
             }
 
         } catch (SQLException sqle) {
