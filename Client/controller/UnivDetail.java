@@ -831,26 +831,26 @@ public class UnivDetail implements Initializable {
     // 학교 평가 등록 버튼 클릭 시
     @FXML
     void clickRegisterUnivRating(MouseEvent event) {
-        if(!(Login.user.getAffiliatedSchool().equals(textUnivName.getText()))){
-            // TODO 예외처리 필요
-            System.out.println("학과 평가 등록 권한이 없습니다.");
-            return;
-        }
+//        if(!(Login.user.getAffiliatedSchool().equals(textUnivName.getText()))){
+//            // TODO 예외처리 필요
+//            System.out.println("학과 평가 등록 권한이 없습니다.");
+//            return;
+//        }
 
         Runnable runnable = () -> {
             String univName = inputUniv.getText().replace(" ", "");
             // FIXME 세션기능 필요
-            String userEmail = null;
+            String userEmail = "park";
             String content = inputUnivRatingContent.getText();
             int score = (int) univRating.getRating();
             java.sql.Date creationDate = new java.sql.Date(System.currentTimeMillis());
 
             RatingVO ratingVO = new RatingVO(univName, userEmail, content, score, creationDate);
 
-            // 학과 평가 등록 요청
-            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING, ratingVO));
+            // 학교 평가 등록 요청
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_RATING, ratingVO));
 
-            // 학과 평가 등록 결과 수신
+            // 학교 평가 등록 결과 수신
             Protocol receivePT = Connection.receive();
 
             if (receivePT.getProtocolType() == Protocol.PT_SUCC
@@ -862,7 +862,8 @@ public class UnivDetail implements Initializable {
                     SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
                     // table view 리스트에 추가
-                    observableUnivRatingList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)), new SimpleStringProperty(content), makeRating(score)));
+                    observableUnivRatingList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)),
+                            new SimpleStringProperty(content), makeRating(score)));
                     tableUnivRating.setItems(observableUnivRatingList);
                 });
 

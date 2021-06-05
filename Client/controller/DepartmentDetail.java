@@ -568,16 +568,17 @@ public class DepartmentDetail implements Initializable {
     // 학과 평가 등록
     @FXML
     private void clickRegisterDeptRating(MouseEvent event) {
-        if(!(Login.user.getAffiliatedDepartment().equals(deptName) && Login.user.getAffiliatedSchool().equals(univName))){
-            // TODO 예외처리 필요
-            System.out.println("학과 평가 등록 권한이 없습니다.");
-            return;
-        }
+//        if(!(Login.user.getAffiliatedDepartment().equals(deptName) && Login.user.getAffiliatedSchool().equals(univName))){
+//            // TODO 예외처리 필요
+//            System.out.println("학과 평가 등록 권한이 없습니다.");
+//            return;
+//        }
 
         Runnable runnable = () -> {
             String univName = this.univName;
             String deptName = this.deptName;
-            String userEmail = Login.user.getUserEmail();
+//            String userEmail = Login.user.getUserEmail();
+            String userEmail = "park";
             String content = inputRatingContent.getText();
             int score = (int) deptRating.getRating();
             java.sql.Date creationDate = new java.sql.Date(System.currentTimeMillis());
