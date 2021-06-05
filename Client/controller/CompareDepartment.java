@@ -19,7 +19,9 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
@@ -209,6 +211,7 @@ public class CompareDepartment implements Initializable {
         Pattern pattern = Pattern.compile("대학교$");
         SuggestionProvider<String> provider = SuggestionProvider.create(Home.getUnivList());
         new AutoCompletionTextFieldBinding<>(inputDeptNameOne, provider);
+        new AutoCompletionTextFieldBinding<>(inputDeptNameTwo, provider);
 
         inputDeptNameOne.textProperty().addListener((observable, oldValue, newValue) -> {
             Matcher matcher = pattern.matcher(newValue);
@@ -223,6 +226,9 @@ public class CompareDepartment implements Initializable {
                         Protocol pt = Connection.receive();
 
                         ArrayList<String> univDeptList = (ArrayList<String>) pt.getBody();
+                        for(int i = 0; i < univDeptList.size(); i++){
+                            univDeptList.set(i, univName+ " " + univDeptList.get(i));
+                        }
 
                         provider.clearSuggestions();
                         provider.addPossibleSuggestions(univDeptList);
@@ -253,6 +259,9 @@ public class CompareDepartment implements Initializable {
                         Protocol pt = Connection.receive();
 
                         ArrayList<String> univDeptList = (ArrayList<String>) pt.getBody();
+                        for(int i = 0; i < univDeptList.size(); i++){
+                            univDeptList.set(i, univName + " " + univDeptList.get(i));
+                        }
 
                         provider.clearSuggestions();
                         provider.addPossibleSuggestions(univDeptList);
@@ -281,7 +290,7 @@ public class CompareDepartment implements Initializable {
                 ArrayList<DeptInfoReqVO> deptList = new ArrayList<DeptInfoReqVO>();
 
                 String[] firstUnivAndDept = inputDeptNameOne.getText().split(" ");
-                String[] secondUnivAndDept = inputDeptNameOne.getText().split(" ");
+                String[] secondUnivAndDept = inputDeptNameTwo.getText().split(" ");
 
                 deptList.add(new DeptInfoReqVO(firstUnivAndDept[0], firstUnivAndDept[1]));
                 deptList.add(new DeptInfoReqVO(secondUnivAndDept[0], secondUnivAndDept[1]));
@@ -290,6 +299,7 @@ public class CompareDepartment implements Initializable {
 
                 ArrayList<DepartmentDetailDTO> receivedDeptDetailList = receiveUnivCp();
 
+                System.out.println(receivedDeptDetailList.size());
                 Platform.runLater(() -> {
                     setUnivDetailInf(receivedDeptDetailList);    // 첫번쨰 학교 상세정보 화면에 세팅
                 });
@@ -332,141 +342,144 @@ public class CompareDepartment implements Initializable {
         DepartmentDetailDTO firstDeptDetail = receivedDeptDetailList.get(FIRST_DEPT_DETAIL);
         DepartmentDetailDTO secondDeptDetail = receivedDeptDetailList.get(SECOND_DEPT_DETAIL);
 
-        admissionFeeOne.setText(String.valueOf(firstDeptDetail.getAdmissionFee()));
-        admissionFeeTwo.setText(String.valueOf(secondDeptDetail.getAdmissionFee()));
+        admissionFeeOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstDeptDetail.getAdmissionFee()));
+        admissionFeeTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondDeptDetail.getAdmissionFee()));
         compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
                 firstDeptDetail.getAdmissionFee(), secondDeptDetail.getAdmissionFee());
 
-        tuitionOne.setText(String.valueOf(firstDeptDetail.getTuition()));
-        tuitionTwo.setText(String.valueOf(secondDeptDetail.getTuition()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        tuitionOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstDeptDetail.getTuition()));
+        tuitionTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondDeptDetail.getTuition()));
+        compareDeptDetailElement(tuitionOne, tuitionTwo,
                 firstDeptDetail.getTuition(), secondDeptDetail.getTuition());
 
         maleGrOne.setText(String.valueOf(firstDeptDetail.getMaleGr()));
         maleGrTwo.setText(String.valueOf(secondDeptDetail.getMaleGr()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(maleGrOne, maleGrTwo,
                 firstDeptDetail.getMaleGr(), secondDeptDetail.getMaleGr());
 
         femaleGrOne.setText(String.valueOf(firstDeptDetail.getFemaleGr()));
         femaleGrTwo.setText(String.valueOf(secondDeptDetail.getFemaleGr()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(femaleGrOne, femaleGrTwo,
                 firstDeptDetail.getFemaleGr(), secondDeptDetail.getFemaleGr());
 
         enteringDomCmntyCollOne.setText(String.valueOf(firstDeptDetail.getEnteringDomCmntyColl()));
         enteringDomCmntyCollTwo.setText(String.valueOf(secondDeptDetail.getEnteringDomCmntyColl()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(enteringDomCmntyCollOne, enteringDomCmntyCollTwo,
                 firstDeptDetail.getEnteringDomCmntyColl(), secondDeptDetail.getEnteringDomCmntyColl());
 
         enteringOverseasCmntyCollOne.setText(String.valueOf(firstDeptDetail.getEnteringOverseasCmntyColl()));
         enteringOverseasCmntyCollTwo.setText(String.valueOf(secondDeptDetail.getEnteringOverseasCmntyColl()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(enteringOverseasCmntyCollOne, enteringOverseasCmntyCollTwo,
                 firstDeptDetail.getEnteringOverseasCmntyColl(), secondDeptDetail.getEnteringOverseasCmntyColl());
 
         enteringDomUnivOne.setText(String.valueOf(firstDeptDetail.getEnteringDomUniv()));
         enteringDomUnivTwo.setText(String.valueOf(secondDeptDetail.getEnteringDomUniv()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(enteringDomUnivOne, enteringDomUnivTwo,
                 firstDeptDetail.getEnteringDomUniv(), secondDeptDetail.getEnteringDomUniv());
 
         enteringOverseasUnivOne.setText(String.valueOf(firstDeptDetail.getEnteringOverseasUniv()));
         enteringOverseasUnivTwo.setText(String.valueOf(secondDeptDetail.getEnteringOverseasUniv()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(enteringOverseasUnivOne, enteringOverseasUnivTwo,
                 firstDeptDetail.getEnteringOverseasUniv(), secondDeptDetail.getEnteringOverseasUniv());
 
         enteringDomGrSchoolOne.setText(String.valueOf(firstDeptDetail.getEnteringDomGrSchool()));
         enteringDomGrSchoolTwo.setText(String.valueOf(secondDeptDetail.getEnteringDomGrSchool()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(enteringDomGrSchoolOne, enteringDomGrSchoolTwo,
                 firstDeptDetail.getEnteringDomGrSchool(), secondDeptDetail.getEnteringDomGrSchool());
 
         enteringOverseasGrSchoolOne.setText(String.valueOf(firstDeptDetail.getEnteringOverseasGrSchool()));
         enteringOverseasGrSchoolTwo.setText(String.valueOf(secondDeptDetail.getEnteringOverseasGrSchool()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(enteringOverseasGrSchoolOne, enteringOverseasGrSchoolTwo,
                 firstDeptDetail.getEnteringOverseasGrSchool(), secondDeptDetail.getEnteringOverseasGrSchool());
 
         domScholarNumberOne.setText(String.valueOf(firstDeptDetail.getDomScholarNumber()));
         domScholarNumberTwo.setText(String.valueOf(secondDeptDetail.getDomScholarNumber()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(domScholarNumberOne, domScholarNumberTwo,
                 firstDeptDetail.getDomScholarNumber(), secondDeptDetail.getDomScholarNumber());
 
         overseasScholarNumberOne.setText(String.valueOf(firstDeptDetail.getOverseasScholarNumber()));
         overseasScholarNumberTwo.setText(String.valueOf(secondDeptDetail.getOverseasScholarNumber()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(overseasScholarNumberOne, overseasScholarNumberTwo,
                 firstDeptDetail.getOverseasScholarNumber(), secondDeptDetail.getOverseasScholarNumber());
 
         maleEmploymentTargetOne.setText(String.valueOf(firstDeptDetail.getMaleEmploymentTarget()));
         maleEmploymentTargetTwo.setText(String.valueOf(secondDeptDetail.getMaleEmploymentTarget()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(maleEmploymentTargetOne, maleEmploymentTargetTwo,
                 firstDeptDetail.getMaleEmploymentTarget(), secondDeptDetail.getMaleEmploymentTarget());
 
         femaleEmploymentTargetOne.setText(String.valueOf(firstDeptDetail.getFemaleEmploymentTarget()));
         femaleEmploymentTargetTwo.setText(String.valueOf(secondDeptDetail.getFemaleEmploymentTarget()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(femaleEmploymentTargetOne, femaleEmploymentTargetTwo,
                 firstDeptDetail.getFemaleEmploymentTarget(), secondDeptDetail.getFemaleEmploymentTarget());
 
         maleDomEmployeeOne.setText(String.valueOf(firstDeptDetail.getMaleDomEmployee()));
         maleDomEmployeeTwo.setText(String.valueOf(secondDeptDetail.getMaleDomEmployee()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(maleDomEmployeeOne, maleDomEmployeeTwo,
                 firstDeptDetail.getMaleDomEmployee(), secondDeptDetail.getMaleDomEmployee());
 
         femaleDomEmployeeOne.setText(String.valueOf(firstDeptDetail.getFemaleDomEmployee()));
         femaleDomEmployeeTwo.setText(String.valueOf(secondDeptDetail.getFemaleDomEmployee()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(femaleDomEmployeeOne, femaleDomEmployeeTwo,
                 firstDeptDetail.getFemaleDomEmployee(), secondDeptDetail.getFemaleDomEmployee());
 
         maleOverseasEmployeeOne.setText(String.valueOf(firstDeptDetail.getMaleOverseasEmployee()));
         maleOverseasEmployeeTwo.setText(String.valueOf(secondDeptDetail.getMaleOverseasEmployee()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(maleOverseasEmployeeOne, maleOverseasEmployeeTwo,
                 firstDeptDetail.getMaleOverseasEmployee(), secondDeptDetail.getMaleOverseasEmployee());
 
         femaleOverseasEmployeeOne.setText(String.valueOf(firstDeptDetail.getFemaleOverseasEmployee()));
         femaleOverseasEmployeeTwo.setText(String.valueOf(secondDeptDetail.getFemaleOverseasEmployee()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(femaleOverseasEmployeeOne, femaleOverseasEmployeeTwo,
                 firstDeptDetail.getFemaleOverseasEmployee(), secondDeptDetail.getFemaleOverseasEmployee());
 
-        enteringRateOne.setText(String.valueOf(firstDeptDetail.getEnteringRate()));
-        enteringRateTwo.setText(String.valueOf(secondDeptDetail.getEnteringRate()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        enteringRateOne.setText(firstDeptDetail.getEnteringRate() + "%");
+        enteringRateTwo.setText(secondDeptDetail.getEnteringRate() + "%");
+        compareDeptDetailElement(enteringRateOne, enteringRateTwo,
                 firstDeptDetail.getEnteringRate(), secondDeptDetail.getEnteringRate());
 
-        outSchoolScholarshipOne.setText(String.valueOf(firstDeptDetail.getOutSchoolScholarship()));
-        outSchoolScholarshipTwo.setText(String.valueOf(secondDeptDetail.getOutSchoolScholarship()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        outSchoolScholarshipOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstDeptDetail.getOutSchoolScholarship()));
+        outSchoolScholarshipTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondDeptDetail.getOutSchoolScholarship()));
+        compareDeptDetailElement(outSchoolScholarshipOne, outSchoolScholarshipTwo,
                 firstDeptDetail.getOutSchoolScholarship(), secondDeptDetail.getOutSchoolScholarship());
 
-        inSchoolScholarshipOne.setText(String.valueOf(firstDeptDetail.getInSchoolScholarship()));
-        inSchoolScholarshipTwo.setText(String.valueOf(secondDeptDetail.getInSchoolScholarship()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        inSchoolScholarshipOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstDeptDetail.getInSchoolScholarship()));
+        inSchoolScholarshipTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondDeptDetail.getInSchoolScholarship()));
+        compareDeptDetailElement(inSchoolScholarshipOne, inSchoolScholarshipTwo,
                 firstDeptDetail.getInSchoolScholarship(), secondDeptDetail.getInSchoolScholarship());
 
-        scholarshipPerPersonOne.setText(String.valueOf(firstDeptDetail.getScholarshipPerPerson()));
-        scholarshipPerPersonTwo.setText(String.valueOf(secondDeptDetail.getScholarshipPerPerson()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        scholarshipPerPersonOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstDeptDetail.getScholarshipPerPerson()));
+        scholarshipPerPersonTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondDeptDetail.getScholarshipPerPerson()));
+        compareDeptDetailElement(scholarshipPerPersonOne, scholarshipPerPersonTwo,
                 firstDeptDetail.getScholarshipPerPerson(), secondDeptDetail.getScholarshipPerPerson());
 
         numOfFulltimeProfessorOne.setText(String.valueOf(firstDeptDetail.getNumOfFulltimeProfessor()));
         numOfFulltimeProfessorTwo.setText(String.valueOf(secondDeptDetail.getNumOfFulltimeProfessor()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(numOfFulltimeProfessorOne, numOfFulltimeProfessorTwo,
                 firstDeptDetail.getNumOfFulltimeProfessor(), secondDeptDetail.getNumOfFulltimeProfessor());
 
         thesisResultPerProfessorOne.setText(String.valueOf(firstDeptDetail.getThesisResultPerProfessor()));
         thesisResultPerProfessorTwo.setText(String.valueOf(secondDeptDetail.getThesisResultPerProfessor()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        compareDeptDetailElement(thesisResultPerProfessorOne, thesisResultPerProfessorTwo,
                 firstDeptDetail.getThesisResultPerProfessor(), secondDeptDetail.getThesisResultPerProfessor());
 
-        rearchCostPerProfessorOne.setText(String.valueOf(firstDeptDetail.getRearchCostPerProfessor()));
-        rearchCostPerProfessorTwo.setText(String.valueOf(secondDeptDetail.getRearchCostPerProfessor()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        rearchCostPerProfessorOne.setText(NumberFormat.getNumberInstance(Locale.US).format(firstDeptDetail.getRearchCostPerProfessor()));
+        rearchCostPerProfessorTwo.setText(NumberFormat.getNumberInstance(Locale.US).format(secondDeptDetail.getRearchCostPerProfessor()));
+        compareDeptDetailElement(rearchCostPerProfessorOne, rearchCostPerProfessorTwo,
                 firstDeptDetail.getRearchCostPerProfessor(), secondDeptDetail.getRearchCostPerProfessor());
 
-        employmentRateOne.setText(String.valueOf(firstDeptDetail.getEmploymentRate()));
-        employmentRateTwo.setText(String.valueOf(secondDeptDetail.getEmploymentRate()));
-        compareDeptDetailElement(admissionFeeOne, admissionFeeTwo,
+        employmentRateOne.setText(firstDeptDetail.getEmploymentRate() + "%");
+        employmentRateTwo.setText(secondDeptDetail.getEmploymentRate() + "%");
+        compareDeptDetailElement(employmentRateOne, employmentRateTwo,
                 firstDeptDetail.getEmploymentRate(), secondDeptDetail.getEmploymentRate());
 
     }
 
     // 상세정보 요소 비교 후 텍스트 색상 변경
     private void compareDeptDetailElement(Label n1, Label n2, Long el1, Long el2) {
-        if (el1 < el2) {
+        if(el1.equals(el2)){
+            n1.setTextFill(Color.BLUE);
+            n2.setTextFill(Color.BLUE);
+        } else if (el1 < el2) {
             n2.setTextFill(Color.RED);
         } else if(el1 > el2){
             n1.setTextFill(Color.RED);

@@ -76,6 +76,8 @@ public class UserStatistics implements Initializable {
                 }
             }
 
+            System.out.println(receiveList.size());
+
             // univView ArrayList
             for(int i = 0; i < receiveList.get(0).size(); i++){
                 univList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
@@ -93,5 +95,8 @@ public class UserStatistics implements Initializable {
                 tableViewOfIndicator.setItems(indicatorList);
             });
         };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 }
