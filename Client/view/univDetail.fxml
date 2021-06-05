@@ -267,9 +267,9 @@
                                     <Line endX="767.0" layoutX="115.0" layoutY="90.0" startX="-100.0" />
                                     <TableView fx:id="tableUnivRating" layoutX="14.0" layoutY="103.0" prefHeight="314.0" prefWidth="872.0">
                                       <columns>
-                                        <TableColumn fx:id="colDate" prefWidth="94.0" text="작성일자" />
-                                        <TableColumn fx:id="colContent" prefWidth="659.0" text="내용" />
-                                          <TableColumn fx:id="colScore" prefWidth="118.0" text="평점" />
+                                        <TableColumn fx:id="colDate" prefWidth="136.0" text="작성일자" />
+                                        <TableColumn fx:id="colContent" prefWidth="536.0" text="내용" />
+                                          <TableColumn fx:id="colScore" prefWidth="199.0" text="평점" />
                                       </columns>
                                     </TableView>
                                  </children>

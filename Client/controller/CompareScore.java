@@ -140,6 +140,12 @@ public class CompareScore implements Initializable {
     // 학과 추가
     @FXML
     void clickAddDept(MouseEvent event) {
+        if (inputDeptName.getText() == null){
+            // TODO 예외처리 필요
+            System.out.println("학과 이름을 검색해주세요");
+            return;
+        }
+
         String univName = inputDeptName.getText().split(" ")[0];
         String deptName = inputDeptName.getText().split(" ")[1];
 

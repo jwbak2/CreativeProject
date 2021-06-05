@@ -21,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -256,17 +257,6 @@ public class UnivDetail implements Initializable {
                 (ObservableValue<?> observable, Object oldValue, Object newValue) -> selectedDeptName = newValue.toString()
         );
 
-
-        // 학과 리스트 탭 클릭 시 학과 리스트 요청 이벤트 추가
-//        tabUnivDeptList.setOnSelectionChanged((event) -> {
-//            if(!checkTabUnivDeptList){
-//                checkTabUnivDeptList = true;
-//
-//                requestDeptListOfUniv();
-//            }
-//        });
-
-
         // 지도 API
         tabUnivMap.setOnSelectionChanged((event) -> {
             if(!checkTabUnivMap){
@@ -276,7 +266,10 @@ public class UnivDetail implements Initializable {
             }
         });
 
-
+        // tableView column setting
+        colDate.setCellValueFactory(new PropertyValueFactory<>("creationDate"));
+        colContent.setCellValueFactory(new PropertyValueFactory<>("ratingContent"));
+        colScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 
     }
 
@@ -338,8 +331,7 @@ public class UnivDetail implements Initializable {
                 // 학교의 학과 리스트 요청 - 다른 스레드 생성해서 요청
                 requestDeptListOfUniv();
 
-                // 학교 평가 리스트 요청
-                requestUnivRatingList();
+
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
@@ -482,6 +474,9 @@ public class UnivDetail implements Initializable {
 
                 ArrayList<String> univDeptList = receiveUnivDeptList();
 
+                // 학교 평가 리스트 요청
+                requestUnivRatingList();
+
                 Platform.runLater(() -> {
                     // 학과 리스트 tab
                     setUnivDeptList(univDeptList);  // deptList Listview 추가
@@ -539,6 +534,9 @@ public class UnivDetail implements Initializable {
             // 학교 평가 리스트 수신
             ArrayList<UnivRatingDTO> univRatingList = receiveUnivRatingList();
 
+            for(UnivRatingDTO univ : univRatingList){
+                System.out.println(univ.getContent());
+            }
             Platform.runLater(() -> {
                 // set 학과 평가 리스트
                 setUnivRatingList(univRatingList);
@@ -552,7 +550,9 @@ public class UnivDetail implements Initializable {
     // 학교 평가 리스트 수신
     private ArrayList<UnivRatingDTO> receiveUnivRatingList(){
         Protocol receivePT = Connection.receive();
+
         ArrayList<UnivRatingDTO> tmp = null;
+
         try {
             Object receivedBody = receivePT.getBody();
 
@@ -567,8 +567,8 @@ public class UnivDetail implements Initializable {
             }
         } catch(NullPointerException NPE){
             System.out.println("학과 평가 리스트 수신 중 예외 발생;");
-
         }
+
         return tmp;
     }
 
@@ -585,6 +585,7 @@ public class UnivDetail implements Initializable {
                     new SimpleStringProperty(univRatingList.get(i).getContent()),
                     makeRating(univRatingList.get(i).getScore())));
         }
+
 
         tableUnivRating.setItems(observableUnivRatingList);
     }
@@ -867,17 +868,19 @@ public class UnivDetail implements Initializable {
             Protocol receivePT = Connection.receive();
 
             if (receivePT.getProtocolType() == Protocol.PT_SUCC
-                    && receivePT.getProtocolCode() == Protocol.PT_SUCC_DEPT_RATING) {
+                    && receivePT.getProtocolCode() == Protocol.PT_SUCC_UNIV_RATING) {
+                // Date to String
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                // table view 리스트에 추가
+                observableUnivRatingList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)),
+                        new SimpleStringProperty(content),
+                        makeRating(score)));
+
                 Platform.runLater(() -> {
                     showLoginSuccPopUp();
 
-                    // Date to String
-                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-                    // table view 리스트에 추가
-                    observableUnivRatingList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)),
-                            new SimpleStringProperty(content), makeRating(score)));
-                    tableUnivRating.setItems(observableUnivRatingList);
+                    tableUnivRating.refresh();
                 });
 
             } else {
