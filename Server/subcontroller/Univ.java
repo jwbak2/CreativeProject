@@ -6,6 +6,9 @@ import Server.model.dto.UnivDTO;
 import Server.model.dto.UnivDetailDTO;
 import Server.transmission.Controller;
 
+import static Server.model.Cache.START_YEAR;
+import static Server.model.Cache.CUR_YEAR;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -47,7 +50,7 @@ public class Univ {
 
 		// START ~ CUR 기간의 대학 상세정보 데이터 받아오기
 		ArrayList<UnivDetailDTO> result = new ArrayList<UnivDetailDTO>();
-		for (int i = Controller.START_YEAR; i <= Controller.CUR_YEAR; i++) {
+		for (int i = START_YEAR; i <= CUR_YEAR; i++) {
 			result.add(getUnivDetail(univCode, i));
 		}
 

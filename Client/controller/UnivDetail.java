@@ -339,7 +339,7 @@ public class UnivDetail implements Initializable {
                 requestDeptListOfUniv();
 
                 // 학교 평가 리스트 요청
-//                requestUnivRatingList();
+                requestUnivRatingList();
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab

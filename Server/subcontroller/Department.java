@@ -5,6 +5,9 @@ import Server.model.dao.DepartmentDetailDAO;
 import Server.model.dto.DepartmentDetailDTO;
 import Server.transmission.Controller;
 
+import static Server.model.Cache.START_YEAR;
+import static Server.model.Cache.CUR_YEAR;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -27,7 +30,7 @@ public class Department {
 		// 학과의 모든 연도 상세정보 조회 - 학과 ID
 		ArrayList<DepartmentDetailDTO> result = new ArrayList<DepartmentDetailDTO>();
 
-		for (int i = Controller.START_YEAR; i <= Controller.CUR_YEAR; i++) {
+		for (int i = START_YEAR; i <= CUR_YEAR; i++) {
 			result.add(getDepartmentDetail(deptId, i));
 		}
 

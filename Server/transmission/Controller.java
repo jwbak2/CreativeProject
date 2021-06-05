@@ -9,10 +9,11 @@ import Server.model.dto.*;
 
 import java.util.ArrayList;
 
+import static Server.model.Cache.CUR_YEAR;
+import static Server.model.Cache.START_YEAR;
+
 public class Controller {
 
-	public static final int CUR_YEAR = 2020;
-	public static final int START_YEAR = 2018;
 
 	private UserDTO curUser;
 
@@ -118,23 +119,39 @@ public class Controller {
 	public void inquiryCustomRanking(CustomizedRankReqVO info) {
 		// 사용자가 선택한 학과들을
 		// 사용자가 선택한 지표들로 비교해서 순위를 제공
-		Department dept = new Department();
-		Univ univ = new Univ();
 
-		ArrayList<DeptInfoReqVO> deptList = info.getDeptList();	// 학과 리스트
-		ArrayList<String> indicators = info.getIndicators();	// 지표 리스트
-
-		ArrayList<String> deptIdList = new ArrayList<>();		// 학과 ID 리스트
-		deptList.forEach((e) -> {
-			deptIdList.add(dept.getDepartmentID(e.getUnivName(), e.getDeptName()));
-		});
-
-		// NOTE: 데이터 분리 및 준비 (대학 이름, 학과 이름으로 학과 ID 만들기)
-
-		// NOTE: 준비된 데이터를 가공해서 저장
-
-		// NOTE: 완성된 리스트를 전송
-//		Sender.send(Protocol.PT_RES, Protocol.PT_RES_CUSTOM_RANKING, );
+//		ArrayList<DeptInfoReqVO> deptList = info.getDeptList();	// 학과 리스트
+//		ArrayList<String> indicators = info.getIndicators();	// 지표 리스트
+//
+//		CustomRank customRank = new CustomRank();
+//
+//		customRank.getRanking(deptList, indicators);
+//		// NOTE: 데이터 분리 및 준비 (대학 이름, 학과 이름으로 학과 ID 만들기)
+//		ArrayList<String> deptIdList = new ArrayList<>();		// 학과 ID 리스트
+//		deptList.forEach((e) -> {
+//			deptIdList.add(dept.getDepartmentID(e.getUnivName(), e.getDeptName()));
+//		});
+//
+//		// NOTE: 한글 지표 이름 -> 테이블 이름으로 변경하기
+//		ArrayList<String> tableNameOfIndicators = convert(indicators);
+//		/*
+//		1. 학과 ID 리스트 있으니까 2가지 경우의 수가 있음
+//			1-1. 학과 ID 리스트로 정보를 다 들고 와서 한다
+//			1-2. 학과 ID 리스트 정보를 DB로 넘기고 PL/SQL 로 한다.
+//
+//		2. StringBuilder로 각 칼럼 이름을 넣어서 칼럼 이름에 맞는 데이터만 쭉 뽑아오기? 근데 대학도 결국 뽑아야하네..?
+//		3. 1,2,3 순위의 점수 배점은 어떻게? 39.3 / 33.3 / 27.3 ..?
+//		4. 학과 조회를 한번에는... 안되겠네 결국 PL/SQL 써야하나..?
+//		5. 그럼 결국 학과 ID 리스트, 칼럼 이름 리스트(3개 겠지?) 를 보내서 (아니 애초에 저런 덩어리들을 보낼 수 있을까?)
+//		6. PL/SQL로 순위를 만들고 결국 보내야하나?
+//		*/
+//
+//		// NOTE: 준비된 데이터를 가공해서 저장
+//		ArrayList<CustomizedRankResVO> list = new ArrayList<>();
+//
+//
+//		// NOTE: 완성된 리스트를 전송
+//		Sender.send(Protocol.PT_RES, Protocol.PT_RES_CUSTOM_RANKING, list);
 
 	}
 

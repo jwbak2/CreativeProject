@@ -2,8 +2,6 @@ package Server.model.dao;
 
 import Server.model.DBCP;
 import Server.model.dto.DepartmentDetailDTO;
-import Server.model.dto.UnivDTO;
-import Server.model.dto.UnivDetailDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -87,6 +85,63 @@ public class DepartmentDetailDAO {
 		}
 
 		return dto;
+	}
+
+	// 속성의 MIN, MAX 데이터 가져오기
+	public MinMaxOfIndicator[] selectMinMax(int year, String[] indicator) throws Exception {
+
+		Connection conn = DBCP.getConnection();
+		StringBuilder sb = new StringBuilder();
+
+		// Query 만들기
+		sb.append("SELECT ");
+		for (int i = 0; i < indicator.length; i++) {
+			sb.append("MAX(" + indicator[i] + "),");
+			sb.append("MIN(" + indicator[i] + ")");
+
+			if (i < indicator.length - 1)
+				sb.append(",");
+		}
+		sb.append(" FROM crtvp.department_detail WHERE year = ?");
+
+		String preQuery = sb.toString();
+
+		ResultSet rs = null;
+		MinMaxOfIndicator[] minMaxData = null;
+
+		// 실행
+		try(PreparedStatement pstmt = conn.prepareStatement(preQuery)) {
+
+			pstmt.setLong(1, year);
+
+			rs = pstmt.executeQuery();
+			rs.next();
+
+
+			minMaxData = new MinMaxOfIndicator[indicator.length];
+
+			// MIN, MAX 저장
+			for (int i = 0; i < indicator.length; i++) {
+				Long max = rs.getLong("MAX(" + indicator[i] + ")");
+				Long min = rs.getLong("MIN(" + indicator[i] + ")");
+				minMaxData[i] = new MinMaxOfIndicator(year, indicator[i], min, max);
+			}
+
+
+		} catch (SQLException sqle) {
+			System.out.println("Exception : SELECT");
+			sqle.printStackTrace();
+
+		} finally {
+			if (conn != null)
+				DBCP.returnConnection(conn);
+			if (rs != null)
+				try { rs.close(); } catch(SQLException sqle){System.out.println("Exception : SELECT"); sqle.printStackTrace();}
+
+		}
+
+		return minMaxData;
+
 	}
 
 }

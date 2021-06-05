@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class IndicatorSelectionStatisticsDAO {
 
 	public ArrayList<String> getIndicatorOfView() {
-		final int LIST_SIZE = 10;
+		final int LIST_SIZE = 20;
 
 		// 학과
 		ArrayList<String> list = null;
@@ -28,8 +28,15 @@ public class IndicatorSelectionStatisticsDAO {
 			// 대학 리스트를 저장할 HashMap
 			list = new ArrayList<>();
 
-			for (int i = 0; i < LIST_SIZE; i++) {
+			int count = 0;
+			while (rs.next()) {
+				System.out.println("지표 조회");
+				count++;
 				list.add(rs.getString("indicator_name"));
+
+				if (count == LIST_SIZE)
+					break;
+
 			}
 
 		} catch (
