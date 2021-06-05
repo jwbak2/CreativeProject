@@ -245,11 +245,11 @@ public class Controller {
 		if(result != null){
 
 			curUser = result;
-			Sender.send(Protocol.PT_SUCC, Protocol.PT_SUCC_LOGIN, null);
+			Sender.send(Protocol.PT_SUCC, Protocol.PT_SUCC_LOGIN, curUser);
 
 		} else {
 
-			Sender.send(Protocol.PT_FAIL, Protocol.PT_FAIL_LOGIN, null);
+			Sender.send(Protocol.PT_FAIL, Protocol.PT_FAIL_LOGIN, curUser);
 
 		}
 

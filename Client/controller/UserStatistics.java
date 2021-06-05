@@ -87,7 +87,7 @@ public class UserStatistics implements Initializable {
             // indicatorView ArrayList
             for(int i = 0; i < receiveList.get(1).size(); i++){
                 indicatorList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
-                        ,new SimpleStringProperty((String) receiveList.get(0).get(i))));
+                        ,new SimpleStringProperty((String) receiveList.get(1).get(i))));
             }
 
             Platform.runLater(() -> {
