@@ -37,6 +37,12 @@ public class UserStatistics implements Initializable {
     @FXML
     private TableColumn<?, ?> colIndicatorName;
 
+    @FXML
+    private TableColumn<?, ?> colUnivView;
+
+    @FXML
+    private TableColumn<?, ?> colIndicatorView;
+
     private ObservableList<RankInfo> univList;
 
     private ObservableList<RankInfo> indicatorList;
@@ -48,9 +54,11 @@ public class UserStatistics implements Initializable {
 
         colUnivRanking.setCellValueFactory(new PropertyValueFactory<>("rank"));
         colUnivName.setCellValueFactory(new PropertyValueFactory<>("content"));
+        colUnivView.setCellValueFactory(new PropertyValueFactory<>("view"));
 
         colIndicatorRanking.setCellValueFactory(new PropertyValueFactory<>("rank"));
         colIndicatorName.setCellValueFactory(new PropertyValueFactory<>("content"));
+        colIndicatorView.setCellValueFactory(new PropertyValueFactory<>("view"));
 
         requestUserStatistics();
     }
@@ -78,14 +86,15 @@ public class UserStatistics implements Initializable {
 
             // univView ArrayList
             for(int i = 0; i < receiveList.get(0).size(); i++){
-                univList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
-                        ,new SimpleStringProperty((String) receiveList.get(0).get(i))));
+                // TODO 조회수 추가
+//                univList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
+//                        ,new SimpleStringProperty((String) receiveList.get(0).get(i))));
             }
 
             // indicatorView ArrayList
             for(int i = 0; i < receiveList.get(1).size(); i++){
-                indicatorList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
-                        ,new SimpleStringProperty((String) receiveList.get(1).get(i))));
+//                indicatorList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
+//                        ,new SimpleStringProperty((String) receiveList.get(1).get(i))));
             }
 
             Platform.runLater(() -> {

@@ -20,10 +20,7 @@ public class ClientMain extends Application {
 
     @Override
     public void init() {
-
-        // TODO 서버 접속 실패시 예외처리 필요
         new Connection(SERVER_IP, PORT);
-
     }
 
 
