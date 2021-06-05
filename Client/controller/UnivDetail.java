@@ -286,7 +286,7 @@ public class UnivDetail implements Initializable {
         WebEngine webEngine = webView.getEngine();
         //html 로드
 //        String MapAPIHtmlFileDir = "C:\\Users\\vxc79\\IdeaProjects\\GetGangGoo\\src\\Client\\resource\\MapAPI.html";
-        String MapAPIHtmlFileDir = "src/Client/resource/MapAPI.html";
+        String MapAPIHtmlFileDir = "Client/resource/MapAPI.html";
 
         try {
             File htmlFile = new File(MapAPIHtmlFileDir);

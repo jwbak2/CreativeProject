@@ -94,7 +94,7 @@
             <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="주민번호" GridPane.rowIndex="4" />
             <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="소속학교" GridPane.rowIndex="5" />
             <Label alignment="CENTER" prefHeight="135.0" prefWidth="342.0" text="소속학과" GridPane.rowIndex="6" />
-            <Label fx:id="userEmailLalbel" alignment="CENTER" prefHeight="135.0" prefWidth="342.0" GridPane.columnIndex="1" />
+            <Label fx:id="userEmailLabel" alignment="CENTER" prefHeight="135.0" prefWidth="342.0" GridPane.columnIndex="1" />
             <Label fx:id="userNameLabel" alignment="CENTER" prefHeight="135.0" prefWidth="342.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label fx:id="userTelNumLabel" alignment="CENTER" prefHeight="135.0" prefWidth="342.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label fx:id="userAreaLabel" alignment="CENTER" prefHeight="135.0" prefWidth="342.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
