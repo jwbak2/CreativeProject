@@ -14,8 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 
-
-<AnchorPane fx:id="firstAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.CompareScore">
+<AnchorPane fx:id="firstAP" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" stylesheets="@css/reset.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.CompareScore">
    <children>
       <GridPane layoutX="42.0" layoutY="220.0" prefHeight="51.0" prefWidth="694.0">
         <columnConstraints>
@@ -34,24 +33,62 @@
             <ComboBox fx:id="comboFirstIndicator" prefHeight="29.0" prefWidth="220.0" promptText="지표" GridPane.columnIndex="1">
                 <items>
                     <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="입학금" />
-                        <String fx:value="등록금" />
-                        <String fx:value="국내 전문대학 진학" />
-                        <String fx:value="국외 전문대학 진학" />
-                        <String fx:value="국내 대학 진학" />
-                        <String fx:value="국외 대학 진학" />
-                        <String fx:value="국내 대학원 진학" />
-                        <String fx:value="국외 대학원 진학" />
-                        <String fx:value="국내 진학자 계" />
-                        <String fx:value="국외 진학자 계" />
-
-                          </FXCollections>
+                        <String fx:value="입학경쟁률" />
+                        <String fx:value="1인당 교육비" />
+                        <String fx:value="학생의 창업 및 창업 지원 현황" />
+                        <String fx:value="기숙사 수용률" />
+                        <String fx:value="도서자료 보유량" />
+                        <String fx:value="교지 면적" />
+                        <String fx:value="특허 출원 및 등록 실적" />
+                        <String fx:value="등록금 현황" />
+                        <String fx:value="졸업생의 진학 현황" />
+                        <String fx:value="졸업생의 취업 현황" />
+                        <String fx:value="장학금 수혜 현황" />
+                        <String fx:value="전임교원 연구실적" />
+                        <String fx:value="연구비 수혜 실적" />
+                  </FXCollections>
                 </items>
             </ComboBox>
             <Label alignment="CENTER" prefHeight="37.0" prefWidth="253.0" text="2 순위" GridPane.columnIndex="2" />
-            <ComboBox fx:id="comboSecondIndicator" prefHeight="29.0" prefWidth="213.0" promptText="지표" GridPane.columnIndex="3" />
+            <ComboBox fx:id="comboSecondIndicator" prefHeight="29.0" prefWidth="213.0" promptText="지표" GridPane.columnIndex="3">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="입학경쟁률" />
+                        <String fx:value="1인당 교육비" />
+                        <String fx:value="학생의 창업 및 창업 지원 현황" />
+                        <String fx:value="기숙사 수용률" />
+                        <String fx:value="도서자료 보유량" />
+                        <String fx:value="교지 면적" />
+                        <String fx:value="특허 출원 및 등록 실적" />
+                        <String fx:value="등록금 현황" />
+                        <String fx:value="졸업생의 진학 현황" />
+                        <String fx:value="졸업생의 취업 현황" />
+                        <String fx:value="장학금 수혜 현황" />
+                        <String fx:value="전임교원 연구실적" />
+                        <String fx:value="연구비 수혜 실적" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
             <Label alignment="CENTER" prefHeight="37.0" prefWidth="254.0" text="3 순위" GridPane.columnIndex="4" />
-            <ComboBox fx:id="comboThirdIndicator" prefHeight="29.0" prefWidth="188.0" promptText="지표" GridPane.columnIndex="5" />
+            <ComboBox fx:id="comboThirdIndicator" prefHeight="29.0" prefWidth="188.0" promptText="지표" GridPane.columnIndex="5">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="입학경쟁률" />
+                        <String fx:value="1인당 교육비" />
+                        <String fx:value="학생의 창업 및 창업 지원 현황" />
+                        <String fx:value="기숙사 수용률" />
+                        <String fx:value="도서자료 보유량" />
+                        <String fx:value="교지 면적" />
+                        <String fx:value="특허 출원 및 등록 실적" />
+                        <String fx:value="등록금 현황" />
+                        <String fx:value="졸업생의 진학 현황" />
+                        <String fx:value="졸업생의 취업 현황" />
+                        <String fx:value="장학금 수혜 현황" />
+                        <String fx:value="전임교원 연구실적" />
+                        <String fx:value="연구비 수혜 실적" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
          </children>
       </GridPane>
       <AnchorPane layoutX="19.0" layoutY="21.0" prefHeight="154.0" prefWidth="863.0">
@@ -62,12 +99,13 @@
                 <TableColumn fx:id="colSelectedDept" minWidth="0.0" prefWidth="211.0" text="학과" />
               </columns>
             </TableView>
-            <Button fx:id="btnAddDept" layoutX="341.0" layoutY="38.0" mnemonicParsing="false" onMouseClicked="#clickAddDept" prefHeight="79.0" prefWidth="83.0" text="추가" />
+            <Button fx:id="btnAddDept" layoutX="342.0" mnemonicParsing="false" onMouseClicked="#clickAddDept" prefHeight="68.0" prefWidth="83.0" text="추가" />
             <TextField fx:id="inputDeptName" layoutX="14.0" layoutY="59.0" prefHeight="37.0" prefWidth="320.0" text="학과 입력" />
+            <Button fx:id="btnResetDeptTable" layoutX="342.0" layoutY="77.0" mnemonicParsing="false" onMouseClicked="#clickResetDeptTable" prefHeight="68.0" prefWidth="83.0" text="초기화" />
          </children>
       </AnchorPane>
       <Line endX="799.0" layoutX="101.0" layoutY="197.0" startX="-100.0" />
-      <Button fx:id="btnSelectScore" layoutX="767.0" layoutY="216.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="102.0" text="조회" />
+      <Button fx:id="btnSelectScore" layoutX="767.0" layoutY="216.0" mnemonicParsing="false" onMouseClicked="#clickSelectCustomRating" prefHeight="59.0" prefWidth="102.0" text="조회" />
       <TableView layoutX="42.0" layoutY="309.0" prefHeight="437.0" prefWidth="826.0">
         <columns>
           <TableColumn prefWidth="75.0" text="학교" />
