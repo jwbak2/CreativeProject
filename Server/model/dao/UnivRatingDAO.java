@@ -88,7 +88,7 @@ public class UnivRatingDAO {
 
 		Connection conn = DBCP.getConnection();
 
-		String preQuery = "SELECT * FROM crtvp.\"univ_rating\" WHERE \"user_email\" = ?";
+		String preQuery = "SELECT * FROM crtvp.univ_rating WHERE user_email = ?";
 
 		ResultSet rs = null;
 		UnivRatingDTO dto = null;
