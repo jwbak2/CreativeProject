@@ -3,7 +3,6 @@ package Server.subcontroller;
 import Server.model.dao.DepartmentDAO;
 import Server.model.dao.DepartmentDetailDAO;
 import Server.model.dto.DepartmentDetailDTO;
-import Server.transmission.Controller;
 
 import static Server.model.Cache.START_YEAR;
 import static Server.model.Cache.CUR_YEAR;
@@ -73,6 +72,21 @@ public class Department {
 			return null;
 		}
 
+	}
+
+
+	public double getScoreByYear(String univId, ArrayList<String> idct) {
+		final double RATIO_YEAR = 0.85;
+		deptDetailDAO = deptDetailDAO == null ? new DepartmentDetailDAO() : deptDetailDAO;
+
+		double total = deptDetailDAO.calculateScoreByYear(START_YEAR, univId, idct);
+		for (int i = START_YEAR + 1; i <= CUR_YEAR; i++) {
+			total = RATIO_YEAR * deptDetailDAO.calculateScoreByYear(i, univId, idct)
+					+ (1 - RATIO_YEAR) * total;
+
+		}
+
+		return total;
 	}
 
 }

@@ -14,7 +14,7 @@ public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클
 
 	private static HashMap<String, String> univList;	// 학과 리스트
 	private static ArrayList< Pair< String, HashMap<String, String> > > deptListCollection;		// 학과 리스트
-	private static HashMap< String, Pair<Long, Long> > minMaxOfIndicators;	// 속성의 min max 값  ->  맞춤형 평점의 점수 계산에 사용됨
+	private static HashMap< String, MinMax > minMaxOfIndicators;	// 속성의 min max 값  ->  맞춤형 평점의 점수 계산에 사용됨
 
 
 	public static void init(){
@@ -57,7 +57,7 @@ public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클
 				MinMaxOfIndicator[] minMaxData = new UnivDetailDAO().selectMinMax(i, univIndicators);
 
 				for (int j = 0; j < minMaxData.length; j++) {
-					Pair<Long, Long> minMax = new Pair<>(minMaxData[j].getMin(), minMaxData[j].getMax());
+					MinMax minMax = new MinMax(minMaxData[j].getMin(), minMaxData[j].getMax());
 					minMaxOfIndicators.put(i + " " + minMaxData[j].getName(), minMax);
 
 				}
@@ -66,7 +66,7 @@ public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클
 				minMaxData = new DepartmentDetailDAO().selectMinMax(i, deptIndicators);
 
 				for (int j = 0; j < minMaxData.length; j++) {
-					Pair<Long, Long> minMax = new Pair<>(minMaxData[j].getMin(), minMaxData[j].getMax());
+					MinMax minMax = new MinMax(minMaxData[j].getMin(), minMaxData[j].getMax());
 					minMaxOfIndicators.put(i + " " + minMaxData[j].getName(), minMax);
 
 				}
@@ -98,7 +98,7 @@ public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클
 		return null;	// Not found
 	}
 
-	public static HashMap< String, Pair<Long, Long> > getMinMaxOfIndicators() {
+	public static HashMap< String, MinMax > getMinMaxOfIndicators() {
 		return minMaxOfIndicators;
 	}
 
