@@ -853,7 +853,7 @@ public class UnivDetail implements Initializable {
         Runnable runnable = () -> {
             String univName = inputUniv.getText().replace(" ", "");
             // FIXME 세션기능 필요
-            String userEmail = "park";
+            String userEmail = Login.user.getUserEmail();
             String content = inputUnivRatingContent.getText();
             int score = (int) univRating.getRating();
             java.sql.Date creationDate = new java.sql.Date(System.currentTimeMillis());

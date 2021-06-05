@@ -577,8 +577,7 @@ public class DepartmentDetail implements Initializable {
         Runnable runnable = () -> {
             String univName = this.univName;
             String deptName = this.deptName;
-//            String userEmail = Login.user.getUserEmail();
-            String userEmail = "park";
+            String userEmail = Login.user.getUserEmail();
             String content = inputRatingContent.getText();
             int score = (int) deptRating.getRating();
             java.sql.Date creationDate = new java.sql.Date(System.currentTimeMillis());
