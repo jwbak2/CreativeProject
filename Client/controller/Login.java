@@ -32,7 +32,7 @@ public class Login implements Initializable {
     @FXML
     private PasswordField textFieldPW;
 
-    static UserDTO user;
+    volatile static UserDTO user;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
