@@ -27,6 +27,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.image.ImageView;
 import javafx.scene.web.WebEngine;
@@ -50,7 +51,12 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static Server.transmission.Protocol.PT_SUCC_BOOKMARK_TOGGLE;
+
 public class UnivDetail implements Initializable {
+
+    @FXML
+    public Button bookMarkButton;
 
     @FXML
     private StackPane spUnivDetail;
@@ -215,6 +221,8 @@ public class UnivDetail implements Initializable {
     @FXML
     private Rating univRating;
 
+
+
     private boolean checkTabUnivMap;
 
     private String homepageURL;
@@ -264,7 +272,71 @@ public class UnivDetail implements Initializable {
         colContent.setCellValueFactory(new PropertyValueFactory<>("ratingContent"));
         colScore.setCellValueFactory(new PropertyValueFactory<>("score"));
 
+        // 북마크 버튼 클릭 시
+        bookMarkButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> bookMarkToggle());
+
     }
+
+    private void bookMarkToggle(){
+
+        Runnable runnable = () -> {
+
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_TOGGLE_BOOKMARK));
+
+            Protocol receivePT = Connection.receive();
+
+            // if 즐겨찾기 등록이 성공한 경우
+            if (receivePT.getProtocolCode() == PT_SUCC_BOOKMARK_TOGGLE && bookMarkButton.getTextFill() == Color.BLACK) {
+
+                setBookMarkButton(1);   // 버튼을 즐겨찾기 등록된 상태로 변경
+
+            } else {
+
+                setBookMarkButton(0);   // 버튼을 즐겨찾기 해제된 상태로 변경
+
+            }
+
+        };
+
+        Thread th = new Thread(runnable);
+        th.start();
+
+    }
+
+    private void bookMarkButtonInit(String univId) {
+
+
+        // 서버에 즐겨찾기 등록상태를 확인 요청
+        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_CHK_BOOKMARK, univId));
+
+        // if 즐겨찾기가 등록된 학교
+        if ((Boolean) Connection.receive().getBody()){
+
+            setBookMarkButton(1);       // 버튼을 즐겨찾기 등록된 상태로 변경
+
+        }
+
+    }
+
+    // code가 0의 경우 black으로 1의 경우 yellow로
+    private void setBookMarkButton(int code){
+
+        Platform.runLater(() -> {
+
+            if(code == 1) {
+                bookMarkButton.setText("즐겨찾기 해제");
+                bookMarkButton.setTextFill(Color.YELLOW);
+
+            } else {
+                bookMarkButton.setText("즐겨찾기 등록");
+                bookMarkButton.setTextFill(Color.BLACK);
+            }
+
+        });
+
+    }
+
+
 
     //지도 API
     private void initAndLoadMapAPI() {
@@ -327,15 +399,17 @@ public class UnivDetail implements Initializable {
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018 상수로 수정 필요
                     setUnivDetailInf(univDtoList.get(0));   // 멤버변수의 ArrayList에서 가져옴
 
-                    // TODO 즐겨찾기 정보도 필요
-
                 });
+
+                //즐겨찾기 버튼 초기화
+                //bookMarkButtonInit(univDTO.getUnivId());
 
                 // 학교의 학과 리스트 요청 - 다른 스레드 생성해서 요청
                 requestDeptListOfUniv();
 
                 // 학교 평가 리스트 요청
                 requestUnivRatingList();
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -345,6 +419,8 @@ public class UnivDetail implements Initializable {
         Thread th = new Thread(runnable);
         th.start();
     }
+
+
 
     // 학교 프로토콜 전송
     void sendUnivInf() throws Exception {
