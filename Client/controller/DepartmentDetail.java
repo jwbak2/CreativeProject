@@ -217,9 +217,6 @@ public class DepartmentDetail implements Initializable {
                     // 학과 상세정보 리스트 수신
                     deptDtoList = receiveDeptDetailDTOList();
 
-                    // 학과 평가 리스트
-                    requestDeptRatingList();
-
                     // FIXME 0 - 2020, 1 - 2019, 2 - 2018
                     Platform.runLater(() -> {
                         // 학과이름 set
@@ -228,6 +225,10 @@ public class DepartmentDetail implements Initializable {
                         // set 학과 상세정보
                         setUnivDeptDetail(deptDtoList.get(0));
                     });
+
+
+                    // 학과 평가 리스트
+                    requestDeptRatingList();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -290,22 +291,17 @@ public class DepartmentDetail implements Initializable {
 
     // 학과 평가 리스트 요청
     private void requestDeptRatingList() {
-        Runnable runnable = () -> {
-            DeptInfoReqVO deptInfoReqVO = new DeptInfoReqVO(univName, deptName);
-            // 학과 평가 리스트 요청
-            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST, deptInfoReqVO));
+        DeptInfoReqVO deptInfoReqVO = new DeptInfoReqVO(univName, deptName);
+        // 학과 평가 리스트 요청
+        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST, deptInfoReqVO));
 
-            // 학과 평가 리스트 수신
-            ArrayList<DepartmentRatingDTO> departmentRatingList = receiveDeptRatingDTOList();
+        // 학과 평가 리스트 수신
+        ArrayList<DepartmentRatingDTO> departmentRatingList = receiveDeptRatingDTOList();
 
-            Platform.runLater(() -> {
-                // set 학과 평가 리스트
-                setDeptRatingList(departmentRatingList);
-            });
-        };
-
-        Thread th = new Thread(runnable);
-        th.start();
+        Platform.runLater(() -> {
+            // set 학과 평가 리스트
+            setDeptRatingList(departmentRatingList);
+        });
     }
 
     // 학과 평가 리스트 수신

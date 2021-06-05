@@ -195,9 +195,6 @@ public class UnivDetail implements Initializable {
 
 
     @FXML
-    private Tab tabUnivRating;
-
-    @FXML
     private TextField inputUnivRatingContent;
 
     @FXML
@@ -237,9 +234,6 @@ public class UnivDetail implements Initializable {
 
         // tab 처음 상태 초기
         checkTabUnivMap = false;
-
-        // 조회 버튼 클릭 전 학과 리스트 탭 disable
-        tabUnivDeptList.setDisable(true);
 
         // 대학교 입력할떄 엔터누르는 이벤트 추가
         inputUniv.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
@@ -317,8 +311,6 @@ public class UnivDetail implements Initializable {
                 // Tab Map
                 checkTabUnivMap = false;
 
-                // 조회 버튼 클릭 후 탭 활성화
-                tabUnivDeptList.setDisable(false);
 
                 // 학교 상세정보 요청
                 sendUnivInf();
@@ -326,11 +318,6 @@ public class UnivDetail implements Initializable {
                 // 응답 처리
                 univDTO = receiveUnivDTO();
                 univDtoList = receiveUnivDetailDTO();
-
-                // 학교의 학과 리스트 요청 - 다른 스레드 생성해서 요청
-                requestDeptListOfUniv();
-
-
 
                 Platform.runLater(() -> {   // UI 변경 코드는 외부 스레드에서 처리 불가능하기에 runLater 매소드 사용
                     // 학교 소개 tab
@@ -343,6 +330,13 @@ public class UnivDetail implements Initializable {
                     // TODO 즐겨찾기 정보도 필요
 
                 });
+
+                // 학교의 학과 리스트 요청 - 다른 스레드 생성해서 요청
+                requestDeptListOfUniv();
+
+                // 학교 평가 리스트 요청
+                requestUnivRatingList();
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -465,28 +459,23 @@ public class UnivDetail implements Initializable {
 
     // 학교의 학과 리스트 요청
     public void requestDeptListOfUniv() {
-        Runnable runnable = () -> {     // 다른 스레드로 처리
-            try {
-                String univName = inputUniv.getText().replace(" ", "");
+        try {
+            String univName = inputUniv.getText().replace(" ", "");
 
-                Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV, univName));
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_LIST_OF_UNIV, univName));
 
-                ArrayList<String> univDeptList = receiveUnivDeptList();
+            ArrayList<String> univDeptList = receiveUnivDeptList();
 
-                // 학교 평가 리스트 요청
-                requestUnivRatingList();
+            // 학교 평가 리스트 요청
+            requestUnivRatingList();
 
-                Platform.runLater(() -> {
-                    // 학과 리스트 tab
-                    setUnivDeptList(univDeptList);  // deptList Listview 추가
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        };
-
-        Thread th = new Thread(runnable);
-        th.start();
+            Platform.runLater(() -> {
+                // 학과 리스트 tab
+                setUnivDeptList(univDeptList);  // deptList Listview 추가
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     // 학교의 학과리스트 list 수신
@@ -525,25 +514,17 @@ public class UnivDetail implements Initializable {
 
     // 학교 평가 리스트 요청
     private void requestUnivRatingList(){
-        Runnable runnable = () -> {
-            String univName = inputUniv.getText().replace(" ", "");
-            // 학교 평가 리스트 요청
-            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_RATING_LIST, univName));
+        String univName = inputUniv.getText().replace(" ", "");
+        // 학교 평가 리스트 요청
+        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_RATING_LIST, univName));
 
-            // 학교 평가 리스트 수신
-            ArrayList<UnivRatingDTO> univRatingList = receiveUnivRatingList();
+        // 학교 평가 리스트 수신
+        ArrayList<UnivRatingDTO> univRatingList = receiveUnivRatingList();
 
-            for(UnivRatingDTO univ : univRatingList){
-                System.out.println(univ.getContent());
-            }
-            Platform.runLater(() -> {
-                // set 학과 평가 리스트
-                setUnivRatingList(univRatingList);
-            });
-        };
-
-        Thread th = new Thread(runnable);
-        th.start();
+        Platform.runLater(() -> {
+            // set 학과 평가 리스트
+            setUnivRatingList(univRatingList);
+        });
     }
 
     // 학교 평가 리스트 수신
@@ -852,7 +833,6 @@ public class UnivDetail implements Initializable {
 
         Runnable runnable = () -> {
             String univName = inputUniv.getText().replace(" ", "");
-            // FIXME 세션기능 필요
             String userEmail = Login.user.getUserEmail();
             String content = inputUnivRatingContent.getText();
             int score = (int) univRating.getRating();

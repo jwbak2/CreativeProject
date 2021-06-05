@@ -5,10 +5,12 @@ import javafx.beans.property.SimpleStringProperty;
 public class RankInfo {
     private SimpleStringProperty rank;
     private SimpleStringProperty content;
+    private SimpleStringProperty view;
 
-    public RankInfo(SimpleStringProperty rank, SimpleStringProperty content) {
+    public RankInfo(SimpleStringProperty rank, SimpleStringProperty content, SimpleStringProperty view) {
         this.rank = rank;
         this.content = content;
+        this.view = view;
     }
 
     public String getRank() {
@@ -25,5 +27,13 @@ public class RankInfo {
 
     public SimpleStringProperty contentProperty() {
         return content;
+    }
+
+    public String getView() {
+        return view.get();
+    }
+
+    public SimpleStringProperty viewProperty() {
+        return view;
     }
 }

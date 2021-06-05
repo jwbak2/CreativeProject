@@ -8,25 +8,27 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" stylesheets="@css/reset.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.UserStatistics">
    <children>
-      <Label alignment="CENTER" layoutX="132.0" layoutY="71.0" prefHeight="87.0" prefWidth="307.0" text="학교 실시간 조회 순위">
+      <Label alignment="CENTER" layoutX="90.0" layoutY="86.0" prefHeight="87.0" prefWidth="307.0" text="학교 실시간 조회 순위">
          <font>
             <Font size="24.0" />
          </font></Label>
-      <Label alignment="CENTER" layoutX="518.0" layoutY="71.0" prefHeight="87.0" prefWidth="307.0" text="지표 조회 순위">
+      <Label alignment="CENTER" layoutX="519.0" layoutY="86.0" prefHeight="87.0" prefWidth="307.0" text="지표 조회 순위">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TableView fx:id="tableViewOfUniv" layoutX="124.0" layoutY="193.0" prefHeight="459.0" prefWidth="323.0">
+      <TableView fx:id="tableViewOfUniv" layoutX="40.0" layoutY="193.0" prefHeight="459.0" prefWidth="407.0">
         <columns>
-          <TableColumn fx:id="colUnivRanking" prefWidth="128.0" text="순위" />
-          <TableColumn fx:id="colUnivName" prefWidth="194.0" text="학교" />
+          <TableColumn fx:id="colUnivRanking" prefWidth="101.0" text="순위" />
+          <TableColumn fx:id="colUnivName" prefWidth="225.0" text="학교" />
+            <TableColumn fx:id="colUnivView" text="조회수" />
         </columns>
       </TableView>
-      <TableView fx:id="tableViewOfIndicator" layoutX="510.0" layoutY="193.0" prefHeight="459.0" prefWidth="323.0">
+      <TableView fx:id="tableViewOfIndicator" layoutX="482.0" layoutY="193.0" prefHeight="459.0" prefWidth="380.0">
          <columns>
-            <TableColumn fx:id="colIndicatorRanking" prefWidth="128.0" text="순위" />
-            <TableColumn fx:id="colIndicatorName" prefWidth="194.0" text="지표" />
+            <TableColumn fx:id="colIndicatorRanking" prefWidth="91.0" text="순위" />
+            <TableColumn fx:id="colIndicatorName" prefWidth="207.0" text="지표" />
+            <TableColumn fx:id="colIndicatorView" prefWidth="81.0" text="조회수" />
          </columns>
       </TableView>
    </children>
