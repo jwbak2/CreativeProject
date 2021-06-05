@@ -498,17 +498,25 @@ public class UnivDetail implements Initializable {
     // 학교의 학과리스트 list 수신
     private ArrayList<String> receiveUnivDeptList() {
         Protocol receivePT = Connection.receive();
-        Object receivedBody = receivePT.getBody();
 
-        // 학과 리스트
-        ArrayList<String> tmp = new ArrayList<>();   //
+        ArrayList<String> tmp  = null;
 
-        // 타입 처리
-        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
-        for (Object obj : ar) {
-            if (obj instanceof String) {
-                tmp.add((String) obj);
+        try {
+            Object receivedBody = receivePT.getBody();
+
+            // 학과 리스트
+            tmp = new ArrayList<>();   //
+
+            // 타입 처리
+            ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+            for (Object obj : ar) {
+                if (obj instanceof String) {
+                    tmp.add((String) obj);
+                }
             }
+        } catch(NullPointerException NP){
+            System.out.println("학과 리스트 수신 중 예외 발생");
+
         }
 
         return tmp;
@@ -526,7 +534,7 @@ public class UnivDetail implements Initializable {
         Runnable runnable = () -> {
             String univName = inputUniv.getText().replace(" ", "");
             // 학교 평가 리스트 요청
-            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_DEPT_RATING_LIST, univName));
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_UNIV_RATING_LIST, univName));
 
             // 학교 평가 리스트 수신
             ArrayList<UnivRatingDTO> univRatingList = receiveUnivRatingList();
@@ -544,18 +552,23 @@ public class UnivDetail implements Initializable {
     // 학교 평가 리스트 수신
     private ArrayList<UnivRatingDTO> receiveUnivRatingList(){
         Protocol receivePT = Connection.receive();
-        Object receivedBody = receivePT.getBody();
+        ArrayList<UnivRatingDTO> tmp = null;
+        try {
+            Object receivedBody = receivePT.getBody();
 
-        ArrayList<UnivRatingDTO> tmp = new ArrayList<>();   //
+            tmp = new ArrayList<>();   //
 
-        // 타입 처리
-        ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
-        for (Object obj : ar) {
-            if (obj instanceof UnivRatingDTO) {
-                tmp.add((UnivRatingDTO) obj);
+            // 타입 처리
+            ArrayList<?> ar = (ArrayList<?>) receivedBody;  // 읽어온 어레이리스트 처리 과정
+            for (Object obj : ar) {
+                if (obj instanceof UnivRatingDTO) {
+                    tmp.add((UnivRatingDTO) obj);
+                }
             }
-        }
+        } catch(NullPointerException NPE){
+            System.out.println("학과 평가 리스트 수신 중 예외 발생;");
 
+        }
         return tmp;
     }
 
