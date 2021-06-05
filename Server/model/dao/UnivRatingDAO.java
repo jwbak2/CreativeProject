@@ -51,7 +51,7 @@ public class UnivRatingDAO {
 
 		ArrayList<UnivRatingDTO> list = null;     // 학과 목록 선언 '학과 이름' 의 1차원 배열
 
-		String SQL = "SELECT * FROM crtvp.\"univ_rating\" WHERE \"univ_id\" = ?";
+		String SQL = "SELECT * FROM crtvp.univ_rating WHERE univ_id = ?";
 
 		Connection conn = DBCP.getConnection();
 		ResultSet rs = null;
