@@ -1,9 +1,7 @@
 package Client.controller;
 
 import Client.transmission.Connection;
-import Client.vo.RankInfo;
-import Client.vo.RatingInfo;
-import Server.model.dto.DepartmentDetailDTO;
+import Client.view.tablemodel.RankInfo;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;

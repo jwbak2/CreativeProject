@@ -2,7 +2,7 @@ package Client.controller;
 
 import Client.transmission.Connection;
 import Client.vo.DeptInfoReqVO;
-import Client.vo.RatingInfo;
+import Client.view.tablemodel.RatingInfo;
 import Client.vo.RatingVO;
 import Server.model.dto.DepartmentDetailDTO;
 import Server.model.dto.DepartmentRatingDTO;
@@ -27,13 +27,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
-import javax.print.DocFlavor;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DepartmentDetail implements Initializable {
 

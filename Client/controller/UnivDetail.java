@@ -1,8 +1,7 @@
 package Client.controller;
 
-import Client.vo.RatingInfo;
+import Client.view.tablemodel.RatingInfo;
 import Client.vo.RatingVO;
-import Server.model.dto.DepartmentRatingDTO;
 import Server.model.dto.UnivDetailDTO;
 import Server.model.dto.UnivDTO;
 import Client.transmission.Connection;
