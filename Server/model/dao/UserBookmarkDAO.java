@@ -46,4 +46,118 @@ public class UserBookmarkDAO {
 		return list;
 
 	}
+
+	public boolean isOnBookmark(String univId, String email) {
+		// 북마크 ON/OFF 상태 확인
+
+		boolean isOn = false;	// 북마크 ON/OFF 상태 변수
+
+		String SQL = "SELECT univ_id FROM crtvp.user_bookmark WHERE user_email = ?";
+
+		Connection conn = DBCP.getConnection();
+		ResultSet rs = null;
+
+		try(PreparedStatement pstmt = conn.prepareStatement(SQL, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+
+			pstmt.setString(1, email);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				String id = rs.getString("univ_id");
+
+				if (id.equals(univId)) {
+					isOn = true;
+					break;
+				}
+			}
+
+		} catch (SQLException sqle) {
+			System.out.println("Exception : SELECT");
+			sqle.printStackTrace();
+
+		} finally {
+			if (conn != null)
+				DBCP.returnConnection(conn);
+
+		}
+
+		return isOn;
+
+	}
+
+	public boolean toggleBookmark(String univId, String email) {
+
+		boolean isSuccess = false;
+		boolean isExist = isOnBookmark(univId, email);
+		System.out.println(isExist);
+		if (isExist) {
+			isSuccess = deleteBookmark(univId, email);
+
+		} else {
+			isSuccess = insertBookmark(univId, email);
+
+		}
+
+		return isSuccess;
+	}
+
+	public boolean deleteBookmark(String univId, String email) {
+		// 북마크 삭제
+
+		int changed = 0;
+
+		String SQL = "DELETE FROM crtvp.user_bookmark WHERE user_email = ? AND univ_id = ?";
+
+		Connection conn = DBCP.getConnection();
+
+		try(PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+			pstmt.setString(1, email);
+			pstmt.setString(2, univId);
+
+			changed = pstmt.executeUpdate();
+
+		} catch (SQLException sqle) {
+			System.out.println("Exception : DELETE BOOKMARK");
+			sqle.printStackTrace();
+
+		} finally {
+			if (conn != null)
+				DBCP.returnConnection(conn);
+
+		}
+
+		return changed > 0;
+	}
+
+	public boolean insertBookmark(String univId, String email) {
+		// 북마크 추가
+
+		int changed = 0;
+
+		String SQL = "INSERT INTO crtvp.user_bookmark(user_email, univ_id) VALUES (?, ?)";
+
+		Connection conn = DBCP.getConnection();
+
+		try(PreparedStatement pstmt = conn.prepareStatement(SQL)) {
+
+			pstmt.setString(1, email);
+			pstmt.setString(2, univId);
+
+			changed = pstmt.executeUpdate();
+
+		} catch (SQLException sqle) {
+			System.out.println("Exception : INSERT BOOKMARK");
+			sqle.printStackTrace();
+
+		} finally {
+			if (conn != null)
+				DBCP.returnConnection(conn);
+
+		}
+
+		return changed > 0;
+	}
+
 }

@@ -48,7 +48,8 @@ public class Protocol implements Serializable {
 	public static final int PT_RES_DEPT_DETAIL = 0x0A;				// 학과 상세정보 응답
 	public static final int PT_RES_DEPT_CP = 0x0B;                  // 학과 상세정보 비교 응답(CP = compare)
 	public static final int PT_RES_DEPT_LIST_OF_UNIV = 0x0F;		// 학교의 학과 리스트 응답
-	public static final int PT_RES_STATUS_OF_BOOKMARK = 0x10; 		// 북마크 상태 응답
+	public static final int PT_RES_CHK_BOOKMARK = 0x10; 		// 북마크 상태 응답
+	public static final int PT_RES_TOGGLE_BOOKMARK = 0x10; 		// 북마크 상태 응답
 
 	
 	//TYPE 0x03 (SUCCESS) CODE

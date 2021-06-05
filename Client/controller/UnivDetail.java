@@ -281,7 +281,7 @@ public class UnivDetail implements Initializable {
 
         Runnable runnable = () -> {
 
-            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_TOGGLE_BOOKMARK));
+            Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_TOGGLE_BOOKMARK, univDTO.getUnivName()));
 
             Protocol receivePT = Connection.receive();
 

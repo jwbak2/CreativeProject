@@ -4,7 +4,6 @@ import Server.model.dao.UnivDAO;
 import Server.model.dao.UnivDetailDAO;
 import Server.model.dto.UnivDTO;
 import Server.model.dto.UnivDetailDTO;
-import Server.transmission.Controller;
 
 import static Server.model.Cache.START_YEAR;
 import static Server.model.Cache.CUR_YEAR;
@@ -77,6 +76,21 @@ public class Univ {
 		univDAO = univDAO == null ? new UnivDAO() : univDAO;
 
 		return univDAO.getViewList();
+	}
+
+	public double getScoreByYear(String univId, ArrayList<String> idct) {
+		//
+		final double RATIO_YEAR = 0.85;
+		univDetailDAO = univDetailDAO == null ? new UnivDetailDAO() : univDetailDAO;
+
+		double total = univDetailDAO.calculateScoreByYear(START_YEAR, univId, idct);
+		for (int i = START_YEAR + 1; i <= CUR_YEAR; i++) {
+			total = RATIO_YEAR * univDetailDAO.calculateScoreByYear(i, univId, idct)
+					+ (1 - RATIO_YEAR) * total;
+
+		}
+
+		return total;
 	}
 
 }

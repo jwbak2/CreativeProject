@@ -2,7 +2,11 @@ package Server.subcontroller;
 
 import Client.vo.DeptInfoReqVO;
 import Server.model.Cache;
+import Server.model.MinMax;
 import Server.model.Pair;
+import Server.model.dao.DepartmentDAO;
+import Server.model.dao.DepartmentDetailDAO;
+import Server.model.dao.UnivDAO;
 import Server.model.dao.UnivDetailDAO;
 import Server.model.dto.DepartmentDetailDTO;
 import Server.model.dto.UnivDetailDTO;
@@ -21,30 +25,48 @@ public class CustomRank {
 
 	// deptList = 학과 리스트, indicators = 사용자가 선택한 지표 (1, 2, 3, ... 순위)
 	public void getRanking(ArrayList<DeptInfoReqVO> deptList, ArrayList<String> indicators) throws Exception {
-		// 학과 정보, 대학 정보 얻어오기
-		// 지표 분리
-		// 학과 대학의 속성 데이터 불러오기
 
-		// 각 대학별 점수 측정
+		ArrayList<String>[] idctList = new ArrayList[NUM_OF_INDICATORS];
+//		ArrayList<String> univIdct = new ArrayList<>();
+//		ArrayList<String> deptIdct = new ArrayList<>();
+
+		for (int i = 0; i < NUM_OF_INDICATORS; i++) {
+			System.out.println("지표명: " + indicators.get(i));
+			idctList[i] = classifyIndicators(indicators.get(i));
+//
+//			String type = indicatorList[i].remove(0);
+//
+//			if (type.equals("UNIV")) {
+//				univIdct.addAll(indicatorList[i]);
+//
+//			} else {
+//				deptIdct.addAll(indicatorList[i]);
+//
+//			}
+		}
+
+		Univ univSC = new Univ();
+		Department deptSC = new Department();
+
 		for (int i = 0; i < deptList.size(); i++) {
-			// 대학 상세정보 가져오기
-			Univ univSC = new Univ();
-			String univId =	univSC.getUnivId(deptList.get(i).getUnivName());
-			ArrayList<UnivDetailDTO> univ = univSC.getAllUnivDetail(univId);
-
-			// 학과 상세정보 가져오기
-			Department deptSC = new Department();
+			String univId = univSC.getUnivId(deptList.get(i).getUnivName());
 			String deptId = deptSC.getDepartmentID(deptList.get(i).getUnivName(), deptList.get(i).getDeptName());
-			ArrayList<DepartmentDetailDTO> dept = deptSC.getAllDepartmentDetail(deptId);
 
-			// 각 지표 별로 계산 해야함 (순위별 퍼센티지를 위해서)
-			int[] scoresByIdct = calculateByIndicator(univ, dept, indicators);
+			double deptScore = 0;
+			for (int j = 0; j < NUM_OF_INDICATORS; j++) {
+				String type = idctList[i].get(0);
 
-			// 지표 분리
+				if (type.equals("UNIV")) {
+					univSC.getScoreByYear(univId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
 
-			// 점수 계산
+				} else {
+					deptSC.getScoreByYear(deptId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
+
+				}
+			}
 
 		}
+
 
 	}
 
@@ -157,16 +179,16 @@ public class CustomRank {
 	public int[] calculateScoreUniv(ArrayList<UnivDetailDTO> univ, ArrayList<String> smallIndicators) {
 		System.out.println("지표 연도별 점수 계산");
 		int[] scores = new int[CUR_YEAR - START_YEAR + 1];
-		HashMap< String, Pair<Long, Long> > minMaxList = Cache.getMinMaxOfIndicators();
+		HashMap< String, MinMax > minMaxList = Cache.getMinMaxOfIndicators();
 
 		// 각 연도마다 지표에 해당하는 속성(들)에 대한 점수 계산
 		for (int i = START_YEAR; i <= CUR_YEAR; i++) {
 			System.out.println("지표에 속하는 속성의 연도별 점수 계산");
 
 			for (int j = 0; j < smallIndicators.size(); j++) {
-				Pair<Long, Long> minMax = minMaxList.get(i + " " + smallIndicators.get(j));
-				Long min = minMax.left;
-				Long max = minMax.left;
+				MinMax minMax = minMaxList.get(i + " " + smallIndicators.get(j));
+				Long min = minMax.getMin();
+				Long max = minMax.getMax();
 
 				System.out.println("in 각 지표의 연도별 점수 " + univ.get(i - START_YEAR).getYear());
 				double score = ((double) getValue(univ.get(i - START_YEAR), smallIndicators.get(j))) / (max - min);
@@ -181,7 +203,7 @@ public class CustomRank {
 	//
 	public int[] calculateScoreDept(ArrayList<DepartmentDetailDTO> dept, ArrayList<String> list) {
 		int[] scores = new int[CUR_YEAR - START_YEAR + 1];
-		HashMap< String, Pair<Long, Long> > minMaxList = Cache.getMinMaxOfIndicators();
+		HashMap< String, MinMax> minMaxList = Cache.getMinMaxOfIndicators();
 
 		for (int i = START_YEAR; i < CUR_YEAR; i++) {
 //			minMaxList.get(i + " " + list.get());
