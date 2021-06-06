@@ -303,11 +303,11 @@ public class UnivDetail implements Initializable {
 
     }
 
-    private void bookMarkButtonInit(String univId) {
+    private void bookMarkButtonInit(String univName) {
 
 
         // 서버에 즐겨찾기 등록상태를 확인 요청
-        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_CHK_BOOKMARK, univId));
+        Connection.send(new Protocol(Protocol.PT_REQ, Protocol.PT_REQ_CHK_BOOKMARK, univName));
 
         // if 즐겨찾기가 등록된 학교
         if ((Boolean) Connection.receive().getBody()){
@@ -402,7 +402,7 @@ public class UnivDetail implements Initializable {
                 });
 
                 //즐겨찾기 버튼 초기화
-                bookMarkButtonInit(univDTO.getUnivId());
+                bookMarkButtonInit(univDTO.getUnivName());
 
                 // 학교의 학과 리스트 요청 - 다른 스레드 생성해서 요청
                 requestDeptListOfUniv();
