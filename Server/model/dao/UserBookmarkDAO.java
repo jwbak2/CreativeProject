@@ -1,5 +1,6 @@
 package Server.model.dao;
 
+import Server.model.Cache;
 import Server.model.DBCP;
 import Server.model.dto.UserBookmarkDTO;
 
@@ -8,6 +9,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import static Server.model.Cache.getKey;
 
 public class UserBookmarkDAO {
 
@@ -29,8 +33,10 @@ public class UserBookmarkDAO {
 
 			list = new ArrayList<>();
 
+			HashMap<String, String> univMap = Cache.getUnivList();
+
 			while (rs.next()) {
-				list.add(rs.getString("univ_id"));
+				list.add(getKey(univMap, rs.getString("univ_id")));
 			}
 
 		} catch (SQLException sqle) {
@@ -163,5 +169,6 @@ public class UserBookmarkDAO {
 
 		return changed > 0;
 	}
+
 
 }
