@@ -6,11 +6,15 @@ import Server.model.dto.DepartmentRatingDTO;
 import Server.model.dto.UnivRatingDTO;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -50,9 +54,9 @@ public class UserDetail implements Initializable {
     Label deptRatingContentLabel;
 
     @FXML
-    TableView bookMarkTable;
+    TableView<String> bookMarkTable;
     @FXML
-    TableColumn bookMarkCol;
+    TableColumn<String, String> bookMarkCol;
 
 
 
@@ -121,11 +125,12 @@ public class UserDetail implements Initializable {
 
         //북마크 세팅팅
 
+        bookMarkCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
 
-        for(String str : bookMarkList){
-            bookMarkTable.getItems().add(str);
+        ObservableList<String> data = FXCollections.observableArrayList(bookMarkList);
 
-        }
+        bookMarkTable.setItems(data);
+
 
 
     }

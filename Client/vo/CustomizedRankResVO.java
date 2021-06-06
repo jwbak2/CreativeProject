@@ -2,7 +2,7 @@ package Client.vo;
 
 import java.io.Serializable;
 
-public class CustomizedRankResVO implements Serializable {
+public class CustomizedRankResVO implements Comparable<CustomizedRankResVO>, Serializable {
 
 	private String univName;
 	private String deptName;
@@ -47,4 +47,11 @@ public class CustomizedRankResVO implements Serializable {
 		return scoreOfTotal;
 	}
 
+	@Override
+	public int compareTo(CustomizedRankResVO vo) {
+		if (scoreOfTotal == vo.getScoreOfTotal())
+			return 0;
+
+		return scoreOfTotal > vo.getScoreOfTotal() ? 1 : -1 ;
+	}
 }

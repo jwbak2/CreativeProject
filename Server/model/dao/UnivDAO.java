@@ -42,8 +42,6 @@ public class UnivDAO {
             dto = new UnivDTO(univId, univName, univType, univEstablishmentCls, univArea, univAddress
                     , univRepresentativeNumber, univHomepageUrl, univLogoImageFile, univIntroduction, view);
 
-            // 대학 조회 시, 대학 조회수 1 증가
-            increaseUserView(univID);
 
         } catch (SQLException sqle) {
             System.out.println("Exception : SELECT");

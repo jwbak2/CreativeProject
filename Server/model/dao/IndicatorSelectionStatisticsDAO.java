@@ -3,13 +3,35 @@ package Server.model.dao;
 import Client.vo.RankVO;
 import Server.model.DBCP;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class IndicatorSelectionStatisticsDAO {
+
+	public void increaseIndicatorView(String idctName) {
+
+		Connection conn = DBCP.getConnection();
+
+		String preQuery = "UPDATE crtvp.Indicator_selection_statistics SET selection_number = selection_number + 1 WHERE indicator_name = ?";
+
+
+		try(PreparedStatement pstmt = conn.prepareStatement(preQuery)) {
+
+			pstmt.setString(1, idctName);
+
+			pstmt.executeQuery();
+
+		} catch (SQLException sqle) {
+			System.out.println("Exception : SELECT");
+			sqle.printStackTrace();
+
+		} finally {
+			if (conn != null)
+				DBCP.returnConnection(conn);
+
+		}
+
+	}
 
 	public ArrayList<RankVO> getIndicatorOfView() {
 		final int LIST_SIZE = 20;

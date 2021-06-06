@@ -2,26 +2,13 @@ package Server.subcontroller;
 
 import Client.vo.CustomizedRankResVO;
 import Client.vo.DeptInfoReqVO;
-import Server.model.Cache;
-import Server.model.MinMax;
-import Server.model.Pair;
-import Server.model.dao.DepartmentDAO;
-import Server.model.dao.DepartmentDetailDAO;
-import Server.model.dao.UnivDAO;
-import Server.model.dao.UnivDetailDAO;
-import Server.model.dto.DepartmentDetailDTO;
-import Server.model.dto.UnivDetailDTO;
+import Server.model.dao.IndicatorSelectionStatisticsDAO;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import static Server.model.Cache.CUR_YEAR;
-import static Server.model.Cache.START_YEAR;
+import java.util.Collections;
 
 public class CustomRank {
 
-	final int UNIV = 0;
-	final int DEPT = 1;
 	final int NUM_OF_INDICATORS = 3;
 	final double[] RATIO_OF_INDICATORS = {42.3, 33.3, 24.3};	// 1순위 ~ NUM_OF_INDICATORS 순위
 
@@ -29,22 +16,15 @@ public class CustomRank {
 	public ArrayList<CustomizedRankResVO> getRanking(ArrayList<DeptInfoReqVO> deptList, ArrayList<String> indicators) throws Exception {
 
 		ArrayList<String>[] idctList = new ArrayList[NUM_OF_INDICATORS];
-//		ArrayList<String> univIdct = new ArrayList<>();
-//		ArrayList<String> deptIdct = new ArrayList<>();
 
 		for (int i = 0; i < NUM_OF_INDICATORS; i++) {
 			System.out.println("지표명: " + indicators.get(i));
+
+			// 사용자가 선택한 지표의 조회수 + 1
+			new IndicatorSelectionStatisticsDAO().increaseIndicatorView(indicators.get(i));
+
+			// 지표를 속성 리스트로 변환
 			idctList[i] = classifyIndicators(indicators.get(i));
-//
-//			String type = indicatorList[i].remove(0);
-//
-//			if (type.equals("UNIV")) {
-//				univIdct.addAll(indicatorList[i]);
-//
-//			} else {
-//				deptIdct.addAll(indicatorList[i]);
-//
-//			}
 		}
 
 		Univ univSC = new Univ();
@@ -60,8 +40,11 @@ public class CustomRank {
 			String univId = univSC.getUnivId(univName);
 			String deptId = deptSC.getDepartmentID(univName, deptName);
 
+			// 조회한 학과의 대학 조회수 1 증가
+			univSC.increaseView(univId);
+
 			System.out.println("--각 학교 점수 구하기 " + univName + " " + deptName);
-			// 커밋을 새로하기 위해 붙인 주석
+
 			double[] deptScore = new double[NUM_OF_INDICATORS];
 			for (int j = 0; j < NUM_OF_INDICATORS; j++) {
 				String type = idctList[j].get(0);
@@ -83,7 +66,7 @@ public class CustomRank {
 			result.add(new CustomizedRankResVO(univName, deptName, deptScore[0], deptScore[1], deptScore[2], scores[i]));
 		}
 
-		System.out.println(result.size());
+		Collections.sort(result, Collections.reverseOrder());
 		return result;
 
 	}
@@ -191,232 +174,6 @@ public class CustomRank {
 		}
 
 		return list;
-	}
-
-	//  각 지표의 연도별 점수
-	public int[] calculateScoreUniv(ArrayList<UnivDetailDTO> univ, ArrayList<String> smallIndicators) {
-		System.out.println("지표 연도별 점수 계산");
-		int[] scores = new int[CUR_YEAR - START_YEAR + 1];
-		HashMap< String, MinMax > minMaxList = Cache.getMinMaxOfIndicators();
-
-		// 각 연도마다 지표에 해당하는 속성(들)에 대한 점수 계산
-		for (int i = START_YEAR; i <= CUR_YEAR; i++) {
-			System.out.println("지표에 속하는 속성의 연도별 점수 계산");
-
-			for (int j = 0; j < smallIndicators.size(); j++) {
-				MinMax minMax = minMaxList.get(i + " " + smallIndicators.get(j));
-				long min = minMax.getMin();
-				long max = minMax.getMax();
-
-				System.out.println("in 각 지표의 연도별 점수 " + univ.get(i - START_YEAR).getYear());
-				double score = ((double) getValue(univ.get(i - START_YEAR), smallIndicators.get(j))) / (max - min);
-			}
-		}
-
-
-		return scores;
-
-	}
-
-	//
-	public int[] calculateScoreDept(ArrayList<DepartmentDetailDTO> dept, ArrayList<String> list) {
-		int[] scores = new int[CUR_YEAR - START_YEAR + 1];
-		HashMap< String, MinMax> minMaxList = Cache.getMinMaxOfIndicators();
-
-		for (int i = START_YEAR; i < CUR_YEAR; i++) {
-//			minMaxList.get(i + " " + list.get());
-		}
-
-		return null;
-
-	}
-
-	// 학과 평점을 지표별로 계산
-	public int[] calculateByIndicator(ArrayList<UnivDetailDTO> univ, ArrayList<DepartmentDetailDTO> dept, ArrayList<String> indicators) {
-		int[] result = null;
-
-
-		for (int j = 0; j < NUM_OF_INDICATORS; j++) {
-			ArrayList<String> smallIndicators = classifyIndicators(indicators.get(j));
-
-			String whichOne = smallIndicators.get(0);
-			// 지표의 연도별 점수 START_YEAR ~ CUR_YEAR
-
-			int[] scoresByYear;
-			if (whichOne.equals("UNIV")) {
-				scoresByYear = calculateScoreUniv(univ, smallIndicators);
-
-			} else if (whichOne.equals("DEPT")) {
-				scoresByYear = calculateScoreDept(dept, smallIndicators);
-
-			}
-
-
-		}
-
-		return result;
-	}
-
-	//
-//	public int calculateByYear(int year Long value) {
-//
-//	}
-
-	public Long getValue(UnivDetailDTO dto, String indicator) {
-		switch (indicator) {
-			case "admission_competition_rate":
-				dto.getAdmissionCompetitionRate();
-				break;
-
-			case "education_cost_per_person":
-				dto.getEducationCostPerPerson();
-				break;
-
-			case "number_founders":
-				dto.getNumberFounders();
-				break;
-
-			case "start_company_sales":
-
-				break;
-
-			case "start_company_capital":
-
-				break;
-
-			case "school_start_company_fund":
-
-				break;
-
-			case "government_start_company_fund":
-
-				break;
-
-			case "professor_for_start_company":
-
-				break;
-
-			case "staff_for_start_company":
-				break;
-
-			case "dormitory_accommodation_rate":
-				break;
-
-			case "book_total":
-				break;
-
-			case "univ_area":
-				break;
-
-			case "num_of_patent_registration":
-				break;
-		}
-		return null;
-	}
-	public Long getValue(DepartmentDetailDTO dto, String indicator) {
-		switch (indicator) {
-			case "admission_fee":
-
-				break;
-
-			case "tuition":
-
-				break;
-
-			case "entering_dom_cmnty_coll":
-
-				break;
-
-			case "entering_overseas_cmnty_coll":
-
-				break;
-
-			case "entering_dom_univ":
-
-				break;
-
-			case "entering_overseas_univ":
-
-				break;
-
-			case "entering_dom_gr_school":
-
-				break;
-
-			case "entering_overseas_gr_school":
-
-				break;
-
-			case "dom_scholar_number":
-
-				break;
-
-			case "overseas_scholar_number":
-
-				break;
-
-			case "entering_rate":
-
-				break;
-
-			case "male_employment_target":
-
-				break;
-
-			case "female_employment_target":
-
-				break;
-
-			case "male_dom_employee":
-
-				break;
-
-			case "female_dom_employee":
-
-				break;
-
-			case "male_overseas_employee":
-
-				break;
-
-			case "female_overseas_employee":
-
-				break;
-
-			case "employment_rate":
-
-				break;
-
-			case "out_school_scholarship":
-
-				break;
-
-			case "in_school_scholarship":
-
-				break;
-
-			case "scholarship_per_person":
-
-				break;
-
-			case "num_of_fulltime_professor":
-
-				break;
-
-			case "thesis_result_per_professor":
-
-				break;
-
-			case "rearch_cost_per_professor":
-
-				break;
-
-			default:
-				System.out.println("알 수 없는 지표");
-				break;
-		}
-
-		return null;
 	}
 
 	public double getTotalScore(double[] scores) {

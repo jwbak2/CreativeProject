@@ -1,12 +1,5 @@
 package Server.transmission;
 
-import Server.ServerMain;
-import Server.model.dao.UnivDAO;
-import Server.model.dao.UnivDetailDAO;
-import Server.model.dto.DepartmentDTO;
-import Server.model.dto.DepartmentRatingDTO;
-import Server.model.dto.UnivRatingDTO;
-
 import java.io.*;
 
 public class Sender {
@@ -19,6 +12,7 @@ public class Sender {
 	public Sender(ObjectOutputStream oos) {
 		this.oos = oos;
 	}
+
 
 	public static void send(int type, int code) {
 		try {
