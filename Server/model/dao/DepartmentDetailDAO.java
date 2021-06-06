@@ -1,12 +1,17 @@
 package Server.model.dao;
 
+import Server.model.Cache;
 import Server.model.DBCP;
+import Server.model.MinMax;
+import Server.model.MinMaxOfIndicator;
 import Server.model.dto.DepartmentDetailDTO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DepartmentDetailDAO {
 
@@ -142,6 +147,64 @@ public class DepartmentDetailDAO {
 
 		return minMaxData;
 
+	}
+
+	public double calculateScoreByYear(int year, String deptId, ArrayList<String> idct) {
+
+		Connection conn = DBCP.getConnection();
+
+		String preQuery = "SELECT * FROM crtvp.department_detail WHERE department_id = ? AND year = ?";
+
+		ResultSet rs = null;
+		double score = 0.0;
+
+		try(PreparedStatement pstmt = conn.prepareStatement(preQuery)) {
+
+			pstmt.setString(1, deptId);
+			pstmt.setInt(2, year);
+
+			rs = pstmt.executeQuery();
+			rs.next();
+
+			HashMap<String, MinMax> minMaxList = Cache.getMinMaxOfIndicators();
+
+			int size =  idct.size();
+			for (int i = 0; i < size; i++) {
+				String indicator = idct.get(i);
+				System.out.println("#지표 : " + indicator);
+
+
+				MinMax minMax = minMaxList.get(indicator);
+				long min = minMax.getMin();
+				long max = minMax.getMax();
+
+				System.out.println("#min : " + min);
+				System.out.println("#max : " + max);
+
+				long value = rs.getLong(indicator);
+
+
+				// 0 <= score <= 1
+				score += ((double) value - min) / (max - min);
+
+			}
+
+			score = score / size;
+
+
+		} catch (SQLException sqle) {
+			System.out.println("Exception : SELECT");
+			sqle.printStackTrace();
+
+		} finally {
+			if (conn != null)
+				DBCP.returnConnection(conn);
+			if (rs != null)
+				try { rs.close(); } catch(SQLException sqle){System.out.println("Exception : SELECT"); sqle.printStackTrace();}
+
+		}
+
+		return score;
 	}
 
 }
