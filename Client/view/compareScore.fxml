@@ -100,7 +100,7 @@
               </columns>
             </TableView>
             <Button fx:id="btnAddDept" layoutX="342.0" mnemonicParsing="false" onMouseClicked="#clickAddDept" prefHeight="68.0" prefWidth="83.0" text="추가" />
-            <TextField fx:id="inputDeptName" layoutX="14.0" layoutY="59.0" prefHeight="37.0" prefWidth="320.0" text="학과 입력" />
+            <TextField fx:id="inputDeptName" layoutX="14.0" layoutY="59.0" prefHeight="37.0" prefWidth="320.0" promptText="학과 입력" />
             <Button fx:id="btnResetDeptTable" layoutX="342.0" layoutY="77.0" mnemonicParsing="false" onMouseClicked="#clickResetDeptTable" prefHeight="68.0" prefWidth="83.0" text="초기화" />
          </children>
       </AnchorPane>

@@ -144,6 +144,9 @@ public class CompareScore implements Initializable {
 
         // selectedDeptList 초기화
         selectedDeptList = FXCollections.observableArrayList();
+
+        // resultScoreList 초기화
+        resultScoreList = FXCollections.observableArrayList();
     }
 
     // 학과 추가
