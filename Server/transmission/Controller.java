@@ -146,7 +146,7 @@ public class Controller {
 		// NOTE: + a (또 어떤 통계?)
 
 		// 사용자 통계 정보가 담기는 ArrayList
-		ArrayList< ArrayList<String> > statsList = new ArrayList<>();
+		ArrayList< ArrayList<RankVO> > statsList = new ArrayList<>();
 
 		// 사용자 통계 정보 가져오기
 		statsList.add(new Univ().getViewListOfUniv());

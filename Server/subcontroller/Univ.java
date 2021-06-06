@@ -1,5 +1,6 @@
 package Server.subcontroller;
 
+import Client.vo.RankVO;
 import Server.model.dao.UnivDAO;
 import Server.model.dao.UnivDetailDAO;
 import Server.model.dto.UnivDTO;
@@ -71,7 +72,7 @@ public class Univ {
 		return univId;
 	}
 
-	public ArrayList<String> getViewListOfUniv() {
+	public ArrayList<RankVO> getViewListOfUniv() {
 		// 대학 정보 반환
 		univDAO = univDAO == null ? new UnivDAO() : univDAO;
 
