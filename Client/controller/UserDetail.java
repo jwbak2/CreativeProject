@@ -123,6 +123,7 @@ public class UserDetail implements Initializable {
 
 
         for(String str : bookMarkList){
+            System.out.println("bookMarkTable.getItems : " + str);
             bookMarkTable.getItems().add(str);
 
         }

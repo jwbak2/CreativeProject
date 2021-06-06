@@ -16,11 +16,12 @@ public class Department {
 	DepartmentDetailDAO deptDetailDAO;
 
 	public Department() {
+		deptDAO = new DepartmentDAO();
+		deptDetailDAO = new DepartmentDetailDAO();
 	}
 
 	public DepartmentDetailDTO getDepartmentDetail(String deptId, int year) throws Exception {
 		// 학과 상세정보 조회 - 학과 ID, 연도
-		deptDetailDAO = deptDetailDAO == null ? new DepartmentDetailDAO() : deptDetailDAO;
 
 		return deptDetailDAO.select(deptId, year);
 	}
@@ -46,7 +47,6 @@ public class Department {
 
 		if (deptMap == null) {
 			// 해당 대학의 학과 리스트가 없음 -> DAO 를 통해 찾아옴
-			deptDAO = deptDAO == null ? new DepartmentDAO() : deptDAO;
 
 			deptMap = deptDAO.getDepartmentList(univId);
 
@@ -62,7 +62,6 @@ public class Department {
 
 	public String getDepartmentID(String univName, String deptName) {
 		// 대학 이름과 학과 이름으로 학과 ID 조회
-		deptDAO = deptDAO == null ? new DepartmentDAO() : deptDAO;
 
 		String univId = new Univ().getUnivId(univName);
 
@@ -77,7 +76,6 @@ public class Department {
 
 	public double getScoreByYear(String univId, ArrayList<String> idct) {
 		final double RATIO_YEAR = 0.85;
-		deptDetailDAO = deptDetailDAO == null ? new DepartmentDetailDAO() : deptDetailDAO;
 
 		double total = deptDetailDAO.calculateScoreByYear(START_YEAR, univId, idct);
 

@@ -19,7 +19,9 @@ public class Univ {
 
 
 	public Univ() {
-		// pass
+		univDAO = new UnivDAO();
+		univDetailDAO = new UnivDetailDAO();
+
 	}
 
 
@@ -33,14 +35,12 @@ public class Univ {
 
 	public UnivDTO getUniv(String univCode) throws Exception {
 		// 대학 정보 반환
-		univDAO = univDAO == null ? new UnivDAO() : univDAO;
 
 		return univDAO.select(univCode);
 	}
 
 	public UnivDetailDTO getUnivDetail(String univCode, int year) throws Exception {
 		// 대학 상세정보 반환
-		univDetailDAO = univDetailDAO == null ? new UnivDetailDAO() : univDetailDAO;
 
 		return univDetailDAO.select(univCode, year);
 	}
@@ -74,7 +74,6 @@ public class Univ {
 
 	public ArrayList<RankVO> getViewListOfUniv() {
 		// 대학 정보 반환
-		univDAO = univDAO == null ? new UnivDAO() : univDAO;
 
 		return univDAO.getViewList();
 	}
@@ -82,7 +81,6 @@ public class Univ {
 	public double getScoreByYear(String univId, ArrayList<String> idct) {
 		// 해당 지표의 연도별 점수 구하기
 		final double RATIO_YEAR = 0.85;
-		univDetailDAO = univDetailDAO == null ? new UnivDetailDAO() : univDetailDAO;
 
 		double total = univDetailDAO.calculateScoreByYear(START_YEAR, univId, idct);
 		for (int i = START_YEAR + 1; i <= CUR_YEAR; i++) {

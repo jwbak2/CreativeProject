@@ -35,8 +35,10 @@ public class UserBookmarkDAO {
 
 			HashMap<String, String> univMap = Cache.getUnivList();
 
+			int i =0;
 			while (rs.next()) {
 				list.add(getKey(univMap, rs.getString("univ_id")));
+				System.out.println(list.get(i++));
 			}
 
 		} catch (SQLException sqle) {
