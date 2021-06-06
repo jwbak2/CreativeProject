@@ -4,6 +4,7 @@ import Server.model.dao.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클래스
 
@@ -73,10 +74,10 @@ public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클
 			}
 
 
-			for (String key: minMaxOfIndicators.keySet()){
-				MinMax mm = minMaxOfIndicators.get(key);
-				System.out.println(key + " = " + mm.getMin() + " " + mm.getMax());
-			}
+//			for (String key: minMaxOfIndicators.keySet()){
+//				MinMax mm = minMaxOfIndicators.get(key);
+//				System.out.println(key + " = " + mm.getMin() + " " + mm.getMax());
+//			}
 
 
 		} catch (Exception e) {
@@ -118,6 +119,17 @@ public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클
 		// 학과 리스트 저장
 		Pair<String, HashMap<String, String>> data = new Pair<>(univId, deptList);
 		deptListCollection.add(data);
+	}
+
+	// hashmap에 value 로 key 찾기
+	public static <K, V> K getKey(Map<K, V> map, V value) {
+
+		for (K key : map.keySet()) {
+			if (value.equals(map.get(key))) {
+				return key;
+			}
+		}
+		return null;
 	}
 
 	private static boolean isTooMany() {
