@@ -96,7 +96,6 @@ public class UserDetail implements Initializable {
         DepartmentRatingDTO deptRating = myPageInfo.getDeptRating();
 
         if(univRating != null){
-            System.out.println("TEST : univRating is null");
             univRatingLabel.setText(univRating.getScore().toString());
             univRatingCreationDateLabel.setText(univRating.getCreationDate().toString());
             univRatingContentLabel.setText(univRating.getContent());
