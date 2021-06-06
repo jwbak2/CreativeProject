@@ -402,7 +402,7 @@ public class UnivDetail implements Initializable {
                 });
 
                 //즐겨찾기 버튼 초기화
-                //bookMarkButtonInit(univDTO.getUnivId());
+                bookMarkButtonInit(univDTO.getUnivId());
 
                 // 학교의 학과 리스트 요청 - 다른 스레드 생성해서 요청
                 requestDeptListOfUniv();
