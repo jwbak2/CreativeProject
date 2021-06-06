@@ -12,9 +12,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="900.0" stylesheets="@css/reset.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client.controller.CompareUniv">
    <children>
-      <TextField fx:id="inputFirstUniv" layoutX="84.0" layoutY="47.0" prefHeight="51.0" prefWidth="263.0" />
+      <TextField fx:id="inputFirstUniv" layoutX="84.0" layoutY="47.0" prefHeight="51.0" prefWidth="263.0" promptText="학교 이름" />
 <!--      <Button fx:id="btnCp" layoutX="788.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#clickBtnCp" prefHeight="51.0" prefWidth="98.0" text="비교" />-->
-      <TextField fx:id="inputSecondUniv" layoutX="552.0" layoutY="47.0" prefHeight="51.0" prefWidth="263.0" />
+      <TextField fx:id="inputSecondUniv" layoutX="552.0" layoutY="47.0" prefHeight="51.0" prefWidth="263.0" promptText="학교 이름" />
       <Button fx:id="BtnCompareUnivDetail" layoutX="404.0" layoutY="47.0" mnemonicParsing="false" onMouseClicked="#compareUnivDetail" prefHeight="51.0" prefWidth="92.0" text="비교" />
       <ScrollPane hbarPolicy="NEVER" layoutY="177.0" prefHeight="623.0" prefWidth="900.0">
          <content>

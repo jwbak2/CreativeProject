@@ -145,8 +145,8 @@
             <Label fx:id="outSchoolScholarshipOne" alignment="CENTER" contentDisplay="TOP" prefHeight="141.0" prefWidth="211.0" GridPane.rowIndex="7" />
          </children>
       </GridPane>
-      <TextField fx:id="inputDeptNameOne" layoutX="91.0" layoutY="46.0" prefHeight="55.0" prefWidth="273.0" />
-      <TextField fx:id="inputDeptNameTwo" layoutX="534.0" layoutY="46.0" prefHeight="55.0" prefWidth="273.0" />
+      <TextField fx:id="inputDeptNameOne" layoutX="91.0" layoutY="46.0" prefHeight="55.0" prefWidth="273.0" promptText="학과 이름" />
+      <TextField fx:id="inputDeptNameTwo" layoutX="534.0" layoutY="46.0" prefHeight="55.0" prefWidth="273.0" promptText="학과 이름" />
       <Line endX="747.0" layoutX="130.0" layoutY="138.0" startX="-100.0" />
    </children>
 </AnchorPane>
