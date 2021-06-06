@@ -106,11 +106,14 @@
       </AnchorPane>
       <Line endX="799.0" layoutX="101.0" layoutY="197.0" startX="-100.0" />
       <Button fx:id="btnSelectScore" layoutX="767.0" layoutY="216.0" mnemonicParsing="false" onMouseClicked="#clickSelectCustomRating" prefHeight="59.0" prefWidth="102.0" text="조회" />
-      <TableView layoutX="42.0" layoutY="309.0" prefHeight="437.0" prefWidth="826.0">
+      <TableView fx:id="tableResultScore" layoutX="42.0" layoutY="309.0" prefHeight="437.0" prefWidth="826.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="학교" />
-          <TableColumn prefWidth="75.0" text="학과" />
-            <TableColumn prefWidth="141.0" text="평점" />
+          <TableColumn fx:id="colResultUniv" prefWidth="225.0" text="학교" />
+          <TableColumn fx:id="colResultDept" prefWidth="208.0" text="학과" />
+            <TableColumn fx:id="colResultScore" prefWidth="111.0" text="평점" />
+            <TableColumn fx:id="colFirstScore" prefWidth="101.0" text="1순위" />
+            <TableColumn fx:id="colSecondScore" prefWidth="94.0" text="2순위" />
+            <TableColumn fx:id="colThirdScore" prefWidth="86.0" text="3순위" />
         </columns>
       </TableView>
    </children>

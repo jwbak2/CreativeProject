@@ -88,10 +88,11 @@ public class UserStatistics implements Initializable {
 
             // univView ArrayList
             for(int i = 0; i < univViewList.size(); i++){
-                // TODO 조회수 추가
-                univList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
-                        ,new SimpleStringProperty(univViewList.get(i).getName())
-                        , new SimpleStringProperty(Integer.toString(univViewList.get(i).getView()))));
+                System.out.println(univViewList.get(i).getName());
+//                // TODO 조회수 추가
+//                univList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
+//                        ,new SimpleStringProperty(univViewList.get(i).getName())
+//                        , new SimpleStringProperty(Integer.toString(univViewList.get(i).getView()))));
             }
 
             // indicatorView ArrayList
