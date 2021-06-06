@@ -83,6 +83,7 @@ public class CustomRank {
 			result.add(new CustomizedRankResVO(univName, deptName, deptScore[0], deptScore[1], deptScore[2], scores[i]));
 		}
 
+		System.out.println(result.size());
 		return result;
 
 	}
@@ -204,8 +205,8 @@ public class CustomRank {
 
 			for (int j = 0; j < smallIndicators.size(); j++) {
 				MinMax minMax = minMaxList.get(i + " " + smallIndicators.get(j));
-				Long min = minMax.getMin();
-				Long max = minMax.getMax();
+				long min = minMax.getMin();
+				long max = minMax.getMax();
 
 				System.out.println("in 각 지표의 연도별 점수 " + univ.get(i - START_YEAR).getYear());
 				double score = ((double) getValue(univ.get(i - START_YEAR), smallIndicators.get(j))) / (max - min);
@@ -422,7 +423,8 @@ public class CustomRank {
 		double result = 0.0;
 
 		for (int i = 0; i < scores.length; i++) {
-			result += scores[i] * RATIO_OF_INDICATORS[i];
+			scores[i] *= RATIO_OF_INDICATORS[i];
+			result += scores[i];
 			System.out.println(i + "----번째까지 합산 지표 점수: " + result);
 		}
 

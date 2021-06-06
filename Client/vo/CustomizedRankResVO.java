@@ -1,6 +1,8 @@
 package Client.vo;
 
-public class CustomizedRankResVO {
+import java.io.Serializable;
+
+public class CustomizedRankResVO implements Serializable {
 
 	private String univName;
 	private String deptName;

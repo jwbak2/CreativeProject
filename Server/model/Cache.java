@@ -73,6 +73,12 @@ public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클
 			}
 
 
+			for (String key: minMaxOfIndicators.keySet()){
+				MinMax mm = minMaxOfIndicators.get(key);
+				System.out.println(key + " = " + mm.getMin() + " " + mm.getMax());
+			}
+
+
 		} catch (Exception e) {
 
 		}
@@ -131,4 +137,5 @@ public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클
 
 		deptListCollection.remove(minIndex);
 	}
+
 }

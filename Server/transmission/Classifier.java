@@ -15,9 +15,9 @@ public class Classifier {
 
 	private final Controller controller = new Controller();
 
-	public void classify(Protocol pt) {
+	public int classify(Protocol pt) {
 		if (pt == null)
-			return;
+			return -1;
 
 		// 패킷 분류
 		int type = pt.getProtocolType();
@@ -138,10 +138,15 @@ public class Classifier {
 			case Protocol.PT_FAIL:	// 실패
 				break;
 
+			case Protocol.PT_EXIT:	// 종료
+				return -1;
+
 			default:
 				System.out.println("---알 수 없는 패킷---");
 				break;
 		}
+
+		return 1;
 
 	}
 
