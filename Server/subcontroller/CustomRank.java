@@ -1,5 +1,6 @@
 package Server.subcontroller;
 
+import Client.vo.CustomizedRankResVO;
 import Client.vo.DeptInfoReqVO;
 import Server.model.Cache;
 import Server.model.MinMax;
@@ -25,7 +26,7 @@ public class CustomRank {
 	final double[] RATIO_OF_INDICATORS = {42.3, 33.3, 24.3};	// 1순위 ~ NUM_OF_INDICATORS 순위
 
 	// deptList = 학과 리스트, indicators = 사용자가 선택한 지표 (1, 2, 3, ... 순위)
-	public void getRanking(ArrayList<DeptInfoReqVO> deptList, ArrayList<String> indicators) throws Exception {
+	public ArrayList<CustomizedRankResVO> getRanking(ArrayList<DeptInfoReqVO> deptList, ArrayList<String> indicators) throws Exception {
 
 		ArrayList<String>[] idctList = new ArrayList[NUM_OF_INDICATORS];
 //		ArrayList<String> univIdct = new ArrayList<>();
@@ -49,35 +50,40 @@ public class CustomRank {
 		Univ univSC = new Univ();
 		Department deptSC = new Department();
 
+		ArrayList<CustomizedRankResVO> result = new ArrayList<>();
 
 		double[] scores = new double[deptList.size()];
 		for (int i = 0; i < deptList.size(); i++) {
 
-			String univId = univSC.getUnivId(deptList.get(i).getUnivName());
-			String deptId = deptSC.getDepartmentID(deptList.get(i).getUnivName(), deptList.get(i).getDeptName());
+			String univName = deptList.get(i).getUnivName();
+			String deptName = deptList.get(i).getDeptName();
+			String univId = univSC.getUnivId(univName);
+			String deptId = deptSC.getDepartmentID(univName, deptName);
 
-			System.out.println("--각 학교 점수 구하기 " + deptList.get(i).getUnivName() + " " + deptList.get(i).getDeptName());
-			double deptScore = 0;
+			System.out.println("--각 학교 점수 구하기 " + univName + " " + deptName);
+
+			double[] deptScore = new double[NUM_OF_INDICATORS];
 			for (int j = 0; j < NUM_OF_INDICATORS; j++) {
 				String type = idctList[j].get(0);
 				System.out.println("----각 지표별 점수 구하기, type: " + type);
 
 				if (type.equals("UNIV")) {
-					deptScore += univSC.getScoreByYear(univId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
+					deptScore[j] += univSC.getScoreByYear(univId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
 
 				} else {
-					deptScore += deptSC.getScoreByYear(deptId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
+					deptScore[j] += deptSC.getScoreByYear(deptId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
 
 				}
 
-				deptScore = deptScore * RATIO_OF_INDICATORS[j];
-				System.out.println(j + "----번째까지 합산 지표 점수: " + deptScore);
 			}
 
-			scores[i] = deptScore;
+			scores[i] = getTotalScore(deptScore);
 			System.out.println("--학교 점수 " + scores[i]);
+
+			result.add(new CustomizedRankResVO(univName, deptName, deptScore[0], deptScore[1], deptScore[2], scores[i]));
 		}
 
+		return result;
 
 	}
 
@@ -410,5 +416,16 @@ public class CustomRank {
 		}
 
 		return null;
+	}
+
+	public double getTotalScore(double[] scores) {
+		double result = 0.0;
+
+		for (int i = 0; i < scores.length; i++) {
+			result += scores[i] * RATIO_OF_INDICATORS[i];
+			System.out.println(i + "----번째까지 합산 지표 점수: " + result);
+		}
+
+		return result;
 	}
 }
