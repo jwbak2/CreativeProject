@@ -590,7 +590,7 @@ public class DepartmentDetail implements Initializable {
                     showLoginSuccPopUp();
 
                     // Date to String
-                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
 
                     // table view 리스트에 추가
                     observableList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)), new SimpleStringProperty(content), makeRating(score)));

@@ -642,7 +642,7 @@ public class UnivDetail implements Initializable {
 
         for (int i = 0; i < univRatingList.size(); i++) {
             // Date to String
-            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
             String creationDate = transFormat.format(univRatingList.get(i).getCreationDate());
 
             observableUnivRatingList.add(new RatingInfo(new SimpleStringProperty(creationDate),
