@@ -18,7 +18,7 @@ public class UserBookmarkDAO {
 	public ArrayList<String> select(String email) {
 		// 북마크 리스트 반환
 
-		ArrayList<String> list = null;     // 학과 목록 선언 '학과 이름' 의 1차원 배열
+		ArrayList<String> list = null;     // 학과 목록 선언 '학과 이름' 의 배열
 
 		String SQL = "SELECT univ_id FROM crtvp.user_bookmark WHERE user_email = ?";
 
