@@ -30,6 +30,7 @@ public class Connection {
         try {
             Connection.ois.close();
             Connection.oos.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
