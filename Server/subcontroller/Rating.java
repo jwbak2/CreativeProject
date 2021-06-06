@@ -1,6 +1,5 @@
 package Server.subcontroller;
 
-import Client.vo.RatingVO;
 import Server.model.dao.DepartmentRatingDAO;
 import Server.model.dao.UnivRatingDAO;
 import Server.model.dto.DepartmentRatingDTO;

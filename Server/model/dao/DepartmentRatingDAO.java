@@ -2,7 +2,6 @@ package Server.model.dao;
 
 import Server.model.DBCP;
 import Server.model.dto.DepartmentRatingDTO;
-import Server.model.dto.UnivRatingDTO;
 
 import java.sql.*;
 import java.util.ArrayList;
