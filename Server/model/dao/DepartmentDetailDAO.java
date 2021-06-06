@@ -171,15 +171,15 @@ public class DepartmentDetailDAO {
 			int size =  idct.size();
 			for (int i = 0; i < size; i++) {
 				String indicator = idct.get(i);
-				System.out.println("#지표 : " + indicator);
+				System.out.println("------지표 : " + indicator);
 
 
-				MinMax minMax = minMaxList.get(indicator);
+				MinMax minMax = minMaxList.get(year + " " + indicator);
 				long min = minMax.getMin();
 				long max = minMax.getMax();
 
-				System.out.println("#min : " + min);
-				System.out.println("#max : " + max);
+				System.out.println("------min : " + min);
+				System.out.println("------max : " + max);
 
 				long value = rs.getLong(indicator);
 

@@ -134,6 +134,7 @@ public class Controller {
 
 		} catch (Exception e) {
 			System.out.println("Controller - 맞춤형 평점 조회 오류");
+			e.printStackTrace();
 
 		}
 
@@ -178,9 +179,11 @@ public class Controller {
 		String univId = new Univ().getUnivId(univName);
 
 		if (bookmark.toggleBookmark(univId, curUser.getUserEmail())) {
+			System.out.println("북마크 토글 성공");
 			Sender.send(Protocol.PT_SUCC, Protocol.PT_SUCC_BOOKMARK_TOGGLE);
 
 		} else {
+			System.out.println("북마크 토글 실패");
 			Sender.send(Protocol.PT_FAIL, Protocol.PT_FAIL_BOOKMARK_TOGGLE);
 
 		}

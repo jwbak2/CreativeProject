@@ -22,15 +22,17 @@ public class ConnectRunnable implements Runnable{
             Receiver receiver = new Receiver(ois);
             Classifier classifier = new Classifier();
 
+
+            int state = 1;
             while (true) {
-                if (socket.isConnected() && !socket.isClosed())
+                if (state > 0 || socket.isConnected() && !socket.isClosed())
                 {
-                    // 소켓 연결 상태 확인 완료
-                    classifier.classify(receiver.receive());
+                    // 연결 상태 확인 완료
+                    state = classifier.classify(receiver.receive());
                 }
                 else
                 {
-                    // 소켓 연결 끊어짐
+                    // 클라이언트와 연결 끊어짐
                     System.out.println("---클라이언트 통신 종료---");
                     socket.close();
                     break;

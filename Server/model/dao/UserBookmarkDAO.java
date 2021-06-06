@@ -116,7 +116,9 @@ public class UserBookmarkDAO {
 			pstmt.setString(1, email);
 			pstmt.setString(2, univId);
 
+			System.out.println("북마크 삭제 준비 완료");
 			changed = pstmt.executeUpdate();
+			System.out.println("북마크 삭제 완료");
 
 		} catch (SQLException sqle) {
 			System.out.println("Exception : DELETE BOOKMARK");
@@ -145,7 +147,9 @@ public class UserBookmarkDAO {
 			pstmt.setString(1, email);
 			pstmt.setString(2, univId);
 
+			System.out.println("북마크 등록 준비 완료");
 			changed = pstmt.executeUpdate();
+			System.out.println("북마크 등록 완료");
 
 		} catch (SQLException sqle) {
 			System.out.println("Exception : INSERT BOOKMARK");
