@@ -61,7 +61,7 @@ public class CustomRank {
 			String deptId = deptSC.getDepartmentID(univName, deptName);
 
 			System.out.println("--각 학교 점수 구하기 " + univName + " " + deptName);
-
+			// 커밋을 새로하기 위해 붙인 주석
 			double[] deptScore = new double[NUM_OF_INDICATORS];
 			for (int j = 0; j < NUM_OF_INDICATORS; j++) {
 				String type = idctList[j].get(0);
