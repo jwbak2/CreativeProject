@@ -1,4 +1,4 @@
-package Server.model.dao;
+package Server.model;
 
 public class MinMaxOfIndicator {
 

@@ -22,6 +22,7 @@ public class CustomRank {
 	final int UNIV = 0;
 	final int DEPT = 1;
 	final int NUM_OF_INDICATORS = 3;
+	final double[] RATIO_OF_INDICATORS = {42.3, 33.3, 24.3};	// 1순위 ~ NUM_OF_INDICATORS 순위
 
 	// deptList = 학과 리스트, indicators = 사용자가 선택한 지표 (1, 2, 3, ... 순위)
 	public void getRanking(ArrayList<DeptInfoReqVO> deptList, ArrayList<String> indicators) throws Exception {
@@ -48,23 +49,33 @@ public class CustomRank {
 		Univ univSC = new Univ();
 		Department deptSC = new Department();
 
+
+		double[] scores = new double[deptList.size()];
 		for (int i = 0; i < deptList.size(); i++) {
+
 			String univId = univSC.getUnivId(deptList.get(i).getUnivName());
 			String deptId = deptSC.getDepartmentID(deptList.get(i).getUnivName(), deptList.get(i).getDeptName());
 
+			System.out.println("--각 학교 점수 구하기 " + deptList.get(i).getUnivName() + " " + deptList.get(i).getDeptName());
 			double deptScore = 0;
 			for (int j = 0; j < NUM_OF_INDICATORS; j++) {
-				String type = idctList[i].get(0);
+				String type = idctList[j].get(0);
+				System.out.println("----각 지표별 점수 구하기, type: " + type);
 
 				if (type.equals("UNIV")) {
-					univSC.getScoreByYear(univId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
+					deptScore += univSC.getScoreByYear(univId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
 
 				} else {
-					deptSC.getScoreByYear(deptId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
+					deptScore += deptSC.getScoreByYear(deptId, new ArrayList<>(idctList[j].subList(1, idctList[j].size())));
 
 				}
+
+				deptScore = deptScore * RATIO_OF_INDICATORS[j];
+				System.out.println(j + "----번째까지 합산 지표 점수: " + deptScore);
 			}
 
+			scores[i] = deptScore;
+			System.out.println("--학교 점수 " + scores[i]);
 		}
 
 
