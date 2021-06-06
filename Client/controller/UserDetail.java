@@ -88,7 +88,7 @@ public class UserDetail implements Initializable {
         //사용자 정보 세팅
         userEmailLabel.setText(Login.user.getUserEmail());
         userNameLabel.setText(Login.user.getUserName());
-        userTelNumLabel.setText(Login.user.getUserPhoneNumber().toString());
+        userTelNumLabel.setText("0" + Login.user.getUserPhoneNumber());
         userAreaLabel .setText(Login.user.getUserArea());
         userResidentRegistrationNumberLabel.setText(Login.user.getResidentRegistrationNumber().toString());
         userAffiliatedSchoolLabel.setText(Login.user.getAffiliatedSchool());
