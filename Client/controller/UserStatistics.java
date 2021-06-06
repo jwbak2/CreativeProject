@@ -2,6 +2,7 @@ package Client.controller;
 
 import Client.transmission.Connection;
 import Client.view.tablemodel.RankInfo;
+import Client.vo.RankVO;
 import Server.transmission.Protocol;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -82,19 +83,23 @@ public class UserStatistics implements Initializable {
                 }
             }
 
-            System.out.println(receiveList.size());
+            ArrayList<RankVO> univViewList = receiveList.get(0);
+            ArrayList<RankVO> indicatorViewList = receiveList.get(1);
 
             // univView ArrayList
-            for(int i = 0; i < receiveList.get(0).size(); i++){
-                // TODO 조회수 추가
+            for(int i = 0; i < univViewList.size(); i++){
+                System.out.println(univViewList.get(i).getName());
+//                // TODO 조회수 추가
 //                univList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
-//                        ,new SimpleStringProperty((String) receiveList.get(0).get(i))));
+//                        ,new SimpleStringProperty(univViewList.get(i).getName())
+//                        , new SimpleStringProperty(Integer.toString(univViewList.get(i).getView()))));
             }
 
             // indicatorView ArrayList
-            for(int i = 0; i < receiveList.get(1).size(); i++){
-//                indicatorList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
-//                        ,new SimpleStringProperty((String) receiveList.get(1).get(i))));
+            for(int i = 0; i < indicatorViewList.size(); i++){
+                indicatorList.add(new RankInfo(new SimpleStringProperty(Integer.toString(i + 1))
+                        ,new SimpleStringProperty(indicatorViewList.get(i).getName())
+                        , new SimpleStringProperty(Integer.toString(indicatorViewList.get(i).getView()))));
             }
 
             Platform.runLater(() -> {

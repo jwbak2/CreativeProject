@@ -1,7 +1,10 @@
 package Client.controller;
 
 import Client.transmission.Connection;
+import Client.view.tablemodel.ResultScore;
+import Client.view.tablemodel.UnivAndDept;
 import Client.vo.CustomizedRankReqVO;
+import Client.vo.CustomizedRankResVO;
 import Client.vo.DeptInfoReqVO;
 import Server.transmission.Protocol;
 import impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding;
@@ -28,31 +31,7 @@ import java.util.regex.Pattern;
 
 public class CompareScore implements Initializable {
 
-    public class UnivAndDept{
-        private final SimpleStringProperty univ;;
-        private final SimpleStringProperty dept;
 
-        public UnivAndDept(SimpleStringProperty univ, SimpleStringProperty dept) {
-            this.univ = univ;
-            this.dept = dept;
-        }
-
-        public String getUniv() {
-            return univ.get();
-        }
-
-        public SimpleStringProperty univProperty() {
-            return univ;
-        }
-
-        public String getDept() {
-            return dept.get();
-        }
-
-        public SimpleStringProperty deptProperty() {
-            return dept;
-        }
-    }
     @FXML
     private AnchorPane firstAP;
 
@@ -86,7 +65,30 @@ public class CompareScore implements Initializable {
     @FXML
     private Button btnResetDeptTable;
 
+    @FXML
+    private TableView<ResultScore> tableResultScore;
+
+    @FXML
+    private TableColumn<?, ?> colResultUniv;
+
+    @FXML
+    private TableColumn<?, ?> colResultDept;
+
+    @FXML
+    private TableColumn<?, ?> colResultScore;
+
+    @FXML
+    private TableColumn<?, ?> colFirstScore;
+
+    @FXML
+    private TableColumn<?, ?> colSecondScore;
+
+    @FXML
+    private TableColumn<?, ?> colThirdScore;
+
     private ObservableList<UnivAndDept> selectedDeptList;
+
+    private ObservableList<ResultScore> resultScoreList;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -132,6 +134,13 @@ public class CompareScore implements Initializable {
         // 테이블 컬럼 set
         colSelectedUniv.setCellValueFactory(new PropertyValueFactory<>("univ"));
         colSelectedDept.setCellValueFactory(new PropertyValueFactory<>("dept"));
+
+        colResultUniv.setCellValueFactory(new PropertyValueFactory<>("univName"));
+        colResultDept.setCellValueFactory(new PropertyValueFactory<>("deptName"));
+        colResultScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct1"));
+        colFirstScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct2"));
+        colSecondScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct3"));
+        colThirdScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfTotal"));
 
         // selectedDeptList 초기화
         selectedDeptList = FXCollections.observableArrayList();
@@ -184,7 +193,22 @@ public class CompareScore implements Initializable {
 
                 Protocol pt = Connection.receive();
 
-                // TODO 받은 데이터 Set
+                ArrayList<CustomizedRankResVO> rankList = (ArrayList<CustomizedRankResVO>) pt.getBody();
+
+                for(int i = 0; i < rankList.size(); i++){
+                    resultScoreList.add(
+                        new ResultScore(
+                            new SimpleStringProperty(rankList.get(i).getUnivName()),
+                            new SimpleStringProperty(rankList.get(i).getDeptName()),
+                            new SimpleStringProperty(Double.toString(rankList.get(i).getScoreOfIdct1())),
+                            new SimpleStringProperty(Double.toString(rankList.get(i).getScoreOfIdct2())),
+                            new SimpleStringProperty(Double.toString(rankList.get(i).getScoreOfIdct3())),
+                            new SimpleStringProperty(Double.toString(rankList.get(i).getScoreOfTotal()))
+                        )
+                    );
+                }
+
+                tableResultScore.setItems(resultScoreList);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -198,6 +222,9 @@ public class CompareScore implements Initializable {
     @FXML
     void clickResetDeptTable(MouseEvent event) {
         tableDept.getItems().clear();
+        tableResultScore.getItems().clear();
+
         selectedDeptList = FXCollections.observableArrayList();
+        resultScoreList = FXCollections.observableArrayList();
     }
 }
