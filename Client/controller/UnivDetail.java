@@ -901,11 +901,11 @@ public class UnivDetail implements Initializable {
     // 학교 평가 등록 버튼 클릭 시
     @FXML
     void clickRegisterUnivRating(MouseEvent event) {
-//        if(!(Login.user.getAffiliatedSchool().equals(textUnivName.getText()))){
-//            // TODO 예외처리 필요
-//            System.out.println("학과 평가 등록 권한이 없습니다.");
-//            return;
-//        }
+        if(!(Login.user.getAffiliatedSchool().equals(textUnivName.getText()))){
+            showRatingAuthFail();
+            System.out.println("학과 평가 등록 권한이 없습니다.");
+            return;
+        }
 
         Runnable runnable = () -> {
             String univName = inputUniv.getText().replace(" ", "");
@@ -978,4 +978,18 @@ public class UnivDetail implements Initializable {
         }
     }
 
+    private void showRatingAuthFail() {
+        try {
+            Stage stage = (Stage) inputUnivRatingContent.getScene().getWindow(); //
+            Popup pu = new Popup();
+            Parent root = FXMLLoader.load(getClass().getResource("../view/authFail.fxml"));
+
+            pu.getContent().add(root);
+            pu.setAutoHide(true); // 포커스 이동시 창 숨김
+            pu.show(stage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
