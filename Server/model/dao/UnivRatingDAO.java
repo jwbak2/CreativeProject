@@ -104,7 +104,7 @@ public class UnivRatingDAO {
 
 			if(rs.next()) {
 
-				String univId = rs.getString("univId");
+				String univId = rs.getString("univ_id");
 				String content = rs.getString("content");
 				Long score = rs.getLong("score");
 				java.sql.Date creationDate = rs.getDate("creation_date");
