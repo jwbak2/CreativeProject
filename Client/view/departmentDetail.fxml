@@ -197,7 +197,7 @@
                               <TableColumn fx:id="colRatingScore" prefWidth="187.0" style="-fx-alignment: CENTER;" text="평점" />
                           </columns>
                         </TableView>
-                        <TextField fx:id="inputRatingContent" layoutX="14.0" layoutY="27.0" prefHeight="55.0" prefWidth="565.0" />
+                        <TextField fx:id="inputRatingContent" layoutX="14.0" layoutY="27.0" prefHeight="55.0" prefWidth="565.0" promptText="평가 내용" />
                         <Rating fx:id="deptRating" layoutX="593.0" layoutY="38.0" prefHeight="0.0" prefWidth="176.0" rating="5.0" />
                         <Button layoutX="792.0" layoutY="30.0" mnemonicParsing="false" onMouseClicked="#clickRegisterDeptRating" prefHeight="48.0" prefWidth="73.0" text="등록" />
                      </children></AnchorPane>
