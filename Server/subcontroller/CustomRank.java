@@ -5,6 +5,7 @@ import Client.vo.DeptInfoReqVO;
 import Server.model.dao.IndicatorSelectionStatisticsDAO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CustomRank {
 
@@ -39,6 +40,9 @@ public class CustomRank {
 			String univId = univSC.getUnivId(univName);
 			String deptId = deptSC.getDepartmentID(univName, deptName);
 
+			// 조회한 학과의 대학 조회수 1 증가
+			univSC.increaseView(univId);
+
 			System.out.println("--각 학교 점수 구하기 " + univName + " " + deptName);
 
 			double[] deptScore = new double[NUM_OF_INDICATORS];
@@ -62,7 +66,7 @@ public class CustomRank {
 			result.add(new CustomizedRankResVO(univName, deptName, deptScore[0], deptScore[1], deptScore[2], scores[i]));
 		}
 
-
+		Collections.sort(result, Collections.reverseOrder());
 		return result;
 
 	}

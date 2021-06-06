@@ -4,8 +4,6 @@ import Client.vo.CustomizedRankReqVO;
 import Client.vo.DeptInfoReqVO;
 import Client.vo.LoginReqVO;
 import Client.vo.RatingVO;
-import Server.model.dto.DepartmentRatingDTO;
-import Server.model.dto.UnivRatingDTO;
 
 import java.util.ArrayList;
 

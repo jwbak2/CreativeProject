@@ -33,25 +33,25 @@ public class Univ {
 		return new ArrayList<String>(univMap.keySet());
 	}
 
-	public UnivDTO getUniv(String univCode) throws Exception {
+	public UnivDTO getUniv(String univId) throws Exception {
 		// 대학 정보 반환
 
-		return univDAO.select(univCode);
+		return univDAO.select(univId);
 	}
 
-	public UnivDetailDTO getUnivDetail(String univCode, int year) throws Exception {
+	public UnivDetailDTO getUnivDetail(String univId, int year) throws Exception {
 		// 대학 상세정보 반환
 
-		return univDetailDAO.select(univCode, year);
+		return univDetailDAO.select(univId, year);
 	}
 
-	public ArrayList<UnivDetailDTO> getAllUnivDetail(String univCode) throws Exception {
+	public ArrayList<UnivDetailDTO> getAllUnivDetail(String univId) throws Exception {
 		// 대학 상세정보 반환
 
 		// START ~ CUR 기간의 대학 상세정보 데이터 받아오기
 		ArrayList<UnivDetailDTO> result = new ArrayList<UnivDetailDTO>();
 		for (int i = START_YEAR; i <= CUR_YEAR; i++) {
-			result.add(getUnivDetail(univCode, i));
+			result.add(getUnivDetail(univId, i));
 		}
 
 		// 연도별 대학 상세정보가 담긴 ArrayList 반환
@@ -91,6 +91,12 @@ public class Univ {
 		}
 
 		return total;
+	}
+
+	public void increaseView(String univId) {
+		// 대학 조회수 증가
+		System.out.println("대학 조회수 증가");
+		univDAO.increaseUserView(univId);
 	}
 
 }
