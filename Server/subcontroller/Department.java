@@ -80,7 +80,9 @@ public class Department {
 		deptDetailDAO = deptDetailDAO == null ? new DepartmentDetailDAO() : deptDetailDAO;
 
 		double total = deptDetailDAO.calculateScoreByYear(START_YEAR, univId, idct);
+
 		for (int i = START_YEAR + 1; i <= CUR_YEAR; i++) {
+			System.out.println("------지표의 연도별 점수 구하기 " + i);
 			total = RATIO_YEAR * deptDetailDAO.calculateScoreByYear(i, univId, idct)
 					+ (1 - RATIO_YEAR) * total;
 

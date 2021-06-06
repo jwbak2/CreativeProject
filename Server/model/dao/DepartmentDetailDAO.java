@@ -3,6 +3,7 @@ package Server.model.dao;
 import Server.model.Cache;
 import Server.model.DBCP;
 import Server.model.MinMax;
+import Server.model.MinMaxOfIndicator;
 import Server.model.dto.DepartmentDetailDTO;
 
 import java.sql.Connection;
@@ -155,7 +156,7 @@ public class DepartmentDetailDAO {
 		String preQuery = "SELECT * FROM crtvp.department_detail WHERE department_id = ? AND year = ?";
 
 		ResultSet rs = null;
-		double score = 0;
+		double score = 0.0;
 
 		try(PreparedStatement pstmt = conn.prepareStatement(preQuery)) {
 

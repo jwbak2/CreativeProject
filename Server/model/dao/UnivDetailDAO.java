@@ -2,6 +2,7 @@ package Server.model.dao;
 
 import Server.model.DBCP;
 import Server.model.MinMax;
+import Server.model.MinMaxOfIndicator;
 import Server.model.dto.UnivDetailDTO;
 import Server.model.Cache;
 
@@ -147,7 +148,7 @@ public class UnivDetailDAO {
         String preQuery = "SELECT * FROM crtvp.univ_detail WHERE univ_id = ? AND year = ?";
 
         ResultSet rs = null;
-        double score = 0;
+        double score = 0.0;
 
         try(PreparedStatement pstmt = conn.prepareStatement(preQuery)) {
 

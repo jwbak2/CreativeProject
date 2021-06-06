@@ -111,7 +111,6 @@ public class Classifier {
 						controller.reqToggleBookmark( (String) body );
 						break;
 
-
 					// 사용자 로그인 요청
 					case Protocol.PT_REQ_LOGIN:
 						System.out.println("~로그인 요청");

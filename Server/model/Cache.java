@@ -4,7 +4,6 @@ import Server.model.dao.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Cache {	// 사용빈도 높은 서버 데이터를 보관하는 클래스
 

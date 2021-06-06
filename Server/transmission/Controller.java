@@ -127,7 +127,10 @@ public class Controller {
 			CustomRank customRank = new CustomRank();
 
 
-			customRank.getRanking(deptList, indicators);
+			ArrayList<CustomizedRankResVO> list = customRank.getRanking(deptList, indicators);
+
+
+			Sender.send(Protocol.PT_RES, Protocol.PT_RES_CUSTOM_RANKING, list);
 
 		} catch (Exception e) {
 			System.out.println("Controller - 맞춤형 평점 조회 오류");
