@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import Client.vo.RankVO;
 import Server.model.DBCP;
 import Server.model.dto.UnivDTO;
 
@@ -93,19 +94,19 @@ public class UnivDAO {
         return univList;
     }
 
-    public ArrayList<String> getViewList() {    // 조회수 순의 학교 리스트를 반환
+    public ArrayList<RankVO> getViewList() {    // 조회수 순의 학교 리스트를 반환
 
         final int LIST_SIZE = 20;
 
         // 학과
-        ArrayList<String> list = null;
+        ArrayList<RankVO> list = null;
 
-        String SQL = "SELECT univ_name FROM crtvp.univ ORDER BY USER_VIEW DESC";
+        String SQL = "SELECT univ_name, USER_VIEW FROM crtvp.univ ORDER BY USER_VIEW DESC";
 
         Connection conn = DBCP.getConnection();
 
         try(Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(SQL);
+            ResultSet rs = stmt.executeQuery(SQL)
         ) {
 
             // 대학 리스트를 저장할 HashMap
@@ -114,7 +115,7 @@ public class UnivDAO {
             int count = 0;
             while (rs.next()) {
                 count++;
-                list.add(rs.getString("univ_name"));
+                list.add(new RankVO(rs.getString("univ_name"), rs.getInt("USER_VIEW")));
 
                 if (count == LIST_SIZE)
                     break;
