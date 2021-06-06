@@ -290,9 +290,13 @@ public class UnivDetail implements Initializable {
 
                 setBookMarkButton(1);   // 버튼을 즐겨찾기 등록된 상태로 변경
 
-            } else {
+            } else if (receivePT.getProtocolCode() == PT_SUCC_BOOKMARK_TOGGLE){
 
                 setBookMarkButton(0);   // 버튼을 즐겨찾기 해제된 상태로 변경
+
+            } else {
+
+                System.out.println("즐겨찾기 등록 실패");
 
             }
 
@@ -313,6 +317,10 @@ public class UnivDetail implements Initializable {
         if ((Boolean) Connection.receive().getBody()){
 
             setBookMarkButton(1);       // 버튼을 즐겨찾기 등록된 상태로 변경
+
+        } else {
+
+            setBookMarkButton(0);
 
         }
 
