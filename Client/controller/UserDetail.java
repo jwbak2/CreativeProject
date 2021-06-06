@@ -123,7 +123,7 @@ public class UserDetail implements Initializable {
 
         }
 
-        //북마크 세팅
+        //북마크 세팅팅
 
         bookMarkCol.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
 

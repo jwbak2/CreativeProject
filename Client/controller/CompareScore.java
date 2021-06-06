@@ -137,10 +137,10 @@ public class CompareScore implements Initializable {
 
         colResultUniv.setCellValueFactory(new PropertyValueFactory<>("univName"));
         colResultDept.setCellValueFactory(new PropertyValueFactory<>("deptName"));
-        colResultScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct1"));
-        colFirstScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct2"));
-        colSecondScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct3"));
-        colThirdScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfTotal"));
+        colFirstScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct1"));
+        colSecondScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct2"));
+        colThirdScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfIdct3"));
+        colResultScore.setCellValueFactory(new PropertyValueFactory<>("scoreOfTotal"));
 
         // selectedDeptList 초기화
         selectedDeptList = FXCollections.observableArrayList();
@@ -203,10 +203,10 @@ public class CompareScore implements Initializable {
                         new ResultScore(
                             new SimpleStringProperty(rankList.get(i).getUnivName()),
                             new SimpleStringProperty(rankList.get(i).getDeptName()),
-                            new SimpleStringProperty(Double.toString(rankList.get(i).getScoreOfIdct1())),
-                            new SimpleStringProperty(Double.toString(rankList.get(i).getScoreOfIdct2())),
-                            new SimpleStringProperty(Double.toString(rankList.get(i).getScoreOfIdct3())),
-                            new SimpleStringProperty(Double.toString(rankList.get(i).getScoreOfTotal()))
+                            new SimpleStringProperty(String.format("%.4f", rankList.get(i).getScoreOfIdct1())),
+                            new SimpleStringProperty(String.format("%.4f", rankList.get(i).getScoreOfIdct2())),
+                            new SimpleStringProperty(String.format("%.4f", rankList.get(i).getScoreOfIdct3())),
+                            new SimpleStringProperty(String.format("%.4f", rankList.get(i).getScoreOfTotal()))
                         )
                     );
                 }
