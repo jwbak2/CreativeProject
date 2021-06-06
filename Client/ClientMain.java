@@ -43,6 +43,7 @@ public class ClientMain extends Application {
     }
 
     public static void terminate() {
+        System.out.println("종료");
         Connection.send(new Protocol(Protocol.PT_EXIT, Protocol.PT_EXIT));    // 종료 패킷 송신
         Connection.terminate();                 // 소켓 통신 종료
         System.exit(0);                   //클라이언트 종료

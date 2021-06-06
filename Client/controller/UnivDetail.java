@@ -933,8 +933,9 @@ public class UnivDetail implements Initializable {
             if (receivePT.getProtocolType() == Protocol.PT_SUCC
                     && receivePT.getProtocolCode() == Protocol.PT_SUCC_UNIV_RATING) {
                 // Date to String
-                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy/MM/dd");
 
+                System.out.println(creationDate);
                 // table view 리스트에 추가
                 observableUnivRatingList.add(new RatingInfo(new SimpleStringProperty(transFormat.format(creationDate)),
                         new SimpleStringProperty(content),
@@ -975,7 +976,7 @@ public class UnivDetail implements Initializable {
         try {
             Stage stage = (Stage) inputUnivRatingContent.getScene().getWindow(); //
             Popup pu = new Popup();
-            Parent root = FXMLLoader.load(getClass().getResource("../view/ratingFail.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("../view/ratingSucc.fxml"));
 
             pu.getContent().add(root);
             pu.setAutoHide(true); // 포커스 이동시 창 숨김

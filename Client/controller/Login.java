@@ -1,5 +1,6 @@
 package Client.controller;
 
+import Client.ClientMain;
 import Client.transmission.Connection;
 import Client.vo.LoginReqVO;
 import Server.model.dto.UserDTO;
@@ -101,6 +102,10 @@ public class Login implements Initializable {
             primaryStage.setScene(new Scene(root));
             primaryStage.setResizable(false);   // 화면 크기 고정
             primaryStage.show();
+
+            primaryStage.setOnCloseRequest((event) -> {
+                ClientMain.terminate();
+            });
         } catch(IOException E){
             E.printStackTrace();
 
