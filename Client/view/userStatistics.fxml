@@ -23,6 +23,9 @@
           <TableColumn fx:id="colUnivName" prefWidth="225.0" text="학교" />
             <TableColumn fx:id="colUnivView" text="조회수" />
         </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
       <TableView fx:id="tableViewOfIndicator" layoutX="482.0" layoutY="193.0" prefHeight="459.0" prefWidth="380.0">
          <columns>
@@ -30,6 +33,9 @@
             <TableColumn fx:id="colIndicatorName" prefWidth="207.0" text="지표" />
             <TableColumn fx:id="colIndicatorView" prefWidth="81.0" text="조회수" />
          </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
       </TableView>
    </children>
 </AnchorPane>
